@@ -186,41 +186,11 @@ Create, keyframe-fade, and remove per-object opacity controllers.</string>
      <string>Render Opacity</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="tb005">
-    <property name="geometry">
-     <rect>
-      <x>140</x>
-      <y>235</y>
-      <width>91</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="minimumSize">
-     <size>
-      <width>0</width>
-      <height>20</height>
-     </size>
-    </property>
-    <property name="maximumSize">
-     <size>
-      <width>16777215</width>
-      <height>20</height>
-     </size>
-    </property>
-    <property name="toolTip">
-     <string>Open the Audio Events manager.
-
-Import audio clips onto the Maya timeline aligned to keyed event triggers.</string>
-    </property>
-    <property name="text">
-     <string>Audio Events</string>
-    </property>
-   </widget>
    <widget class="PushButton" name="tb004">
     <property name="geometry">
      <rect>
-      <x>145</x>
-      <y>210</y>
+      <x>150</x>
+      <y>235</y>
       <width>81</width>
       <height>20</height>
      </rect>
