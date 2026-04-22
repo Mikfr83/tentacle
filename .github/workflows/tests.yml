@@ -25,12 +25,12 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y libegl1-mesa libopengl0 xvfb
+          sudo apt-get install -y libegl1-mesa libopengl0 xvfb python3-tk
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pytest qtpy PySide6 pythontk
+          pip install pytest qtpy PySide6 pythontk uitk mayatk
           pip install -e . --no-deps
 
       - name: Run tests
