@@ -38,6 +38,7 @@ class TclMaya(MarkingMenu):
             bindings=bindings,
             handlers={"ui": MayaUiHandler},
             log_level=log_level,
+            suppress_default_on_reentry=True,
             **kwargs,
         )
 
