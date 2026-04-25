@@ -352,6 +352,97 @@
        </widget>
       </item>
       <item>
+       <widget class="QGroupBox" name="warnings_group">
+        <property name="title">
+         <string>HUD Warnings</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_warnings">
+         <property name="spacing">
+          <number>1</number>
+         </property>
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QCheckBox" name="chk_warn_framerate">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>20</height>
+            </size>
+           </property>
+           <property name="toolTip">
+            <string>Warn in the HUD when the scene's frame rate matches Maya's default — a common sign the scene's FPS was never explicitly set.</string>
+           </property>
+           <property name="text">
+            <string>Default Frame Rate</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="chk_warn_autosave_off">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>20</height>
+            </size>
+           </property>
+           <property name="toolTip">
+            <string>Warn in the HUD when Maya autosave is disabled.</string>
+           </property>
+           <property name="text">
+            <string>Autosave Disabled</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="chk_warn_autosave_open">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>20</height>
+            </size>
+           </property>
+           <property name="toolTip">
+            <string>Warn in the HUD when the currently open scene file lives in the autosave folder — easy to forget to re-save to the main file after a crash recovery.</string>
+           </property>
+           <property name="text">
+            <string>Autosave Scene Open</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="chk_warn_skip_unsaved">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>20</height>
+            </size>
+           </property>
+           <property name="toolTip">
+            <string>Suppress all HUD warnings while the scene is new/unsaved (no file on disk yet). Useful to avoid noise during scene setup.</string>
+           </property>
+           <property name="text">
+            <string>Skip Warnings on Unsaved Scenes</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
        <widget class="QGroupBox" name="bindings_group">
         <property name="title">
          <string>Menu Bindings</string>

@@ -21,9 +21,6 @@ class StatusMixin:
             )
             if self.sb.preferences.tb000.menu.auto_update:
                 self.sb.check_for_update()
-        # Autosave status
-        if not pm.autoSave(q=True, enable=True):
-            hud.insertText('Autosave: <font style="color: Red;">OFF</font>')
         # Symmetry status
         if pm.symmetricModelling(q=True, symmetry=True):
             axis = pm.symmetricModelling(q=True, axis=True)
@@ -131,7 +128,156 @@ class SelectionMixin:
             )
 
 
-class HudSlots(SlotsMaya, ptk.PackageManager, StatusMixin, SelectionMixin):
+class WarningsMixin:
+    """Lightweight pre-build checks shown as colored icons (immediately) and
+    formatted detail lines (after the regular HUD-build delay).
+
+    Each spec defines:
+        key       - QCheckBox objectName in preferences UI gating the check.
+        icon      - Unicode glyph used in the early icon row.
+        color     - HTML color for both icon and detail line.
+        label     - Short tag rendered next to the icon.
+        check     - Callable(self) -> bool. True means "trigger this warning".
+        describe  - Callable(self) -> str. Detail line shown post-delay.
+
+    Adding a new check is a one-line tuple addition — no other edits needed.
+    """
+
+    WARNING_DEFS = (
+        {
+            "key": "chk_warn_framerate",
+            "icon": "⚠",
+            "color": "Orange",
+            "label": "FPS",
+            "check": lambda self: self._warn_check_default_framerate(),
+            "describe": lambda self: self._warn_describe_default_framerate(),
+        },
+        {
+            "key": "chk_warn_autosave_off",
+            "icon": "⚠",
+            "color": "Red",
+            "label": "Autosave",
+            "check": lambda self: self._warn_check_autosave_off(),
+            "describe": lambda self: 'Autosave: <font style="color: Red;">DISABLED</font> &mdash; enable it in Preferences to avoid losing work after a crash.',
+        },
+        {
+            "key": "chk_warn_autosave_open",
+            "icon": "⚠",
+            "color": "Red",
+            "label": "Autosave Open",
+            "check": lambda self: self._warn_check_autosave_scene_open(),
+            "describe": lambda self: 'Open file is an <font style="color: Red;">AUTOSAVE</font> &mdash; save to your main scene before continuing or your work will be lost on the next autosave cycle.',
+        },
+    )
+
+    SKIP_ON_UNSAVED_KEY = "chk_warn_skip_unsaved"
+
+    def _warn_is_enabled(self, key: str) -> bool:
+        """Return True if the user has opted-in to the warning in preferences.
+
+        Triggers lazy load of the preferences UI on first call so checkbox
+        state restoration is available even before the user opens prefs.
+        """
+        try:
+            prefs = self.sb.loaded_ui.preferences
+        except AttributeError:
+            return False
+        widget = getattr(prefs, key, None)
+        if widget is None:
+            return False
+        try:
+            return bool(widget.isChecked())
+        except AttributeError:
+            return False
+
+    def _scene_is_unsaved(self) -> bool:
+        """True if no saved scene file exists on disk (new/untitled scene)."""
+        try:
+            scene = str(pm.sceneName() or "")
+            return not scene or not os.path.isfile(scene)
+        except (RuntimeError, TypeError):
+            return False
+
+    def evaluate_warnings(self) -> list:
+        """Return the subset of WARNING_DEFS whose check fires and is enabled."""
+        if self._warn_is_enabled(self.SKIP_ON_UNSAVED_KEY) and self._scene_is_unsaved():
+            return []
+        active = []
+        for spec in self.WARNING_DEFS:
+            if not self._warn_is_enabled(spec["key"]):
+                continue
+            try:
+                triggered = bool(spec["check"](self))
+            except Exception as error:
+                print(f"{__file__}: warning check {spec['key']} failed: {error}")
+                continue
+            if triggered:
+                active.append(spec)
+        return active
+
+    def insert_warning_icons(self, hud, warnings) -> None:
+        """Insert a single-line row of colored badges; one per active warning."""
+        if not warnings:
+            return
+        badges = "&nbsp;&nbsp;".join(
+            f'<font style="color: {w["color"]};">{w["icon"]} {w["label"]}</font>'
+            for w in warnings
+        )
+        hud.insertText(f'<span style="font-size: 150%;">{badges}</span>')
+
+    def insert_warning_details(self, hud, warnings) -> None:
+        """Insert a formatted detail line per active warning."""
+        for w in warnings:
+            try:
+                msg = w["describe"](self)
+            except Exception as error:
+                print(f"{__file__}: warning describe {w['key']} failed: {error}")
+                continue
+            if msg:
+                hud.insertText(msg)
+
+    # ---- individual checks (kept lightweight: O(1) Maya state queries) ----
+
+    def _warn_check_default_framerate(self) -> bool:
+        try:
+            default = pm.optionVar(q="workingUnitTimeDefault")
+        except (RuntimeError, TypeError):
+            default = "film"  # Maya factory default
+        return pm.currentUnit(q=True, time=True) == default
+
+    def _warn_describe_default_framerate(self) -> str:
+        key = pm.currentUnit(q=True, time=True)
+        val = ptk.VidUtils.FRAME_RATES.get(key)
+        display = f"{val} fps {key.upper()}" if val else key
+        return (
+            f'Frame Rate: <font style="color: Orange;">{display}</font> '
+            "matches Maya's default &mdash; verify this is intentional."
+        )
+
+    def _warn_check_autosave_off(self) -> bool:
+        return not pm.autoSave(q=True, enable=True)
+
+    def _warn_check_autosave_scene_open(self) -> bool:
+        scene = str(pm.sceneName() or "")
+        if not scene:
+            return False
+        scene_norm = os.path.normpath(scene).lower()
+        try:
+            folders = mtk.EnvUtils.find_autosave_directories()
+        except Exception:
+            folders = []
+        for folder in folders:
+            try:
+                if scene_norm.startswith(os.path.normpath(folder).lower()):
+                    return True
+            except (OSError, ValueError):
+                continue
+        return False
+
+
+class HudSlots(
+    SlotsMaya, ptk.PackageManager, StatusMixin, SelectionMixin, WarningsMixin
+):
     """HUD Slots for Maya, providing scene and selection information."""
 
     _hud_request_token: int = 0
@@ -143,11 +289,19 @@ class HudSlots(SlotsMaya, ptk.PackageManager, StatusMixin, SelectionMixin):
 
         self.ui = self.sb.loaded_ui.hud_startmenu
         self.ui.hudTextEdit.shown.connect(self.request_hud_build)
+        self._active_warnings: list = []
 
     def request_hud_build(self) -> None:
         """Start a new HUD build request, only the latest token will be used."""
         self._hud_request_token += 1
         my_token = self._hud_request_token
+
+        # Lightweight pre-build phase: evaluate opted-in warnings synchronously
+        # and surface their icons immediately so the user gets feedback even if
+        # they dismiss the HUD before the delayed full build runs.
+        self._active_warnings = self.evaluate_warnings()
+        self.insert_warning_icons(self.ui.hudTextEdit, self._active_warnings)
+
         self.sb.QtCore.QTimer.singleShot(500, lambda: self._delayed_hud_build(my_token))
 
     def _delayed_hud_build(self, token: int) -> None:
@@ -159,6 +313,8 @@ class HudSlots(SlotsMaya, ptk.PackageManager, StatusMixin, SelectionMixin):
 
     def construct_hud(self) -> None:
         hud = self.ui.hudTextEdit
+
+        self.insert_warning_details(hud, self._active_warnings)
 
         selection = pm.ls(sl=True)
         if not selection:

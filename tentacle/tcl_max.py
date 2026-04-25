@@ -18,7 +18,12 @@ class TclMax(MarkingMenu):
                 print(__file__, error)
 
         super().__init__(
-            parent, ui_source="ui", slot_source=slot_source, *args, **kwargs
+            parent,
+            ui_source="ui",
+            slot_source=slot_source,
+            suppress_default_on_reentry=True,
+            *args,
+            **kwargs,
         )
 
     @classmethod
