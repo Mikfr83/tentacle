@@ -1,9 +1,6 @@
 # !/usr/bin/python
 # coding=utf-8
-try:
-    import pymel.core as pm
-except ImportError as error:
-    print(__file__, error)
+import maya.cmds as cmds
 from tentacle.slots.maya._slots_maya import SlotsMaya
 
 
@@ -16,22 +13,22 @@ class Symmetry(SlotsMaya):
     def chk000_init(self, widget):
         """Set initial symmetry state"""
         self.sb.create_button_groups(widget.ui, "chk000-2", allow_deselect=True)
-        state = pm.symmetricModelling(query=True, symmetry=True)
-        axis = pm.symmetricModelling(query=True, axis=True)
+        state = cmds.symmetricModelling(query=True, symmetry=True)
+        axis = cmds.symmetricModelling(query=True, axis=True)
         w = "chk000" if axis == "x" else "chk001" if axis == "y" else "chk002"
         getattr(widget.ui, w).setChecked(state)
 
     def chk000(self, state, widget):
         """Symmetry X"""
-        pm.symmetricModelling(edit=True, symmetry=bool(state), axis="x")
+        cmds.symmetricModelling(edit=True, symmetry=bool(state), axis="x")
 
     def chk001(self, state, widget):
         """Symmetry Y"""
-        pm.symmetricModelling(edit=True, symmetry=bool(state), axis="y")
+        cmds.symmetricModelling(edit=True, symmetry=bool(state), axis="y")
 
     def chk002(self, state, widget):
         """Symmetry Z"""
-        pm.symmetricModelling(edit=True, symmetry=bool(state), axis="z")
+        cmds.symmetricModelling(edit=True, symmetry=bool(state), axis="z")
 
     def chk005_init(self, widget):
         """Set symmetry reference space"""
@@ -42,14 +39,14 @@ class Symmetry(SlotsMaya):
         if state:
             self.sb.toggle_multi(self.ui, setDisabled="chk000-2")
 
-            selected_edges = pm.filterExpand(selectionMask=32)
+            selected_edges = cmds.filterExpand(selectionMask=32)
             if not selected_edges:
                 self.ui.chk004.setChecked(True)
                 self.sb.message_box("First select an edge.")
                 return
 
             try:
-                pm.symmetricModelling(edit=True, symmetry=bool(state), about="topo")
+                cmds.symmetricModelling(edit=True, symmetry=bool(state), about="topo")
             except RuntimeError:
                 self.sb.message_box(
                     "Topological symmetry cannot be activated.\nYou must select a seam edge before activation can occur."

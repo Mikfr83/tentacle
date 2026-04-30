@@ -2,10 +2,6 @@
 # coding=utf-8
 import os
 
-try:
-    import pymel.core as pm
-except ImportError as error:
-    print(__file__, error)
 import mayatk as mtk
 from uitk import Signals
 from tentacle.slots.maya._slots_maya import SlotsMaya

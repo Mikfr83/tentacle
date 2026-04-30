@@ -4,6 +4,16 @@
 
 **Nav**: [← root](../CLAUDE.md) · **Deps**: [pythontk](../pythontk/CLAUDE.md) · [uitk](../uitk/CLAUDE.md) · [mayatk](../mayatk/CLAUDE.md)
 
+## API surface
+
+Before writing a new helper, **check the registry first** — duplicates undermine the SSoT goal.
+
+- This package: [`API_REGISTRY.md`](API_REGISTRY.md) · [`API_CHANGES.md`](API_CHANGES.md) (diff vs last refresh)
+- Upstream: [`pythontk` API](../pythontk/API_REGISTRY.md) · [`uitk` API](../uitk/API_REGISTRY.md) · [`mayatk` API](../mayatk/API_REGISTRY.md)
+- Cross-package shadows: [`m3trik/docs/API_SHADOWS.md`](../m3trik/docs/API_SHADOWS.md)
+
+Refresh manually: `python m3trik/scripts/generate_api_registry.py tentacle` — otherwise auto-refreshed bi-weekly.
+
 ## Architecture
 
 - `tentacle/slots/<dcc>/*.py` — DCC-specific slot handlers (e.g. `slots/maya/rendering.py`).

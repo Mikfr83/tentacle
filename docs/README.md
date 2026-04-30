@@ -1,4 +1,4 @@
-[![Tests](https://img.shields.io/badge/Tests-22%20passed-brightgreen.svg)](test/)
+[![Tests](https://img.shields.io/badge/Tests-38%20passed-brightgreen.svg)](test/)
 [![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0.en.html)
 [![Version](https://img.shields.io/badge/Version-0.9.97-blue.svg)](https://pypi.org/project/tentacletk/)
 
@@ -67,13 +67,13 @@ To launch the marking menu:
 For Maya, add the following to your `userSetup.py`:
 
 ```python
-import pymel.core as pm
+from maya.utils import executeDeferred
 
 def start_tentacle():
     from tentacle import TclMaya
     TclMaya(key_show='Key_F12')  # Use Qt key names, e.g. Key_F12
 
-pm.evalDeferred(start_tentacle)
+executeDeferred(start_tentacle)
 ```
 
 ## Menu Wiring (How It Works)

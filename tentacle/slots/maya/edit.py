@@ -1,9 +1,7 @@
 # !/usr/bin/python
 # coding=utf-8
-try:
-    import pymel.core as pm
-except ImportError as error:
-    print(__file__, error)
+import maya.cmds as cmds
+import maya.mel as mel
 import mayatk as mtk
 from uitk import Signals
 from tentacle.slots.maya._slots_maya import SlotsMaya
@@ -257,7 +255,7 @@ class Edit(SlotsMaya):
         omitSelectedObjects = widget.option_box.menu.chk023.isChecked()
         delete_history = widget.option_box.menu.chk026.isChecked()
 
-        objects = pm.ls(sl=1, transforms=1)
+        objects = cmds.ls(sl=1, transforms=1) or []
 
         if overlappingDuplicateObjects:
             duplicates = mtk.get_overlapping_duplicates(
@@ -266,7 +264,8 @@ class Edit(SlotsMaya):
             self.sb.message_box(
                 f"Found {len(duplicates)} duplicate overlapping objects."
             )
-            pm.delete(duplicates) if repair else pm.select(duplicates)
+            if duplicates:
+                cmds.delete(duplicates) if repair else cmds.select(duplicates)
             return
 
         if mergeVertices:  # Merge vertices on each object.
@@ -275,7 +274,8 @@ class Edit(SlotsMaya):
         if overlappingFaces:
             duplicates = mtk.get_overlapping_faces(objects)
             self.sb.message_box(f"Found {len(duplicates)} duplicate overlapping faces.")
-            pm.delete(duplicates) if repair else pm.select(duplicates, add=1)
+            if duplicates:
+                cmds.delete(duplicates) if repair else cmds.select(duplicates, add=1)
 
         try:
             mtk.Diagnostics.clean_geometry(
@@ -299,7 +299,7 @@ class Edit(SlotsMaya):
                 bakePartialHistory=delete_history,
             )
         except (ValueError, RuntimeError) as exc:
-            pm.warning(str(exc))
+            cmds.warning(str(exc))
             self.sb.message_box(str(exc))
             return
 
@@ -334,8 +334,6 @@ class Edit(SlotsMaya):
 
     def tb001(self, widget):
         """Delete History"""
-        import maya.cmds as cmds
-
         unused_nodes, deformers, optimize = map(
             lambda chk: chk.isChecked(),
             (
@@ -364,10 +362,10 @@ class Edit(SlotsMaya):
         result_msg = None
 
         # Suspend viewport refresh for the duration of the cleanup
-        pm.refresh(suspend=True)
+        cmds.refresh(suspend=True)
         try:
             if unused_nodes:
-                pm.mel.MLdeleteUnused()
+                mel.eval("MLdeleteUnused")
                 # Fast empty-group deletion via DAG path parsing
                 # A "group" is an exact-type transform with no shape children.
                 # An "empty group" is a group with no DAG children at all.
@@ -398,10 +396,10 @@ class Edit(SlotsMaya):
                         print(f"Bake Partial History Failed: {error}")
 
             if optimize:
-                pm.mel.OptimizeScene()
+                mel.eval("OptimizeScene")
         finally:
-            pm.refresh(suspend=False)
-            pm.refresh(force=True)
+            cmds.refresh(suspend=False)
+            cmds.refresh(force=True)
 
         if result_msg:
             self.sb.message_box(result_msg)
@@ -428,11 +426,11 @@ class Edit(SlotsMaya):
         """Node Locking"""
         unlock = widget.option_box.menu.chk027.isChecked()
 
-        selection = pm.ls(sl=True)
+        selection = cmds.ls(sl=True) or []
         # If not selection use all nodes
-        nodes = selection if selection else pm.ls()
+        nodes = selection if selection else (cmds.ls() or [])
         for node in nodes:
-            pm.lockNode(node, lock=not unlock)
+            cmds.lockNode(node, lock=not unlock)
 
     def b_attr_mgr(self):
         """Attribute Manager"""
@@ -537,13 +535,13 @@ class Edit(SlotsMaya):
             if text in control_map:
                 preset, kwargs = control_map[text]
                 ctrl = mtk.Controls.create(preset, name=text.replace(" ", ""), **kwargs)
-                pm.select(ctrl)
+                cmds.select(ctrl)
         else:
             try:
                 mtk.Primitives.create_default_primitive(parent_text, text)
-                pm.selectMode(object=True)
+                cmds.selectMode(object=True)
             except Exception as e:
-                pm.warning(f"Error creating {parent_text} {text}: {e}")
+                cmds.warning(f"Error creating {parent_text} {text}: {e}")
 
     # --- Convert Expandable List ----------------------------------------
 
@@ -588,27 +586,27 @@ class Edit(SlotsMaya):
         cmd = self._CONVERT_COMMANDS.get(text)
         if cmd:
             try:
-                pm.mel.eval(cmd)
+                mel.eval(cmd)
             except Exception as e:
-                pm.warning(f"Convert '{text}' failed: {e}")
+                cmds.warning(f"Convert '{text}' failed: {e}")
 
     def b021(self):
         """Tranfer Maps"""
-        pm.mel.performSurfaceSampling(1)
+        mel.eval("performSurfaceSampling 1")
 
     def b022(self):
         """Transfer Vertex Order"""
-        pm.mel.TransferVertexOrder()
+        mel.eval("TransferVertexOrder")
 
     def b023(self):
         """Transfer Attribute Values"""
-        pm.mel.TransferAttributeValues()
+        mel.eval("TransferAttributeValues")
 
     def b027(self):
         """Shading Sets"""
-        selected_objects = pm.selected(type="surfaceShape")
+        selected_objects = cmds.ls(sl=True, type="surfaceShape") or []
         if selected_objects:
-            pm.mel.performTransferShadingSets(0)
+            mel.eval("performTransferShadingSets 0")
         else:
             raise ValueError(
                 "Please select at least one surface to perform the shading transfer."

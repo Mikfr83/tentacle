@@ -1,9 +1,7 @@
 # !/usr/bin/python
 # coding=utf-8
-try:
-    import pymel.core as pm
-except ImportError as error:
-    print(__file__, error)
+import maya.cmds as cmds
+import maya.mel as mel
 import mayatk as mtk
 from tentacle.slots.maya._slots_maya import SlotsMaya
 
@@ -41,9 +39,11 @@ class Pivot(SlotsMaya):
             widget.option_box.menu.chk001.isChecked()
         )  # Reset Pivot Orientation
 
-        pm.mel.manipPivotReset(int(resetPivotPosition), int(resetPivotOrientation))
-        pm.inViewMessage(
-            status_message="Reset Pivot Position <hl>{0}</hl>.<br>Reset Pivot Orientation <hl>{1}</hl>.".format(
+        mel.eval(
+            f"manipPivotReset {int(resetPivotPosition)} {int(resetPivotOrientation)}"
+        )
+        cmds.inViewMessage(
+            statusMessage="Reset Pivot Position <hl>{0}</hl>.<br>Reset Pivot Orientation <hl>{1}</hl>.".format(
                 resetPivotPosition, resetPivotOrientation
             ),
             pos="topCenter",
@@ -78,14 +78,18 @@ class Pivot(SlotsMaya):
         object_ = widget.option_box.menu.chk003.isChecked()
         world = widget.option_box.menu.chk004.isChecked()
 
-        pm.mel.manipPivotReset(1, 1)  # reset Pivot Position and Orientation.
+        mel.eval("manipPivotReset 1 1")  # reset Pivot Position and Orientation.
+
+        selection = cmds.ls(sl=True) or []
+        if not selection:
+            return
 
         if component:  # Set pivot points to the center of the component's bounding box.
-            pm.xform(centerPivotsOnComponents=1)
+            cmds.xform(selection, centerPivotsOnComponents=1)
         elif object_:  # Set pivot points to the center of the object's bounding box
-            pm.xform(centerPivots=1)
+            cmds.xform(selection, centerPivots=1)
         elif world:
-            pm.xform(worldSpace=1, pivots=[0, 0, 0])
+            cmds.xform(selection, worldSpace=1, pivots=[0, 0, 0])
 
     def tb002_init(self, widget):
         """ """
@@ -135,7 +139,7 @@ class Pivot(SlotsMaya):
         world_space = widget.option_box.menu.chk009.isChecked()
 
         mtk.transfer_pivot(
-            pm.selected(),
+            cmds.ls(sl=True) or [],
             translate=translate,
             rotate=rotate,
             scale=scale,
@@ -165,14 +169,14 @@ class Pivot(SlotsMaya):
 
         if result:
             if pivot_type == "manip":
-                pm.inViewMessage(
-                    status_message="World-aligned <hl>manipulator</hl> pivot set (temporary).",
+                cmds.inViewMessage(
+                    statusMessage="World-aligned <hl>manipulator</hl> pivot set (temporary).",
                     pos="topCenter",
                     fade=True,
                 )
             else:
-                pm.inViewMessage(
-                    status_message="World-aligned <hl>object</hl> pivot set (permanent).",
+                cmds.inViewMessage(
+                    statusMessage="World-aligned <hl>object</hl> pivot set (permanent).",
                     pos="topCenter",
                     fade=True,
                 )
@@ -197,7 +201,7 @@ class Pivot(SlotsMaya):
 
     def b004(self):
         """Bake Pivot"""
-        mtk.bake_pivot(pm.selected(), position=True, orientation=True)
+        mtk.bake_pivot(cmds.ls(sl=True) or [], position=True, orientation=True)
 
 
 # --------------------------------------------------------------------------------------------

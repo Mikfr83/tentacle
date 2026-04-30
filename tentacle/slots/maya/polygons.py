@@ -1,9 +1,7 @@
 # !/usr/bin/python
 # coding=utf-8
-try:
-    import pymel.core as pm
-except ImportError as error:
-    print(__file__, error)
+import maya.cmds as cmds
+import maya.mel as mel
 import pythontk as ptk
 import mayatk as mtk
 from tentacle.slots.maya._slots_maya import SlotsMaya
@@ -65,8 +63,8 @@ class PolygonsSlots(SlotsMaya):
     def tb000(self, widget):
         """Merge Vertices"""
         tolerance = widget.option_box.menu.s002.value()
-        objects = pm.ls(sl=True, objectsOnly=True, flatten=True)
-        componentMode = pm.selectMode(q=True, component=True)
+        objects = cmds.ls(sl=True, objectsOnly=True, flatten=True) or []
+        componentMode = cmds.selectMode(q=True, component=True)
 
         if not objects:
             self.sb.message_box(
@@ -104,7 +102,7 @@ class PolygonsSlots(SlotsMaya):
             by_material=separate_by_material, center_pivots=True, rename=rename
         )
         if separated:
-            pm.select(separated)
+            cmds.select(separated)
 
     def tb003_init(self, widget):
         """Initialize Extrude"""
@@ -131,26 +129,26 @@ class PolygonsSlots(SlotsMaya):
         keepFacesTogether = widget.option_box.menu.chk002.isChecked()
         divisions = widget.option_box.menu.s004.value()
 
-        selection = pm.ls(sl=1)
+        selection = cmds.ls(sl=1) or []
         if not selection:
             return self.sb.message_box(
                 "<strong>Nothing selected</strong>.<br>Operation requires a component selection."
             )
-        if pm.selectType(q=True, facet=1):  # face selection
-            pm.polyExtrudeFacet(
+        if cmds.selectType(q=True, facet=1):  # face selection
+            cmds.polyExtrudeFacet(
                 edit=1, keepFacesTogether=keepFacesTogether, divisions=divisions
             )
-            pm.mel.PolyExtrude()  # return pm.polyExtrudeFacet(selection, ch=1, keepFacesTogether=keepFacesTogether, divisions=divisions)
+            mel.eval("PolyExtrude")
 
-        elif pm.selectType(q=True, edge=1):  # edge selection
-            pm.polyExtrudeEdge(
+        elif cmds.selectType(q=True, edge=1):  # edge selection
+            cmds.polyExtrudeEdge(
                 edit=1, keepFacesTogether=keepFacesTogether, divisions=divisions
             )
-            pm.mel.PolyExtrude()  # return pm.polyExtrudeEdge(selection, ch=1, keepFacesTogether=keepFacesTogether, divisions=divisions)
+            mel.eval("PolyExtrude")
 
-        elif pm.selectType(q=True, vertex=1):  # vertex selection
-            pm.polyExtrudeVertex(edit=1, width=0.5, length=1, divisions=divisions)
-            pm.mel.PolyExtrude()  # return polyExtrudeVertex(selection, ch=1, width=0.5, length=1, divisions=divisions)
+        elif cmds.selectType(q=True, vertex=1):  # vertex selection
+            cmds.polyExtrudeVertex(edit=1, width=0.5, length=1, divisions=divisions)
+            mel.eval("PolyExtrude")
 
     def tb004_init(self, widget):
         """Initialize Combine"""
@@ -190,7 +188,7 @@ class PolygonsSlots(SlotsMaya):
         cluster_by_distance = widget.option_box.menu.chk004.isChecked()
         threshold = widget.option_box.menu.s003.value()
 
-        selection = pm.selected()
+        selection = cmds.ls(sl=True) or []
         if not selection:
             return self.sb.message_box(
                 "<strong>Nothing selected</strong>.<br>Operation requires a selection."
@@ -233,7 +231,7 @@ class PolygonsSlots(SlotsMaya):
         separate = widget.option_box.menu.chk015.isChecked()
         separate_each = widget.option_box.menu.chk020.isChecked()
 
-        selection = pm.ls(sl=True)
+        selection = cmds.ls(sl=True) or []
         if not selection:
             return self.sb.message_box(
                 "<strong>Nothing selected</strong>.<br>Operation requires a component selection."
@@ -245,7 +243,7 @@ class PolygonsSlots(SlotsMaya):
             separate=separate,
             keep_faces_together=not separate_each,
         )
-        pm.selectMode(object=True)
+        cmds.selectMode(object=True)
         return result
 
     def tb006_init(self, widget):
@@ -262,8 +260,8 @@ class PolygonsSlots(SlotsMaya):
 
     def tb006(self, widget):
         """Inset Face Region"""
-        selection = pm.ls(sl=True)
-        selected_faces = pm.filterExpand(selection, selectionMask=34, expand=1)
+        selection = cmds.ls(sl=True) or []
+        selected_faces = cmds.filterExpand(selection, selectionMask=34, expand=1)
         if not selected_faces:
             self.sb.message_box(
                 "<strong>Nothing selected</strong>.<br>Operation requires a face selection."
@@ -271,7 +269,7 @@ class PolygonsSlots(SlotsMaya):
             return
 
         offset = widget.option_box.menu.s001.value()
-        return pm.polyExtrudeFacet(
+        return cmds.polyExtrudeFacet(
             selected_faces,
             keepFacesTogether=1,
             pvx=0,
@@ -334,14 +332,14 @@ class PolygonsSlots(SlotsMaya):
             subdMethod = 0
             u = v = 0
         # perform operation
-        selectedFaces = pm.filterExpand(pm.ls(sl=1), selectionMask=34, expand=1)
+        selectedFaces = cmds.filterExpand(cmds.ls(sl=1) or [], selectionMask=34, expand=1)
         if selectedFaces:
             for (
                 face
             ) in (
                 selectedFaces
             ):  # when performing polySubdivideFacet on multiple faces, adjacent subdivided faces will make the next face an n-gon and therefore not able to be subdivided.
-                pm.polySubdivideFacet(
+                cmds.polySubdivideFacet(
                     face,
                     divisions=dv,
                     divisionsU=u,
@@ -375,7 +373,7 @@ class PolygonsSlots(SlotsMaya):
 
     def tb008(self, widget):
         """Boolean Operation"""
-        if not pm.selected():
+        if not (cmds.ls(sl=True) or []):
             return self.sb.message_box(
                 "<strong>Nothing selected</strong>.<br>Operation requires the selection of at least two objects."
             )
@@ -384,17 +382,17 @@ class PolygonsSlots(SlotsMaya):
 
         if mode == "Union":
             if interactive:
-                pm.mel.PolygonBooleanUnion()
+                mel.eval("PolygonBooleanUnion")
             else:
                 mtk.Macros.m_boolean(operation="union")
         elif mode == "Difference":
             if interactive:
-                pm.mel.PolygonBooleanDifference()
+                mel.eval("PolygonBooleanDifference")
             else:
                 mtk.Macros.m_boolean(operation="difference")
         elif mode == "Intersection":
             if interactive:
-                pm.mel.PolygonBooleanIntersection()
+                mel.eval("PolygonBooleanIntersection")
             else:
                 mtk.Macros.m_boolean(operation="intersection")
 
@@ -421,10 +419,12 @@ class PolygonsSlots(SlotsMaya):
         tolerance = widget.option_box.menu.s005.value()
         freezetransforms = widget.option_box.menu.chk016.isChecked()
 
-        selection = pm.ls(sl=1, type="transform")
+        selection = cmds.ls(sl=1, type="transform") or []
         if len(selection) > 1:
             obj1, obj2 = selection
-            mtk.snap_closest_verts(obj1, obj2, tolerance, freezetransforms)
+            mtk.EditUtils.snap_closest_verts(
+                obj1, obj2, tolerance, freezetransforms
+            )
         else:
             self.sb.message_box(
                 "<strong>Nothing selected</strong>.<br>Operation requires at least two selected objects."
@@ -433,7 +433,7 @@ class PolygonsSlots(SlotsMaya):
 
     def b000(self):
         """Circularize"""
-        circularize = pm.polyCircularize(
+        circularize = cmds.polyCircularize(
             ch=True,
             alignment=0,
             radialOffset=0,
@@ -450,15 +450,15 @@ class PolygonsSlots(SlotsMaya):
 
     def b001(self):
         """Fill Holes"""
-        pm.mel.FillHole()
+        mel.eval("FillHole")
 
     def b003(self):
         """Symmetrize"""
-        pm.mel.Symmetrize()
+        mel.eval("Symmetrize")
 
     def b005(self):
         """Merge Vertices: Set Distance"""
-        verts = pm.ls(sl=1, flatten=1)
+        verts = cmds.ls(sl=1, flatten=1) or []
         try:
             p1, p2 = verts
         except ValueError:
@@ -473,21 +473,22 @@ class PolygonsSlots(SlotsMaya):
         spinbox = self.ui.tb000.option_box.menu.s002
         spinbox.setValue(dist)
         # Switch back to object mode
-        pm.selectMode(object=True)
-        pm.select(pm.ls(verts, objectsOnly=True))
+        cmds.selectMode(object=True)
+        if verts:
+            cmds.select(cmds.ls(verts, objectsOnly=True) or [])
 
     def b006(self, widget):
         """Bridge"""
-        selection = pm.ls(sl=1)
-        edges = pm.filterExpand(selection, selectionMask=32, expand=1)
+        selection = cmds.ls(sl=1) or []
+        edges = cmds.filterExpand(selection, selectionMask=32, expand=1)
         if not edges:
             return self.sb.message_box(
                 "<strong>Nothing selected</strong>.<br>Operation requires a edge selection."
             )
         try:  # Bridge the edges
-            node = pm.polyBridgeEdge(edges, curveType=0, divisions=0)
+            node = cmds.polyBridgeEdge(edges, curveType=0, divisions=0)
             if node:  # Fill edges if they lie on a border
-                pm.polyCloseBorder(edges)
+                cmds.polyCloseBorder(edges)
         except RuntimeError:  # Bridge edges that share a vertex
             mtk.Components.bridge_connected_edges(edges)
 
@@ -497,21 +498,21 @@ class PolygonsSlots(SlotsMaya):
 
     def b008(self):
         """Weld Center"""
-        pm.selectMode(component=True)
-        pm.selectType(vertex=True)
-        pm.select(deselect=True)
-        pm.mel.targetWeldCtx("polyMergeVertexContext", edit=True, mergeToCenter=True)
-        pm.mel.MergeVertexTool()
+        cmds.selectMode(component=True)
+        cmds.selectType(vertex=True)
+        cmds.select(deselect=True)
+        cmds.targetWeldCtx("polyMergeVertexContext", edit=True, mergeToCenter=True)
+        mel.eval("MergeVertexTool")
 
     def b009(self):
         """Collapse Component"""
-        if pm.selectType(q=True, facet=1):
-            pm.mel.PolygonCollapse()
+        if cmds.selectType(q=True, facet=1):
+            mel.eval("PolygonCollapse")
         else:
-            was_edge_selected = pm.selectType(q=True, edge=True)
-            pm.mel.MergeToCenter()
+            was_edge_selected = cmds.selectType(q=True, edge=True)
+            mel.eval("MergeToCenter")
             if was_edge_selected:
-                pm.selectType(edge=True)
+                cmds.selectType(edge=True)
 
     def b011(self):
         """Bevel"""
@@ -519,21 +520,20 @@ class PolygonsSlots(SlotsMaya):
 
     def b012(self):
         """Multi-Cut Tool"""
-        pm.mel.dR_multiCutTool()
+        mel.eval("dR_multiCutTool")
 
     def b022(self):
         """Attach"""
-        # pm.mel.AttachComponent()
-        pm.mel.dR_connectTool()
+        mel.eval("dR_connectTool")
 
     def b032(self):
         """Poke"""
-        pm.mel.PokePolygon()
+        mel.eval("PokePolygon")
 
     def b034(self):
         """Wedge"""
         try:
-            pm.mel.WedgePolygon()
+            mel.eval("WedgePolygon")
         except Exception:
             self.sb.message_box(
                 "<strong>Nothing selected</strong>.<br>Select faces and one or more edges from the selected faces to wedge about."
@@ -541,41 +541,41 @@ class PolygonsSlots(SlotsMaya):
 
     def b038(self):
         """Assign Invisible"""
-        selection = pm.ls(sl=True)
-        selected_faces = pm.filterExpand(selection, selectionMask=34, expand=1)
+        selection = cmds.ls(sl=True) or []
+        selected_faces = cmds.filterExpand(selection, selectionMask=34, expand=1)
         if not selected_faces:
             self.sb.message_box(
                 "<strong>Nothing selected</strong>.<br>Operation requires a face selection."
             )
             return
-        if not pm.polyHole(selected_faces, q=True, assignHole=True):
-            pm.polyHole(selected_faces, assignHole=True)
+        if not cmds.polyHole(selected_faces, q=True, assignHole=True):
+            cmds.polyHole(selected_faces, assignHole=True)
         else:
-            pm.polyHole(selected_faces, assignHole=False)
+            cmds.polyHole(selected_faces, assignHole=False)
 
     def b043(self):
         """Target Weld"""
-        pm.selectMode(component=True)
-        pm.selectType(vertex=True)
-        pm.select(deselect=True)
-        pm.mel.targetWeldCtx("polyMergeVertexContext", edit=True, mergeToCenter=False)
-        pm.mel.MergeVertexTool()
+        cmds.selectMode(component=True)
+        cmds.selectType(vertex=True)
+        cmds.select(deselect=True)
+        cmds.targetWeldCtx("polyMergeVertexContext", edit=True, mergeToCenter=False)
+        mel.eval("MergeVertexTool")
 
     def b047(self):
         """Insert Edgeloop"""
-        pm.mel.SplitEdgeRingTool()
+        mel.eval("SplitEdgeRingTool")
 
     def b049(self):
         """Slide Edge Tool"""
-        pm.mel.SlideEdgeTool()
+        mel.eval("SlideEdgeTool")
 
     def b051(self):
         """Offset Edgeloop"""
-        pm.mel.performPolyDuplicateEdge(0)
+        mel.eval("performPolyDuplicateEdge 0")
 
     def b053(self):
         """Edit Edge Flow"""
-        pm.polyEditEdgeFlow(adjustEdgeFlow=1)
+        cmds.polyEditEdgeFlow(adjustEdgeFlow=1)
 
 
 # --------------------------------------------------------------------------------------------

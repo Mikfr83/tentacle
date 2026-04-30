@@ -1,9 +1,7 @@
 # !/usr/bin/python
 # coding=utf-8
-try:
-    import pymel.core as pm
-except ImportError as error:
-    print(__file__, error)
+import maya.cmds as cmds
+import maya.mel as mel
 import mayatk as mtk
 
 # From this package:
@@ -32,14 +30,14 @@ class UvSlots(SlotsMaya):
             setObjectName="uv_snapshot",
             setToolTip="Save an image file of the current UV layout.",
         )
-        widget.menu.uv_snapshot.clicked.connect(pm.mel.UVCreateSnapshot)
+        widget.menu.uv_snapshot.clicked.connect(lambda: mel.eval("UVCreateSnapshot"))
         widget.menu.add(
             "QPushButton",
             setText="Open UV Editor",
             setObjectName="uv_editor",
             setToolTip="Open the texture coordinate mapping window.",
         )
-        widget.menu.uv_editor.clicked.connect(pm.mel.TextureViewWindow)
+        widget.menu.uv_editor.clicked.connect(lambda: mel.eval("TextureViewWindow"))
 
     def cmb002_init(self, widget):
         """Initialize UV Transform Menu"""
@@ -173,7 +171,7 @@ class UvSlots(SlotsMaya):
         shellPadding = mtk.calculate_uv_padding(map_size, normalize=True)
         tilePadding = shellPadding / 2
 
-        selection = pm.selected()
+        selection = cmds.ls(sl=True) or []
         if not selection:
             self.sb.message_box(
                 "<b>Nothing selected.<b><br>The operation requires at least one selected object."
@@ -183,19 +181,19 @@ class UvSlots(SlotsMaya):
         # Get unique meshes from selection (handles both object and component selection)
         meshes = mtk.Components.get_components(selection, "mesh", flatten=False)
         if not meshes:
-            meshes = pm.ls(selection, type="transform", dag=True) or selection
+            meshes = cmds.ls(selection, type="transform", dag=True) or selection
 
         successful = []
         failed = []
 
         for mesh in meshes:
             try:
-                uvs = pm.polyListComponentConversion(mesh, fromFace=True, toUV=True)
-                uvs_flattened = pm.ls(uvs, flatten=True)
+                uvs = cmds.polyListComponentConversion(mesh, fromFace=True, toUV=True)
+                uvs_flattened = cmds.ls(uvs, flatten=True) or []
                 if not uvs_flattened:
                     continue
 
-                pm.u3dLayout(
+                cmds.u3dLayout(
                     uvs_flattened,
                     resolution=map_size,
                     shellSpacing=shellPadding,
@@ -298,11 +296,11 @@ class UvSlots(SlotsMaya):
         sphericalUnwrap = widget.option_box.menu.chk005.isChecked()
         normalBasedUnwrap = widget.option_box.menu.chk006.isChecked()
 
-        selection = pm.selected()
+        selection = cmds.ls(sl=True) or []
         for obj in selection:
             try:
                 if seamOnly:
-                    autoSeam = pm.u3dAutoSeam(obj, s=0, p=1)
+                    autoSeam = cmds.u3dAutoSeam(obj, s=0, p=1)
                     return autoSeam if len(selection) == 1 else autoSeam
 
                 elif any((cylindricalUnwrap, sphericalUnwrap, planarUnwrap)):
@@ -314,15 +312,15 @@ class UvSlots(SlotsMaya):
                     objFaces = mtk.Components.get_components(obj, "f")
                     if not objFaces:
                         objFaces = mtk.Components.get_components(obj, "f")
-                    pm.polyProjection(
+                    cmds.polyProjection(
                         objFaces, type=unwrapType, insertBeforeDeformers=1, smartFit=1
                     )
 
                 elif normalBasedUnwrap:
-                    pm.mel.texNormalProjection(1, 1, obj)  # Normal-Based unwrap
+                    mel.eval(f'texNormalProjection 1 1 "{obj}"')  # Normal-Based unwrap
 
                 elif standardUnwrap:
-                    polyAutoProjection = pm.polyAutoProjection(
+                    polyAutoProjection = cmds.polyAutoProjection(
                         obj,
                         layoutMethod=0,
                         optimize=1,
@@ -350,9 +348,9 @@ class UvSlots(SlotsMaya):
         widget.option_box.menu.setTitle("DISPLAY OPTIONS")
 
         panel = mtk.get_panel(scriptType="polyTexturePlacementPanel")
-        checkered_state = pm.textureWindow(panel, q=True, displayCheckered=True)
-        borders_state = True if pm.polyOptions(q=True, displayMapBorder=True) else False
-        distortion_state = pm.textureWindow(panel, q=True, displayDistortion=True)
+        checkered_state = cmds.textureWindow(panel, q=True, displayCheckered=True)
+        borders_state = True if cmds.polyOptions(q=True, displayMapBorder=True) else False
+        distortion_state = cmds.textureWindow(panel, q=True, displayDistortion=True)
 
         values = [
             ("chk014", "Checkered", checkered_state),
@@ -370,13 +368,13 @@ class UvSlots(SlotsMaya):
         ]
 
         widget.option_box.menu.chk014.toggled.connect(
-            lambda state: pm.textureWindow(panel, edit=True, displayCheckered=state)
+            lambda state: cmds.textureWindow(panel, edit=True, displayCheckered=state)
         )
         widget.option_box.menu.chk015.toggled.connect(
-            lambda state: pm.polyOptions(displayMapBorder=state)
+            lambda state: cmds.polyOptions(displayMapBorder=state)
         )
         widget.option_box.menu.chk016.toggled.connect(
-            lambda state: pm.textureWindow(panel, edit=True, displayDistortion=state)
+            lambda state: cmds.textureWindow(panel, edit=True, displayDistortion=state)
         )
 
     def tb003_init(self, widget):
@@ -430,17 +428,17 @@ class UvSlots(SlotsMaya):
         unmapped = widget.option_box.menu.chk013.isChecked()
 
         if back_facing:
-            pm.mel.selectUVFaceOrientationComponents({}, 0, 2, 1)
+            mel.eval("selectUVFaceOrientationComponents {} 0 2 1")
         elif front_facing:
-            pm.mel.selectUVFaceOrientationComponents({}, 0, 1, 1)
+            mel.eval("selectUVFaceOrientationComponents {} 0 1 1")
         elif overlapping:
-            pm.mel.selectUVOverlappingComponents(1, 0)
+            mel.eval("selectUVOverlappingComponents 1 0")
         elif nonOverlapping:
-            pm.mel.selectUVOverlappingComponents(0, 0)
+            mel.eval("selectUVOverlappingComponents 0 0")
         elif textureBorders:
-            pm.mel.selectUVBorderComponents({}, "", 1)
+            mel.eval('selectUVBorderComponents {} "" 1')
         elif unmapped:
-            pm.mel.selectUnmappedFaces()
+            mel.eval("selectUnmappedFaces")
 
     def tb004_init(self, widget):
         """Initialize Unfold UV"""
@@ -484,10 +482,10 @@ class UvSlots(SlotsMaya):
         map_size = self.get_map_size()
 
         # If selection mode is not object, switch to object mode
-        if pm.selectMode(query=True, object=True):
-            pm.selectMode(object=True)
+        if cmds.selectMode(query=True, object=True):
+            cmds.selectMode(object=True)
 
-        pm.u3dUnfold(
+        cmds.u3dUnfold(
             iterations=1,
             pack=0,
             borderintersection=1,
@@ -497,7 +495,7 @@ class UvSlots(SlotsMaya):
         )
 
         if optimize:
-            pm.u3dOptimize(
+            cmds.u3dOptimize(
                 iterations=10,
                 power=1,
                 surfangle=1,
@@ -508,10 +506,10 @@ class UvSlots(SlotsMaya):
             )
 
         if orient:
-            pm.mel.texOrientShells()
+            mel.eval("texOrientShells")
 
         if stackSimilar:
-            pm.polyUVStackSimilarShells(tolerance=tolerance)
+            cmds.polyUVStackSimilarShells(tolerance=tolerance)
 
     def tb005_init(self, widget):
         """Initialize Straighten UV"""
@@ -553,14 +551,14 @@ class UvSlots(SlotsMaya):
         straightenShell = widget.option_box.menu.chk020.isChecked()
 
         if u and v:
-            pm.mel.texStraightenUVs("UV", angle)
+            mel.eval(f'texStraightenUVs "UV" {angle}')
         elif u:
-            pm.mel.texStraightenUVs("U", angle)
+            mel.eval(f'texStraightenUVs "U" {angle}')
         elif v:
-            pm.mel.texStraightenUVs("V", angle)
+            mel.eval(f'texStraightenUVs "V" {angle}')
 
         if straightenShell:
-            pm.mel.texStraightenShell()
+            mel.eval("texStraightenShell")
 
     def tb006_init(self, widget):
         """Initialize Distribute"""
@@ -585,9 +583,9 @@ class UvSlots(SlotsMaya):
         v = widget.option_box.menu.chk024.isChecked()
 
         if u:
-            pm.mel.texDistributeShells(0, 0, "right", [])  # 'left', 'right'
+            mel.eval('texDistributeShells 0 0 "right" {}')  # 'left', 'right'
         if v:
-            pm.mel.texDistributeShells(0, 0, "down", [])  # 'up', 'down'
+            mel.eval('texDistributeShells 0 0 "down" {}')  # 'up', 'down'
 
     def tb007_init(self, widget):
         """Initialize Cleanup UV Sets"""
@@ -644,7 +642,7 @@ class UvSlots(SlotsMaya):
         force_rename = widget.option_box.menu.chk038.isChecked()
         dry_run = widget.option_box.menu.chk030.isChecked()
 
-        selection = pm.selected()
+        selection = cmds.ls(sl=True) or []
         if not selection:
             self.sb.message_box(
                 "<b>Nothing selected.<b><br>The operation requires at least one selected object."
@@ -742,7 +740,7 @@ class UvSlots(SlotsMaya):
 
         axis = "u" if mirror_u and not mirror_v else "v"
 
-        selection = pm.selected()
+        selection = cmds.ls(sl=True) or []
         if not selection:
             self.sb.message_box(
                 "<b>Nothing selected.<b><br>The operation requires at least one selected object."
@@ -760,20 +758,20 @@ class UvSlots(SlotsMaya):
         """Transform"""
         text = widget.items[index]
         if text == "Flip U":
-            pm.polyFlipUV(flipType=0, local=1, usePivot=1, pivotU=0, pivotV=0)
+            cmds.polyFlipUV(flipType=0, local=1, usePivot=1, pivotU=0, pivotV=0)
         elif text == "Flip V":
-            pm.polyFlipUV(flipType=1, local=1, usePivot=1, pivotU=0, pivotV=0)
+            cmds.polyFlipUV(flipType=1, local=1, usePivot=1, pivotU=0, pivotV=0)
         elif text == "Rotate 45":
             angle = -45
-            selected_objects = pm.selected()
+            selected_objects = cmds.ls(sl=True) or []
             if not selected_objects:
                 self.sb.message_box(
                     "<b>Nothing selected.<b><br>The operation requires at least one selected object."
                 )
                 return
 
-            selected_uvs = pm.polyListComponentConversion(selected_objects, toUV=True)
-            selected_uvs = pm.ls(selected_uvs, flatten=True)
+            selected_uvs = cmds.polyListComponentConversion(selected_objects, toUV=True)
+            selected_uvs = cmds.ls(selected_uvs, flatten=True) or []
             if not selected_uvs:
                 self.sb.message_box(
                     "<b>No UVs found.<b><br>Select a mesh, faces, edges, or UVs."
@@ -782,7 +780,7 @@ class UvSlots(SlotsMaya):
 
             all_u, all_v = [], []
             for uv in selected_uvs:
-                u, v = pm.polyEditUV(uv, query=True, uValue=True, vValue=True)
+                u, v = cmds.polyEditUV(uv, query=True, uValue=True, vValue=True)
                 all_u.append(u)
                 all_v.append(v)
 
@@ -790,23 +788,23 @@ class UvSlots(SlotsMaya):
             pivot_v = sum(all_v) / len(all_v)
 
             for uv in selected_uvs:
-                pm.polyEditUV(
+                cmds.polyEditUV(
                     uv, pivotU=pivot_u, pivotV=pivot_v, angle=angle, relative=True
                 )
         elif text == "Align U Left":
-            pm.mel.performAlignUV("minU")
+            mel.eval('performAlignUV "minU"')
         elif text == "Align U Middle":
-            pm.mel.performAlignUV("avgU")
+            mel.eval('performAlignUV "avgU"')
         elif text == "Align U Right":
-            pm.mel.performAlignUV("maxU")
+            mel.eval('performAlignUV "maxU"')
         elif text == "Align U Top":
-            pm.mel.performAlignUV("maxV")
+            mel.eval('performAlignUV "maxV"')
         elif text == "Align U Middle":
-            pm.mel.performAlignUV("avgV")
+            mel.eval('performAlignUV "avgV"')
         elif text == "Align U Bottom":
-            pm.mel.performAlignUV("minV")
+            mel.eval('performAlignUV "minV"')
         elif text == "Linear Align":
-            pm.mel.performLinearAlignUV()
+            mel.eval("performLinearAlignUV")
 
     def chk001(self, state, widget):
         """Auto Unwrap: Scale Mode CheckBox"""
@@ -821,38 +819,38 @@ class UvSlots(SlotsMaya):
     def chk014(self, state, widget):
         """Display: Checkered Pattern"""
         panel = mtk.get_panel(scriptType="polyTexturePlacementPanel")
-        pm.textureWindow(panel, edit=1, displayCheckered=state)
+        cmds.textureWindow(panel, edit=1, displayCheckered=state)
 
     def chk015(self, state, widget):
         """Display: Borders"""
-        borderWidth = pm.optionVar(query="displayPolyBorderEdgeSize")[1]
-        pm.polyOptions(displayMapBorder=state, sizeBorder=borderWidth)
+        borderWidth = cmds.optionVar(query="displayPolyBorderEdgeSize")[1]
+        cmds.polyOptions(displayMapBorder=state, sizeBorder=borderWidth)
 
     def chk016(self, state, widget):
         """Display: Distortion"""
         panel = mtk.get_panel(scriptType="polyTexturePlacementPanel")
-        pm.textureWindow(panel, edit=1, displayDistortion=state)
+        cmds.textureWindow(panel, edit=1, displayDistortion=state)
 
     @mtk.undoable
     def b000(self, widget):
         """Transfer UV's"""
-        frm, *to = pm.ls(orderedSelection=1, flatten=1)
-        if not to:
+        ordered = cmds.ls(orderedSelection=1, flatten=1) or []
+        if len(ordered) < 2:
             return self.sb.message_box(
                 "<b>Nothing selected.</b><br>The operation requires the selection of at least two polygon objects."
             )
+        frm, *to = ordered
 
         for t in to:
             mtk.transfer_uvs(frm, t)
 
     def b002(self):
         """Stack Shells"""
-        pm.mel.texStackShells({})
-        # pm.mel.texOrientShells()
+        mel.eval("texStackShells {}")
 
     def b003(self):
         """Get texel density."""
-        density = mtk.get_texel_density(pm.selected(), self.get_map_size())
+        density = mtk.get_texel_density(cmds.ls(sl=True) or [], self.get_map_size())
         self.ui.s003.setValue(density)
 
     @mtk.undoable
@@ -861,12 +859,12 @@ class UvSlots(SlotsMaya):
         density = self.ui.s003.value()
         map_size = self.get_map_size()
 
-        mtk.set_texel_density(pm.selected(), density, map_size)
+        mtk.set_texel_density(cmds.ls(sl=True) or [], density, map_size)
 
     def b005(self):
         """Cut UV's"""
-        selection = pm.selected()
-        selected_edges = pm.filterExpand(selection, selectionMask=32)
+        selection = cmds.ls(sl=True) or []
+        selected_edges = cmds.filterExpand(selection, selectionMask=32)
 
         if not selection:
             self.sb.message_box("Nothing selected")
@@ -877,17 +875,20 @@ class UvSlots(SlotsMaya):
             edges_by_object = mtk.Components.map_components_to_objects(selected_edges)
             # Iterate through the objects and perform the cut operation on their edges
             for obj_name, edges in edges_by_object.items():
-                pm.polyMapCut(edges)
+                cmds.polyMapCut(edges)
             # Re-select the edges after the operation
-            pm.select(selected_edges)
+            cmds.select(selected_edges)
         else:
             # If no edges are selected, check for selected objects that are mesh transforms
             for obj in selection:
-                if isinstance(obj, pm.nodetypes.Transform):
-                    shape = obj.getShape()
-                    if shape and isinstance(shape, pm.nodetypes.Mesh):
-                        # Cut the UVs along all edges of the mesh
-                        pm.polyMapCut(shape.e[:])
+                if cmds.objectType(obj) == "transform":
+                    shapes = cmds.listRelatives(
+                        obj, shapes=True, noIntermediate=True
+                    ) or []
+                    for shape in shapes:
+                        if cmds.objectType(shape) == "mesh":
+                            # Cut the UVs along all edges of the mesh
+                            cmds.polyMapCut(f"{shape}.e[*]")
 
     def b007(self):
         """Display UV Borders"""
@@ -896,18 +897,20 @@ class UvSlots(SlotsMaya):
     @mtk.undoable
     def b011(self):
         """Sew UVs"""
-        selected = pm.selected(flatten=True)
+        selected = cmds.ls(sl=True, flatten=True) or []
 
-        for obj in selected:
-            # Check if the selected item is a mesh edge
-            if isinstance(obj, pm.MeshEdge):
-                pm.polyMapSew(obj)
-            # Check if the selected item is a transform node (possibly a mesh object)
-            elif isinstance(obj, pm.nodetypes.Transform):
-                shape = obj.getShape()
-                # Confirm the shape node is a mesh
-                if shape and isinstance(shape, pm.nodetypes.Mesh):
-                    pm.polyMapSew(shape.e[:])
+        # Edges (component selection) — sew directly
+        edges = cmds.filterExpand(selected, selectionMask=32) or []
+        for edge in edges:
+            cmds.polyMapSew(edge)
+
+        # Transforms — sew all edges of their mesh shape
+        transforms = cmds.ls(selected, type="transform") or []
+        for obj in transforms:
+            shapes = cmds.listRelatives(obj, shapes=True, noIntermediate=True) or []
+            for shape in shapes:
+                if cmds.objectType(shape) == "mesh":
+                    cmds.polyMapSew(f"{shape}.e[*]")
 
     def b021(self, widget):
         """Unfold and Pack UVs"""
@@ -922,22 +925,22 @@ class UvSlots(SlotsMaya):
 
     def b023(self):
         """Move To Uv Space: Left"""
-        selection = pm.selected()
+        selection = cmds.ls(sl=True) or []
         mtk.move_to_uv_space(selection, -1, 0)  # move left
 
     def b024(self):
         """Move To Uv Space: Down"""
-        selection = pm.selected()
+        selection = cmds.ls(sl=True) or []
         mtk.move_to_uv_space(selection, 0, -1)  # move down
 
     def b025(self):
         """Move To Uv Space: Up"""
-        selection = pm.selected()
+        selection = cmds.ls(sl=True) or []
         mtk.move_to_uv_space(selection, 0, 1)  # move up
 
     def b026(self):
         """Move To Uv Space: Right"""
-        selection = pm.selected()
+        selection = cmds.ls(sl=True) or []
         mtk.move_to_uv_space(selection, 1, 0)  # move right
 
 

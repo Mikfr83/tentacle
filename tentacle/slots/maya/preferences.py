@@ -4,10 +4,8 @@ import html
 import os
 import sys
 
-try:
-    import pymel.core as pm
-except ImportError as error:
-    print(__file__, error)
+import maya.cmds as cmds
+import maya.mel as mel
 import mayatk as mtk
 import pythontk as ptk
 
@@ -64,12 +62,12 @@ class Preferences(SlotsMaya):
         """Initializes the combo box with unit options."""
         if not widget.is_initialized:
             # Set up a script job to update the index when the unit changes
-            widget.unitChangeJob = pm.scriptJob(
+            widget.unitChangeJob = cmds.scriptJob(
                 event=[
                     "linearUnitChanged",
                     lambda: widget.setCurrentIndex(
                         widget.items.index(
-                            pm.currentUnit(q=True, fullName=True, linear=True)
+                            cmds.currentUnit(q=True, fullName=True, linear=True)
                         )
                     ),
                 ],
@@ -79,25 +77,25 @@ class Preferences(SlotsMaya):
         items = {i.upper(): i for i in mtk.EnvUtils.SCENE_UNIT_VALUES}
         widget.add(items)
         widget.setCurrentIndex(
-            widget.items.index(pm.currentUnit(q=True, fullName=True, linear=True))
+            widget.items.index(cmds.currentUnit(q=True, fullName=True, linear=True))
         )
 
     def cmb001(self, index, widget):
         """Set Working Units: Linear"""
         # Valid Units: millimeter | centimeter | meter | kilometer | inch | foot | yard | mile
         unit = widget.currentData()
-        pm.currentUnit(linear=unit.lower())
+        cmds.currentUnit(linear=unit.lower())
 
     def cmb002_init(self, widget):
         """Initializes the combo box with frame rate options."""
         if not widget.is_initialized:
             # Set up a script job to update the index when the frame rate changes
-            widget.timeChangeJob = pm.scriptJob(
+            widget.timeChangeJob = cmds.scriptJob(
                 event=[
                     "timeChanged",
                     lambda: widget.setCurrentIndex(
                         widget.items.index(
-                            pm.currentUnit(q=True, fullName=True, time=True)
+                            cmds.currentUnit(q=True, fullName=True, time=True)
                         )
                     ),
                 ],
@@ -110,21 +108,21 @@ class Preferences(SlotsMaya):
         }
         widget.add(items)
         widget.setCurrentIndex(
-            widget.items.index(pm.currentUnit(q=True, fullName=True, time=True))
+            widget.items.index(cmds.currentUnit(q=True, fullName=True, time=True))
         )
 
     def cmb002(self, index, widget):
         """Set Working Units: Time"""
         # game | film | pal | ntsc | show | palf | ntscf
-        pm.currentUnit(time=widget.currentData())
+        cmds.currentUnit(time=widget.currentData())
 
     def s000_init(self, widget):
         """Initialize autosave max backups spinbox (widget is source of truth)."""
         if not widget.is_initialized:
             # Set initial value from Maya
-            autoSaveState = pm.autoSave(q=True, enable=True)
+            autoSaveState = cmds.autoSave(q=True, enable=True)
             if autoSaveState:
-                autoSaveAmount = pm.autoSave(q=True, maxBackups=True)
+                autoSaveAmount = cmds.autoSave(q=True, maxBackups=True)
                 widget.setValue(autoSaveAmount)
             else:
                 widget.setValue(0)
@@ -132,9 +130,9 @@ class Preferences(SlotsMaya):
             def update_autosave(value):
                 """Update Maya autosave settings from widget value."""
                 if value == 0:
-                    pm.autoSave(enable=False)
+                    cmds.autoSave(enable=False)
                 else:
-                    pm.autoSave(enable=True, maxBackups=value, limitBackups=True)
+                    cmds.autoSave(enable=True, maxBackups=value, limitBackups=True)
 
             widget.valueChanged.connect(update_autosave)
 
@@ -146,12 +144,12 @@ class Preferences(SlotsMaya):
         """Initialize autosave interval spinbox (widget is source of truth)."""
         if not widget.is_initialized:
             # Set initial value from Maya
-            autoSaveInterval = pm.autoSave(q=True, int=True)
+            autoSaveInterval = cmds.autoSave(q=True, int=True)
             widget.setValue(autoSaveInterval / 60)
 
             def update_interval(value):
                 """Update Maya autosave interval from widget value."""
-                pm.autoSave(int=int(value * 60))
+                cmds.autoSave(int=int(value * 60))
 
             widget.valueChanged.connect(update_interval)
 
@@ -340,7 +338,7 @@ class Preferences(SlotsMaya):
 
     def b001(self):
         """Color Settings"""
-        pm.mel.colorPrefWnd()
+        mel.eval("colorPrefWnd")
 
     def b002(self):
         """Autosave: Delete All"""
@@ -354,15 +352,15 @@ class Preferences(SlotsMaya):
 
     def b008(self):
         """Hotkeys"""
-        pm.mel.HotkeyPreferencesWindow()
+        mel.eval("HotkeyPreferencesWindow")
 
     def b009(self):
         """Plug-In Manager"""
-        pm.mel.PluginManager()
+        mel.eval("PluginManager")
 
     def b010(self):
         """Settings/Preferences"""
-        pm.mel.PreferencesWindow()
+        mel.eval("PreferencesWindow")
 
     # -------------------------------------------------------------------------
     # Menu Bindings Configuration

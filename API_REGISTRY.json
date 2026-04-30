@@ -1,0 +1,5344 @@
+{
+  "name": "tentacle",
+  "source_root": "tentacle/tentacle",
+  "generated_at": "2026-04-29",
+  "modules": [
+    {
+      "relpath": "__init__.py",
+      "summary": "",
+      "functions": [
+        {
+          "name": "greeting",
+          "qualname": "greeting",
+          "kind": "function",
+          "signature": "(string, outputToConsole=True)",
+          "summary": "Format a string using preset variables.",
+          "line": 26,
+          "deprecated": false
+        }
+      ],
+      "classes": []
+    },
+    {
+      "relpath": "slots/_slots.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "Slots",
+          "summary": "Provides methods that can be triggered by widgets in the ui.",
+          "line": 6,
+          "bases": [
+            "QtCore.QObject"
+          ],
+          "members": [
+            {
+              "name": "repeat_last_command",
+              "qualname": "Slots.repeat_last_command",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Repeat the last stored command.",
+              "line": 56,
+              "deprecated": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "relpath": "slots/maya/_slots_maya.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "SlotsMaya",
+          "summary": "App specific methods inherited by all other app specific slot classes.",
+          "line": 6,
+          "bases": [
+            "Slots"
+          ],
+          "members": []
+        }
+      ]
+    },
+    {
+      "relpath": "slots/maya/animation.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "Animation",
+          "summary": "",
+          "line": 12,
+          "bases": [
+            "SlotsMaya"
+          ],
+          "members": [
+            {
+              "name": "header_init",
+              "qualname": "Animation.header_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Header Init",
+              "line": 20,
+              "deprecated": false
+            },
+            {
+              "name": "tb000_init",
+              "qualname": "Animation.tb000_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Go To Frame Init",
+              "line": 79,
+              "deprecated": false
+            },
+            {
+              "name": "tb000",
+              "qualname": "Animation.tb000",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Go To Frame",
+              "line": 180,
+              "deprecated": false
+            },
+            {
+              "name": "tb001_init",
+              "qualname": "Animation.tb001_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Invert Keyframes Init",
+              "line": 207,
+              "deprecated": false
+            },
+            {
+              "name": "tb001",
+              "qualname": "Animation.tb001",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Invert keyframes (selected keys preferred, fallback to all keys).",
+              "line": 264,
+              "deprecated": false
+            },
+            {
+              "name": "tb002_init",
+              "qualname": "Animation.tb002_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Adjust Spacing Init",
+              "line": 284,
+              "deprecated": false
+            },
+            {
+              "name": "tb002",
+              "qualname": "Animation.tb002",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Adjust spacing",
+              "line": 337,
+              "deprecated": false
+            },
+            {
+              "name": "tb003_init",
+              "qualname": "Animation.tb003_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Stagger Keys Init",
+              "line": 368,
+              "deprecated": false
+            },
+            {
+              "name": "tb003",
+              "qualname": "Animation.tb003",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Stagger Keys",
+              "line": 445,
+              "deprecated": false
+            },
+            {
+              "name": "tb004_init",
+              "qualname": "Animation.tb004_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Transfer Keys Init",
+              "line": 474,
+              "deprecated": false
+            },
+            {
+              "name": "tb004",
+              "qualname": "Animation.tb004",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Transfer Keys",
+              "line": 499,
+              "deprecated": false
+            },
+            {
+              "name": "tb005_init",
+              "qualname": "Animation.tb005_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Add/Remove Intermediate Keys Init",
+              "line": 513,
+              "deprecated": false
+            },
+            {
+              "name": "tb005",
+              "qualname": "Animation.tb005",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Add/Remove Intermediate Keys",
+              "line": 565,
+              "deprecated": false
+            },
+            {
+              "name": "tb006_init",
+              "qualname": "Animation.tb006_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Move Keys Init",
+              "line": 610,
+              "deprecated": false
+            },
+            {
+              "name": "tb006",
+              "qualname": "Animation.tb006",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Move Keys",
+              "line": 646,
+              "deprecated": false
+            },
+            {
+              "name": "tb007_init",
+              "qualname": "Animation.tb007_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Align Selected Keyframes Init",
+              "line": 665,
+              "deprecated": false
+            },
+            {
+              "name": "tb007",
+              "qualname": "Animation.tb007",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Align Selected Keyframes",
+              "line": 686,
+              "deprecated": false
+            },
+            {
+              "name": "tb008_init",
+              "qualname": "Animation.tb008_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Set Visibility Keys Init",
+              "line": 712,
+              "deprecated": false
+            },
+            {
+              "name": "tb008",
+              "qualname": "Animation.tb008",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Set Visibility Keys",
+              "line": 751,
+              "deprecated": false
+            },
+            {
+              "name": "tb009_init",
+              "qualname": "Animation.tb009_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Snap Keys to Frames Init",
+              "line": 776,
+              "deprecated": false
+            },
+            {
+              "name": "tb009",
+              "qualname": "Animation.tb009",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Snap Keys to Frames",
+              "line": 814,
+              "deprecated": false
+            },
+            {
+              "name": "tb010_init",
+              "qualname": "Animation.tb010_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Delete Keys Init",
+              "line": 846,
+              "deprecated": false
+            },
+            {
+              "name": "tb010",
+              "qualname": "Animation.tb010",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Delete Keys",
+              "line": 885,
+              "deprecated": false
+            },
+            {
+              "name": "tb011_init",
+              "qualname": "Animation.tb011_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Tie/Untie Keyframes Init",
+              "line": 903,
+              "deprecated": false
+            },
+            {
+              "name": "tb011",
+              "qualname": "Animation.tb011",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Tie/Untie Keyframes",
+              "line": 921,
+              "deprecated": false
+            },
+            {
+              "name": "tb013_init",
+              "qualname": "Animation.tb013_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Select Keys Init",
+              "line": 936,
+              "deprecated": false
+            },
+            {
+              "name": "tb013",
+              "qualname": "Animation.tb013",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Select Keys",
+              "line": 985,
+              "deprecated": false
+            },
+            {
+              "name": "tb014_init",
+              "qualname": "Animation.tb014_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Scale Keys Init",
+              "line": 1017,
+              "deprecated": false
+            },
+            {
+              "name": "tb014",
+              "qualname": "Animation.tb014",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Scale Keys",
+              "line": 1199,
+              "deprecated": false
+            },
+            {
+              "name": "tb015_init",
+              "qualname": "Animation.tb015_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Repair Corrupted Curves - Initialize option box",
+              "line": 1274,
+              "deprecated": false
+            },
+            {
+              "name": "tb015",
+              "qualname": "Animation.tb015",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Repair Corrupted Curves",
+              "line": 1315,
+              "deprecated": false
+            },
+            {
+              "name": "tb016_init",
+              "qualname": "Animation.tb016_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Print Animation Info - Initialize option box",
+              "line": 1383,
+              "deprecated": false
+            },
+            {
+              "name": "tb016",
+              "qualname": "Animation.tb016",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Print Animation Info",
+              "line": 1408,
+              "deprecated": false
+            },
+            {
+              "name": "tb017_init",
+              "qualname": "Animation.tb017_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Step Keys Init",
+              "line": 1421,
+              "deprecated": false
+            },
+            {
+              "name": "tb017",
+              "qualname": "Animation.tb017",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Step Keys — set stepped tangents on keys.",
+              "line": 1449,
+              "deprecated": false
+            },
+            {
+              "name": "tb012_init",
+              "qualname": "Animation.tb012_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Copy Keys Init",
+              "line": 1475,
+              "deprecated": false
+            },
+            {
+              "name": "tb012",
+              "qualname": "Animation.tb012",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Copy Keys",
+              "line": 1492,
+              "deprecated": false
+            },
+            {
+              "name": "tb018_init",
+              "qualname": "Animation.tb018_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Paste Keys Init",
+              "line": 1542,
+              "deprecated": false
+            },
+            {
+              "name": "tb018",
+              "qualname": "Animation.tb018",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Paste Keys",
+              "line": 1556,
+              "deprecated": false
+            },
+            {
+              "name": "tb019_init",
+              "qualname": "Animation.tb019_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Optimize Keys Init",
+              "line": 1588,
+              "deprecated": false
+            },
+            {
+              "name": "tb019",
+              "qualname": "Animation.tb019",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Optimize Keys — remove redundant animation data.",
+              "line": 1623,
+              "deprecated": false
+            },
+            {
+              "name": "b000",
+              "qualname": "Animation.b000",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Open Shot Sequencer",
+              "line": 1664,
+              "deprecated": false
+            },
+            {
+              "name": "b004",
+              "qualname": "Animation.b004",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Open Shot Manifest",
+              "line": 1668,
+              "deprecated": false
+            },
+            {
+              "name": "b005",
+              "qualname": "Animation.b005",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Fit Playback Range",
+              "line": 1672,
+              "deprecated": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "relpath": "slots/maya/arnold.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "ArnoldSlots",
+          "summary": "",
+          "line": 13,
+          "bases": [
+            "SlotsMaya"
+          ],
+          "members": []
+        }
+      ]
+    },
+    {
+      "relpath": "slots/maya/cache.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "CacheSlots",
+          "summary": "",
+          "line": 13,
+          "bases": [
+            "SlotsMaya"
+          ],
+          "members": []
+        }
+      ]
+    },
+    {
+      "relpath": "slots/maya/cameras.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "Cameras",
+          "summary": "",
+          "line": 12,
+          "bases": [
+            "SlotsMaya"
+          ],
+          "members": [
+            {
+              "name": "list000_init",
+              "qualname": "Cameras.list000_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Initialize Camera Options List",
+              "line": 26,
+              "deprecated": false
+            },
+            {
+              "name": "list000",
+              "qualname": "Cameras.list000",
+              "kind": "method",
+              "signature": "(self, item)",
+              "summary": "Camera Options List",
+              "line": 78,
+              "deprecated": false
+            },
+            {
+              "name": "b000",
+              "qualname": "Cameras.b000",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Cameras: Back View",
+              "line": 112,
+              "deprecated": false
+            },
+            {
+              "name": "b001",
+              "qualname": "Cameras.b001",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Cameras: Top View",
+              "line": 116,
+              "deprecated": false
+            },
+            {
+              "name": "b002",
+              "qualname": "Cameras.b002",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Cameras: Right View",
+              "line": 120,
+              "deprecated": false
+            },
+            {
+              "name": "b003",
+              "qualname": "Cameras.b003",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Cameras: Left View",
+              "line": 124,
+              "deprecated": false
+            },
+            {
+              "name": "b004",
+              "qualname": "Cameras.b004",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Cameras: Perspective View",
+              "line": 128,
+              "deprecated": false
+            },
+            {
+              "name": "b005",
+              "qualname": "Cameras.b005",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Cameras: Front View",
+              "line": 132,
+              "deprecated": false
+            },
+            {
+              "name": "b006",
+              "qualname": "Cameras.b006",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Cameras: Bottom View",
+              "line": 136,
+              "deprecated": false
+            },
+            {
+              "name": "b007",
+              "qualname": "Cameras.b007",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Cameras: Align View",
+              "line": 140,
+              "deprecated": false
+            },
+            {
+              "name": "b010",
+              "qualname": "Cameras.b010",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Camera: Dolly",
+              "line": 161,
+              "deprecated": false
+            },
+            {
+              "name": "b011",
+              "qualname": "Cameras.b011",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Camera: Roll",
+              "line": 165,
+              "deprecated": false
+            },
+            {
+              "name": "b012",
+              "qualname": "Cameras.b012",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Camera: Truck",
+              "line": 172,
+              "deprecated": false
+            },
+            {
+              "name": "b013",
+              "qualname": "Cameras.b013",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Camera: Orbit",
+              "line": 176,
+              "deprecated": false
+            },
+            {
+              "name": "toggle_camera_view",
+              "qualname": "Cameras.toggle_camera_view",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Toggle between the last two camera views in history.",
+              "line": 181,
+              "deprecated": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "relpath": "slots/maya/constrain.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "Constrain",
+          "summary": "",
+          "line": 13,
+          "bases": [
+            "SlotsMaya"
+          ],
+          "members": []
+        }
+      ]
+    },
+    {
+      "relpath": "slots/maya/control.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "ControlSlots",
+          "summary": "",
+          "line": 13,
+          "bases": [
+            "SlotsMaya"
+          ],
+          "members": []
+        }
+      ]
+    },
+    {
+      "relpath": "slots/maya/crease.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "Crease",
+          "summary": "",
+          "line": 11,
+          "bases": [
+            "SlotsMaya"
+          ],
+          "members": [
+            {
+              "name": "tb000_init",
+              "qualname": "Crease.tb000_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "",
+              "line": 18,
+              "deprecated": false
+            },
+            {
+              "name": "tb000",
+              "qualname": "Crease.tb000",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Crease",
+              "line": 53,
+              "deprecated": false
+            },
+            {
+              "name": "b002",
+              "qualname": "Crease.b002",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Transfer Crease Edges",
+              "line": 61,
+              "deprecated": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "relpath": "slots/maya/curves.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "CurvesSlots",
+          "summary": "",
+          "line": 13,
+          "bases": [
+            "SlotsMaya"
+          ],
+          "members": []
+        }
+      ]
+    },
+    {
+      "relpath": "slots/maya/deform.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "DeformSlots",
+          "summary": "",
+          "line": 13,
+          "bases": [
+            "SlotsMaya"
+          ],
+          "members": []
+        }
+      ]
+    },
+    {
+      "relpath": "slots/maya/display.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "DisplaySlots",
+          "summary": "",
+          "line": 12,
+          "bases": [
+            "SlotsMaya"
+          ],
+          "members": [
+            {
+              "name": "header_init",
+              "qualname": "DisplaySlots.header_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "",
+              "line": 19,
+              "deprecated": false
+            },
+            {
+              "name": "b000",
+              "qualname": "DisplaySlots.b000",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Set Wireframe color",
+              "line": 34,
+              "deprecated": false
+            },
+            {
+              "name": "b001",
+              "qualname": "DisplaySlots.b001",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Wireframe Selected",
+              "line": 38,
+              "deprecated": false
+            },
+            {
+              "name": "b002",
+              "qualname": "DisplaySlots.b002",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Hide Selected",
+              "line": 42,
+              "deprecated": false
+            },
+            {
+              "name": "b003",
+              "qualname": "DisplaySlots.b003",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Show Selected",
+              "line": 47,
+              "deprecated": false
+            },
+            {
+              "name": "b004",
+              "qualname": "DisplaySlots.b004",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Show Geometry",
+              "line": 52,
+              "deprecated": false
+            },
+            {
+              "name": "b005",
+              "qualname": "DisplaySlots.b005",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Xray Selected",
+              "line": 56,
+              "deprecated": false
+            },
+            {
+              "name": "b006",
+              "qualname": "DisplaySlots.b006",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Un-Xray All",
+              "line": 64,
+              "deprecated": false
+            },
+            {
+              "name": "b007",
+              "qualname": "DisplaySlots.b007",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Xray Other",
+              "line": 73,
+              "deprecated": false
+            },
+            {
+              "name": "b009",
+              "qualname": "DisplaySlots.b009",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Toggle Material Override",
+              "line": 90,
+              "deprecated": false
+            },
+            {
+              "name": "b011",
+              "qualname": "DisplaySlots.b011",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Toggle Component ID Display",
+              "line": 94,
+              "deprecated": false
+            },
+            {
+              "name": "b012",
+              "qualname": "DisplaySlots.b012",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Wireframe Non Active (Wireframe All But The Selected Item)",
+              "line": 98,
+              "deprecated": false
+            },
+            {
+              "name": "b013",
+              "qualname": "DisplaySlots.b013",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Explode View GUI",
+              "line": 104,
+              "deprecated": false
+            },
+            {
+              "name": "b014",
+              "qualname": "DisplaySlots.b014",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Color Manager GUI",
+              "line": 108,
+              "deprecated": false
+            },
+            {
+              "name": "b021",
+              "qualname": "DisplaySlots.b021",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Template Selected",
+              "line": 112,
+              "deprecated": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "relpath": "slots/maya/duplicate.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "Duplicate",
+          "summary": "",
+          "line": 11,
+          "bases": [
+            "SlotsMaya"
+          ],
+          "members": [
+            {
+              "name": "header_init",
+              "qualname": "Duplicate.header_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "",
+              "line": 15,
+              "deprecated": false
+            },
+            {
+              "name": "tb000_init",
+              "qualname": "Duplicate.tb000_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "",
+              "line": 42,
+              "deprecated": false
+            },
+            {
+              "name": "tb000",
+              "qualname": "Duplicate.tb000",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Convert to Instances",
+              "line": 65,
+              "deprecated": false
+            },
+            {
+              "name": "tb001_init",
+              "qualname": "Duplicate.tb001_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "",
+              "line": 92,
+              "deprecated": false
+            },
+            {
+              "name": "tb001",
+              "qualname": "Duplicate.tb001",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Select Instanced Objects",
+              "line": 101,
+              "deprecated": false
+            },
+            {
+              "name": "b000",
+              "qualname": "Duplicate.b000",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Mirror",
+              "line": 123,
+              "deprecated": false
+            },
+            {
+              "name": "b005",
+              "qualname": "Duplicate.b005",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Uninstance Selected Objects",
+              "line": 127,
+              "deprecated": false
+            },
+            {
+              "name": "b006",
+              "qualname": "Duplicate.b006",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Duplicate Linear",
+              "line": 132,
+              "deprecated": false
+            },
+            {
+              "name": "b007",
+              "qualname": "Duplicate.b007",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Duplicate Radial",
+              "line": 136,
+              "deprecated": false
+            },
+            {
+              "name": "b008",
+              "qualname": "Duplicate.b008",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Duplicate Grid",
+              "line": 140,
+              "deprecated": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "relpath": "slots/maya/edit.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "Edit",
+          "summary": "",
+          "line": 12,
+          "bases": [
+            "SlotsMaya"
+          ],
+          "members": [
+            {
+              "name": "header_init",
+              "qualname": "Edit.header_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Initialize header menu",
+              "line": 19,
+              "deprecated": false
+            },
+            {
+              "name": "tb000_init",
+              "qualname": "Edit.tb000_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Initialize Mesh Cleanup",
+              "line": 34,
+              "deprecated": false
+            },
+            {
+              "name": "tb000",
+              "qualname": "Edit.tb000",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Mesh Cleanup",
+              "line": 214,
+              "deprecated": false
+            },
+            {
+              "name": "tb001_init",
+              "qualname": "Edit.tb001_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Initialize Delete History",
+              "line": 306,
+              "deprecated": false
+            },
+            {
+              "name": "tb001",
+              "qualname": "Edit.tb001",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Delete History",
+              "line": 335,
+              "deprecated": false
+            },
+            {
+              "name": "tb002",
+              "qualname": "Edit.tb002",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Delete Selected",
+              "line": 409,
+              "deprecated": false
+            },
+            {
+              "name": "tb004_init",
+              "qualname": "Edit.tb004_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "",
+              "line": 413,
+              "deprecated": false
+            },
+            {
+              "name": "tb004",
+              "qualname": "Edit.tb004",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Node Locking",
+              "line": 427,
+              "deprecated": false
+            },
+            {
+              "name": "b_attr_mgr",
+              "qualname": "Edit.b_attr_mgr",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Attribute Manager",
+              "line": 437,
+              "deprecated": false
+            },
+            {
+              "name": "b000",
+              "qualname": "Edit.b000",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Cut On Axis",
+              "line": 441,
+              "deprecated": false
+            },
+            {
+              "name": "list000_init",
+              "qualname": "Edit.list000_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Initialize Create Primitives list.",
+              "line": 447,
+              "deprecated": false
+            },
+            {
+              "name": "list000",
+              "qualname": "Edit.list000",
+              "kind": "method",
+              "signature": "(self, item)",
+              "summary": "Create Primitive",
+              "line": 512,
+              "deprecated": false
+            },
+            {
+              "name": "list001_init",
+              "qualname": "Edit.list001_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Initialize Convert list.",
+              "line": 572,
+              "deprecated": false
+            },
+            {
+              "name": "list001",
+              "qualname": "Edit.list001",
+              "kind": "method",
+              "signature": "(self, item)",
+              "summary": "Convert",
+              "line": 582,
+              "deprecated": false
+            },
+            {
+              "name": "b021",
+              "qualname": "Edit.b021",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Tranfer Maps",
+              "line": 595,
+              "deprecated": false
+            },
+            {
+              "name": "b022",
+              "qualname": "Edit.b022",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Transfer Vertex Order",
+              "line": 599,
+              "deprecated": false
+            },
+            {
+              "name": "b023",
+              "qualname": "Edit.b023",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Transfer Attribute Values",
+              "line": 603,
+              "deprecated": false
+            },
+            {
+              "name": "b027",
+              "qualname": "Edit.b027",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Shading Sets",
+              "line": 607,
+              "deprecated": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "relpath": "slots/maya/edit_mesh.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "EditMeshSlots",
+          "summary": "",
+          "line": 13,
+          "bases": [
+            "SlotsMaya"
+          ],
+          "members": []
+        }
+      ]
+    },
+    {
+      "relpath": "slots/maya/editors.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "Editors",
+          "summary": "",
+          "line": 11,
+          "bases": [
+            "SlotsMaya"
+          ],
+          "members": [
+            {
+              "name": "list000_init",
+              "qualname": "Editors.list000_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Initialize the widget with structured data for easier maintenance.",
+              "line": 18,
+              "deprecated": false
+            },
+            {
+              "name": "list000",
+              "qualname": "Editors.list000",
+              "kind": "method",
+              "signature": "(self, item)",
+              "summary": "",
+              "line": 98,
+              "deprecated": false
+            },
+            {
+              "name": "b000",
+              "qualname": "Editors.b000",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Attributes",
+              "line": 229,
+              "deprecated": false
+            },
+            {
+              "name": "b001",
+              "qualname": "Editors.b001",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Outliner",
+              "line": 233,
+              "deprecated": false
+            },
+            {
+              "name": "b002",
+              "qualname": "Editors.b002",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Tool",
+              "line": 237,
+              "deprecated": false
+            },
+            {
+              "name": "b003",
+              "qualname": "Editors.b003",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Layers",
+              "line": 241,
+              "deprecated": false
+            },
+            {
+              "name": "b004",
+              "qualname": "Editors.b004",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Channels",
+              "line": 245,
+              "deprecated": false
+            },
+            {
+              "name": "b005",
+              "qualname": "Editors.b005",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Node Editor",
+              "line": 249,
+              "deprecated": false
+            },
+            {
+              "name": "b006",
+              "qualname": "Editors.b006",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Dependancy Graph",
+              "line": 253,
+              "deprecated": false
+            },
+            {
+              "name": "b007",
+              "qualname": "Editors.b007",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Status Line",
+              "line": 292,
+              "deprecated": false
+            },
+            {
+              "name": "b008",
+              "qualname": "Editors.b008",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Shelf",
+              "line": 296,
+              "deprecated": false
+            },
+            {
+              "name": "b009",
+              "qualname": "Editors.b009",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Time & Range",
+              "line": 300,
+              "deprecated": false
+            },
+            {
+              "name": "b011",
+              "qualname": "Editors.b011",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Command Line",
+              "line": 314,
+              "deprecated": false
+            },
+            {
+              "name": "b012",
+              "qualname": "Editors.b012",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Help Line",
+              "line": 318,
+              "deprecated": false
+            },
+            {
+              "name": "b013",
+              "qualname": "Editors.b013",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Tool Box",
+              "line": 322,
+              "deprecated": false
+            },
+            {
+              "name": "getEditorWidget",
+              "qualname": "Editors.getEditorWidget",
+              "kind": "method",
+              "signature": "(self, name)",
+              "summary": "Get a maya widget from a given name.",
+              "line": 326,
+              "deprecated": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "relpath": "slots/maya/effects.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "EffectsSlots",
+          "summary": "",
+          "line": 13,
+          "bases": [
+            "SlotsMaya"
+          ],
+          "members": []
+        }
+      ]
+    },
+    {
+      "relpath": "slots/maya/fields_solvers.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "FieldsSolversSlots",
+          "summary": "",
+          "line": 13,
+          "bases": [
+            "SlotsMaya"
+          ],
+          "members": []
+        }
+      ]
+    },
+    {
+      "relpath": "slots/maya/fluids.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "FluidsSlots",
+          "summary": "",
+          "line": 13,
+          "bases": [
+            "SlotsMaya"
+          ],
+          "members": []
+        }
+      ]
+    },
+    {
+      "relpath": "slots/maya/generate.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "GenerateSlots",
+          "summary": "",
+          "line": 13,
+          "bases": [
+            "SlotsMaya"
+          ],
+          "members": []
+        }
+      ]
+    },
+    {
+      "relpath": "slots/maya/help.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "HelpSlots",
+          "summary": "",
+          "line": 13,
+          "bases": [
+            "SlotsMaya"
+          ],
+          "members": []
+        }
+      ]
+    },
+    {
+      "relpath": "slots/maya/hud.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "StatusMixin",
+          "summary": "",
+          "line": 15,
+          "bases": [],
+          "members": [
+            {
+              "name": "insert_scene_status",
+              "qualname": "StatusMixin.insert_scene_status",
+              "kind": "method",
+              "signature": "(self, hud) -> None",
+              "summary": "",
+              "line": 16,
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "SelectionMixin",
+          "summary": "",
+          "line": 57,
+          "bases": [],
+          "members": [
+            {
+              "name": "insert_selection_info",
+              "qualname": "SelectionMixin.insert_selection_info",
+              "kind": "method",
+              "signature": "(self, hud, selection) -> None",
+              "summary": "",
+              "line": 58,
+              "deprecated": false
+            },
+            {
+              "name": "insert_component_info",
+              "qualname": "SelectionMixin.insert_component_info",
+              "kind": "method",
+              "signature": "(self, hud, selection) -> None",
+              "summary": "",
+              "line": 106,
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "WarningsMixin",
+          "summary": "Lightweight pre-build checks shown as colored icons (immediately) and",
+          "line": 131,
+          "bases": [],
+          "members": [
+            {
+              "name": "evaluate_warnings",
+              "qualname": "WarningsMixin.evaluate_warnings",
+              "kind": "method",
+              "signature": "(self) -> list",
+              "summary": "Return the subset of WARNING_DEFS whose check fires and is enabled.",
+              "line": 201,
+              "deprecated": false
+            },
+            {
+              "name": "insert_warning_icons",
+              "qualname": "WarningsMixin.insert_warning_icons",
+              "kind": "method",
+              "signature": "(self, hud, warnings) -> None",
+              "summary": "Insert a single-line row of colored badges;",
+              "line": 218,
+              "deprecated": false
+            },
+            {
+              "name": "insert_warning_details",
+              "qualname": "WarningsMixin.insert_warning_details",
+              "kind": "method",
+              "signature": "(self, hud, warnings) -> None",
+              "summary": "Insert a formatted detail line per active warning.",
+              "line": 228,
+              "deprecated": false
+            }
+          ]
+        },
+        {
+          "name": "HudSlots",
+          "summary": "HUD Slots for Maya, providing scene and selection information.",
+          "line": 278,
+          "bases": [
+            "SlotsMaya",
+            "ptk.PackageManager",
+            "StatusMixin",
+            "SelectionMixin",
+            "WarningsMixin"
+          ],
+          "members": [
+            {
+              "name": "request_hud_build",
+              "qualname": "HudSlots.request_hud_build",
+              "kind": "method",
+              "signature": "(self) -> None",
+              "summary": "Start a new HUD build request, only the latest token will be used.",
+              "line": 294,
+              "deprecated": false
+            },
+            {
+              "name": "construct_hud",
+              "qualname": "HudSlots.construct_hud",
+              "kind": "method",
+              "signature": "(self) -> None",
+              "summary": "",
+              "line": 314,
+              "deprecated": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "relpath": "slots/maya/key.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "KeySlots",
+          "summary": "",
+          "line": 13,
+          "bases": [
+            "SlotsMaya"
+          ],
+          "members": []
+        }
+      ]
+    },
+    {
+      "relpath": "slots/maya/lighting.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "Lighting",
+          "summary": "",
+          "line": 13,
+          "bases": [
+            "SlotsMaya"
+          ],
+          "members": [
+            {
+              "name": "header_init",
+              "qualname": "Lighting.header_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "",
+              "line": 21,
+              "deprecated": false
+            },
+            {
+              "name": "b000",
+              "qualname": "Lighting.b000",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Launch the HDR Manager.",
+              "line": 31,
+              "deprecated": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "relpath": "slots/maya/lighting_shading.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "LightingShadingSlots",
+          "summary": "",
+          "line": 13,
+          "bases": [
+            "SlotsMaya"
+          ],
+          "members": []
+        }
+      ]
+    },
+    {
+      "relpath": "slots/maya/main.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "Main",
+          "summary": "",
+          "line": 14,
+          "bases": [
+            "SlotsMaya"
+          ],
+          "members": [
+            {
+              "name": "list000_init",
+              "qualname": "Main.list000_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Initialize Workspace Browser",
+              "line": 21,
+              "deprecated": false
+            },
+            {
+              "name": "list000",
+              "qualname": "Main.list000",
+              "kind": "method",
+              "signature": "(self, item)",
+              "summary": "Workspace Browser",
+              "line": 71,
+              "deprecated": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "relpath": "slots/maya/mash.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "MashSlots",
+          "summary": "",
+          "line": 13,
+          "bases": [
+            "SlotsMaya"
+          ],
+          "members": []
+        }
+      ]
+    },
+    {
+      "relpath": "slots/maya/materials.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "MaterialsSlots",
+          "summary": "",
+          "line": 15,
+          "bases": [
+            "SlotsMaya"
+          ],
+          "members": [
+            {
+              "name": "header_init",
+              "qualname": "MaterialsSlots.header_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Initialize the header menu",
+              "line": 26,
+              "deprecated": false
+            },
+            {
+              "name": "cmb002_init",
+              "qualname": "MaterialsSlots.cmb002_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Initialize Materials",
+              "line": 110,
+              "deprecated": false
+            },
+            {
+              "name": "lbl007",
+              "qualname": "MaterialsSlots.lbl007",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Rename the current material by stripping trailing integers and underscores.",
+              "line": 185,
+              "deprecated": false
+            },
+            {
+              "name": "tb000_init",
+              "qualname": "MaterialsSlots.tb000_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "",
+              "line": 232,
+              "deprecated": false
+            },
+            {
+              "name": "tb000",
+              "qualname": "MaterialsSlots.tb000",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Select By Material",
+              "line": 255,
+              "deprecated": false
+            },
+            {
+              "name": "lbl002",
+              "qualname": "MaterialsSlots.lbl002",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Delete Material",
+              "line": 317,
+              "deprecated": false
+            },
+            {
+              "name": "b015",
+              "qualname": "MaterialsSlots.b015",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Delete Unused Materials",
+              "line": 323,
+              "deprecated": false
+            },
+            {
+              "name": "lbl004",
+              "qualname": "MaterialsSlots.lbl004",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Select and Show Attributes: Show Material Attributes in the Attribute Editor.",
+              "line": 328,
+              "deprecated": false
+            },
+            {
+              "name": "lbl005",
+              "qualname": "MaterialsSlots.lbl005",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Set the current combo box text as editable.",
+              "line": 334,
+              "deprecated": false
+            },
+            {
+              "name": "lbl006",
+              "qualname": "MaterialsSlots.lbl006",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Open material in editor",
+              "line": 339,
+              "deprecated": false
+            },
+            {
+              "name": "b002",
+              "qualname": "MaterialsSlots.b002",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Get Material: Change the index to match the current material selection.",
+              "line": 353,
+              "deprecated": false
+            },
+            {
+              "name": "b004",
+              "qualname": "MaterialsSlots.b004",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Assign Random",
+              "line": 372,
+              "deprecated": false
+            },
+            {
+              "name": "b005_init",
+              "qualname": "MaterialsSlots.b005_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Initialize Assign Current",
+              "line": 411,
+              "deprecated": false
+            },
+            {
+              "name": "b005",
+              "qualname": "MaterialsSlots.b005",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Assign Current",
+              "line": 428,
+              "deprecated": false
+            },
+            {
+              "name": "b006",
+              "qualname": "MaterialsSlots.b006",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Assign: New Material",
+              "line": 438,
+              "deprecated": false
+            },
+            {
+              "name": "b008",
+              "qualname": "MaterialsSlots.b008",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Map Packer",
+              "line": 449,
+              "deprecated": false
+            },
+            {
+              "name": "b009",
+              "qualname": "MaterialsSlots.b009",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Create Game Shader",
+              "line": 471,
+              "deprecated": false
+            },
+            {
+              "name": "b010",
+              "qualname": "MaterialsSlots.b010",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Texture Path Editor",
+              "line": 475,
+              "deprecated": false
+            },
+            {
+              "name": "b011",
+              "qualname": "MaterialsSlots.b011",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Shader Templates",
+              "line": 479,
+              "deprecated": false
+            },
+            {
+              "name": "b013",
+              "qualname": "MaterialsSlots.b013",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Reload Textures and Reset Viewport",
+              "line": 483,
+              "deprecated": false
+            },
+            {
+              "name": "b014",
+              "qualname": "MaterialsSlots.b014",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Remove and Reassign Duplicates",
+              "line": 490,
+              "deprecated": false
+            },
+            {
+              "name": "b016",
+              "qualname": "MaterialsSlots.b016",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Map Converter",
+              "line": 497,
+              "deprecated": false
+            },
+            {
+              "name": "b017",
+              "qualname": "MaterialsSlots.b017",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Print Texture Info",
+              "line": 519,
+              "deprecated": false
+            },
+            {
+              "name": "b018",
+              "qualname": "MaterialsSlots.b018",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Material Updater",
+              "line": 540,
+              "deprecated": false
+            },
+            {
+              "name": "b021",
+              "qualname": "MaterialsSlots.b021",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Image to Plane",
+              "line": 544,
+              "deprecated": false
+            },
+            {
+              "name": "b019",
+              "qualname": "MaterialsSlots.b019",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Send to Marmoset",
+              "line": 548,
+              "deprecated": false
+            },
+            {
+              "name": "b020",
+              "qualname": "MaterialsSlots.b020",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Send to Substance Painter",
+              "line": 556,
+              "deprecated": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "relpath": "slots/maya/mesh.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "MeshSlots",
+          "summary": "",
+          "line": 13,
+          "bases": [
+            "SlotsMaya"
+          ],
+          "members": []
+        }
+      ]
+    },
+    {
+      "relpath": "slots/maya/mesh_display.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "MeshDisplaySlots",
+          "summary": "",
+          "line": 13,
+          "bases": [
+            "SlotsMaya"
+          ],
+          "members": []
+        }
+      ]
+    },
+    {
+      "relpath": "slots/maya/mesh_tools.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "MeshToolsSlots",
+          "summary": "",
+          "line": 13,
+          "bases": [
+            "SlotsMaya"
+          ],
+          "members": []
+        }
+      ]
+    },
+    {
+      "relpath": "slots/maya/ncloth.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "NClothSlots",
+          "summary": "",
+          "line": 13,
+          "bases": [
+            "SlotsMaya"
+          ],
+          "members": []
+        }
+      ]
+    },
+    {
+      "relpath": "slots/maya/nconstraint.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "NConstraintSlots",
+          "summary": "",
+          "line": 13,
+          "bases": [
+            "SlotsMaya"
+          ],
+          "members": []
+        }
+      ]
+    },
+    {
+      "relpath": "slots/maya/nhair.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "NHairSlots",
+          "summary": "",
+          "line": 13,
+          "bases": [
+            "SlotsMaya"
+          ],
+          "members": []
+        }
+      ]
+    },
+    {
+      "relpath": "slots/maya/normals.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "Normals",
+          "summary": "",
+          "line": 12,
+          "bases": [
+            "SlotsMaya"
+          ],
+          "members": [
+            {
+              "name": "tb001_init",
+              "qualname": "Normals.tb001_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Initialize Set Normals By Angle",
+              "line": 16,
+              "deprecated": false
+            },
+            {
+              "name": "tb001",
+              "qualname": "Normals.tb001",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Set Normals By Angle",
+              "line": 43,
+              "deprecated": false
+            },
+            {
+              "name": "tb004_init",
+              "qualname": "Normals.tb004_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Initialize Average Normals",
+              "line": 65,
+              "deprecated": false
+            },
+            {
+              "name": "tb004",
+              "qualname": "Normals.tb004",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Average Normals",
+              "line": 74,
+              "deprecated": false
+            },
+            {
+              "name": "b000",
+              "qualname": "Normals.b000",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Soften Edge Normals",
+              "line": 81,
+              "deprecated": false
+            },
+            {
+              "name": "b001",
+              "qualname": "Normals.b001",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Harden all selected edges.",
+              "line": 92,
+              "deprecated": false
+            },
+            {
+              "name": "b002",
+              "qualname": "Normals.b002",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Transfer Normals",
+              "line": 103,
+              "deprecated": false
+            },
+            {
+              "name": "b003",
+              "qualname": "Normals.b003",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Soft Edge Display",
+              "line": 114,
+              "deprecated": false
+            },
+            {
+              "name": "b004",
+              "qualname": "Normals.b004",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Toggle lock/unlock vertex normals.",
+              "line": 118,
+              "deprecated": false
+            },
+            {
+              "name": "b005",
+              "qualname": "Normals.b005",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Display Face Normals",
+              "line": 122,
+              "deprecated": false
+            },
+            {
+              "name": "b006",
+              "qualname": "Normals.b006",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Set To Face",
+              "line": 126,
+              "deprecated": false
+            },
+            {
+              "name": "tb010_init",
+              "qualname": "Normals.tb010_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Initialize Reverse Normals",
+              "line": 130,
+              "deprecated": false
+            },
+            {
+              "name": "tb010",
+              "qualname": "Normals.tb010",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Reverse Normals",
+              "line": 148,
+              "deprecated": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "relpath": "slots/maya/nparticles.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "NParticlesSlots",
+          "summary": "",
+          "line": 13,
+          "bases": [
+            "SlotsMaya"
+          ],
+          "members": []
+        }
+      ]
+    },
+    {
+      "relpath": "slots/maya/nurbs.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "Nurbs",
+          "summary": "",
+          "line": 12,
+          "bases": [
+            "SlotsMaya"
+          ],
+          "members": [
+            {
+              "name": "header_init",
+              "qualname": "Nurbs.header_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "",
+              "line": 19,
+              "deprecated": false
+            },
+            {
+              "name": "cmb001_init",
+              "qualname": "Nurbs.cmb001_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "",
+              "line": 28,
+              "deprecated": false
+            },
+            {
+              "name": "tb000_init",
+              "qualname": "Nurbs.tb000_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "",
+              "line": 40,
+              "deprecated": false
+            },
+            {
+              "name": "tb001_init",
+              "qualname": "Nurbs.tb001_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "",
+              "line": 111,
+              "deprecated": false
+            },
+            {
+              "name": "cmb001",
+              "qualname": "Nurbs.cmb001",
+              "kind": "method",
+              "signature": "(self, index, widget)",
+              "summary": "Create: Curve",
+              "line": 187,
+              "deprecated": false
+            },
+            {
+              "name": "tb000",
+              "qualname": "Nurbs.tb000",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Revolve",
+              "line": 207,
+              "deprecated": false
+            },
+            {
+              "name": "tb001",
+              "qualname": "Nurbs.tb001",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Loft",
+              "line": 234,
+              "deprecated": false
+            },
+            {
+              "name": "lbl000",
+              "qualname": "Nurbs.lbl000",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Image Tracer",
+              "line": 260,
+              "deprecated": false
+            },
+            {
+              "name": "b012",
+              "qualname": "Nurbs.b012",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Project Curve",
+              "line": 264,
+              "deprecated": false
+            },
+            {
+              "name": "b014",
+              "qualname": "Nurbs.b014",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Duplicate Curve",
+              "line": 268,
+              "deprecated": false
+            },
+            {
+              "name": "b016",
+              "qualname": "Nurbs.b016",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Extract Curve",
+              "line": 272,
+              "deprecated": false
+            },
+            {
+              "name": "b018",
+              "qualname": "Nurbs.b018",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Lock Curve",
+              "line": 279,
+              "deprecated": false
+            },
+            {
+              "name": "b019",
+              "qualname": "Nurbs.b019",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Unlock Curve",
+              "line": 283,
+              "deprecated": false
+            },
+            {
+              "name": "b020",
+              "qualname": "Nurbs.b020",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Bend Curve",
+              "line": 287,
+              "deprecated": false
+            },
+            {
+              "name": "b022",
+              "qualname": "Nurbs.b022",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Curl Curve",
+              "line": 291,
+              "deprecated": false
+            },
+            {
+              "name": "b024",
+              "qualname": "Nurbs.b024",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Modify Curve Curvature",
+              "line": 295,
+              "deprecated": false
+            },
+            {
+              "name": "b026",
+              "qualname": "Nurbs.b026",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Smooth Curve",
+              "line": 299,
+              "deprecated": false
+            },
+            {
+              "name": "b028",
+              "qualname": "Nurbs.b028",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Straighten Curve",
+              "line": 303,
+              "deprecated": false
+            },
+            {
+              "name": "b030",
+              "qualname": "Nurbs.b030",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Extrude",
+              "line": 307,
+              "deprecated": false
+            },
+            {
+              "name": "b036",
+              "qualname": "Nurbs.b036",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Planar",
+              "line": 311,
+              "deprecated": false
+            },
+            {
+              "name": "b038",
+              "qualname": "Nurbs.b038",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Insert Isoparm",
+              "line": 315,
+              "deprecated": false
+            },
+            {
+              "name": "b040",
+              "qualname": "Nurbs.b040",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Edit Curve Tool",
+              "line": 319,
+              "deprecated": false
+            },
+            {
+              "name": "b041",
+              "qualname": "Nurbs.b041",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Attach Curve",
+              "line": 323,
+              "deprecated": false
+            },
+            {
+              "name": "b042",
+              "qualname": "Nurbs.b042",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Detach Curve",
+              "line": 327,
+              "deprecated": false
+            },
+            {
+              "name": "b043",
+              "qualname": "Nurbs.b043",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Extend Curve",
+              "line": 331,
+              "deprecated": false
+            },
+            {
+              "name": "b045",
+              "qualname": "Nurbs.b045",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Cut Curve",
+              "line": 335,
+              "deprecated": false
+            },
+            {
+              "name": "b046",
+              "qualname": "Nurbs.b046",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Open/Close Curve",
+              "line": 339,
+              "deprecated": false
+            },
+            {
+              "name": "b047",
+              "qualname": "Nurbs.b047",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Insert Knot",
+              "line": 343,
+              "deprecated": false
+            },
+            {
+              "name": "b049",
+              "qualname": "Nurbs.b049",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Add Points Tool",
+              "line": 347,
+              "deprecated": false
+            },
+            {
+              "name": "b051",
+              "qualname": "Nurbs.b051",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Reverse Curve",
+              "line": 351,
+              "deprecated": false
+            },
+            {
+              "name": "b052",
+              "qualname": "Nurbs.b052",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Extend Curve",
+              "line": 355,
+              "deprecated": false
+            },
+            {
+              "name": "b054",
+              "qualname": "Nurbs.b054",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Extend On Surface",
+              "line": 359,
+              "deprecated": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "relpath": "slots/maya/pivot.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "Pivot",
+          "summary": "",
+          "line": 11,
+          "bases": [
+            "SlotsMaya"
+          ],
+          "members": [
+            {
+              "name": "tb000_init",
+              "qualname": "Pivot.tb000_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "",
+              "line": 18,
+              "deprecated": false
+            },
+            {
+              "name": "tb000",
+              "qualname": "Pivot.tb000",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Reset Pivot",
+              "line": 35,
+              "deprecated": false
+            },
+            {
+              "name": "tb001_init",
+              "qualname": "Pivot.tb001_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "",
+              "line": 53,
+              "deprecated": false
+            },
+            {
+              "name": "tb001",
+              "qualname": "Pivot.tb001",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Center Pivot",
+              "line": 75,
+              "deprecated": false
+            },
+            {
+              "name": "tb002_init",
+              "qualname": "Pivot.tb002_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "",
+              "line": 90,
+              "deprecated": false
+            },
+            {
+              "name": "tb002",
+              "qualname": "Pivot.tb002",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Transfer Pivot",
+              "line": 129,
+              "deprecated": false
+            },
+            {
+              "name": "tb003_init",
+              "qualname": "Pivot.tb003_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Initialize World-Aligned Pivot options",
+              "line": 147,
+              "deprecated": false
+            },
+            {
+              "name": "tb003",
+              "qualname": "Pivot.tb003",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "World-Aligned Pivot",
+              "line": 158,
+              "deprecated": false
+            },
+            {
+              "name": "b000",
+              "qualname": "Pivot.b000",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Center Pivot: Object",
+              "line": 180,
+              "deprecated": false
+            },
+            {
+              "name": "b001",
+              "qualname": "Pivot.b001",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Center Pivot: Component",
+              "line": 186,
+              "deprecated": false
+            },
+            {
+              "name": "b002",
+              "qualname": "Pivot.b002",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Center Pivot: World",
+              "line": 192,
+              "deprecated": false
+            },
+            {
+              "name": "b004",
+              "qualname": "Pivot.b004",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Bake Pivot",
+              "line": 198,
+              "deprecated": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "relpath": "slots/maya/playback.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "PlaybackSlots",
+          "summary": "",
+          "line": 13,
+          "bases": [
+            "SlotsMaya"
+          ],
+          "members": []
+        }
+      ]
+    },
+    {
+      "relpath": "slots/maya/polygons.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "PolygonsSlots",
+          "summary": "",
+          "line": 12,
+          "bases": [
+            "SlotsMaya"
+          ],
+          "members": [
+            {
+              "name": "header_init",
+              "qualname": "PolygonsSlots.header_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Initialize Header",
+              "line": 19,
+              "deprecated": false
+            },
+            {
+              "name": "chk008",
+              "qualname": "PolygonsSlots.chk008",
+              "kind": "method",
+              "signature": "(self, state, widget)",
+              "summary": "Divide Facet: Split U",
+              "line": 34,
+              "deprecated": false
+            },
+            {
+              "name": "chk009",
+              "qualname": "PolygonsSlots.chk009",
+              "kind": "method",
+              "signature": "(self, state, widget)",
+              "summary": "Divide Facet: Split V",
+              "line": 38,
+              "deprecated": false
+            },
+            {
+              "name": "chk010",
+              "qualname": "PolygonsSlots.chk010",
+              "kind": "method",
+              "signature": "(self, state, widget)",
+              "summary": "Divide Facet: Tris",
+              "line": 42,
+              "deprecated": false
+            },
+            {
+              "name": "tb000_init",
+              "qualname": "PolygonsSlots.tb000_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Initialize Merge Vertices",
+              "line": 46,
+              "deprecated": false
+            },
+            {
+              "name": "tb000",
+              "qualname": "PolygonsSlots.tb000",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Merge Vertices",
+              "line": 65,
+              "deprecated": false
+            },
+            {
+              "name": "tb002_init",
+              "qualname": "PolygonsSlots.tb002_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Initialize Separate",
+              "line": 79,
+              "deprecated": false
+            },
+            {
+              "name": "tb002",
+              "qualname": "PolygonsSlots.tb002",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Separate",
+              "line": 98,
+              "deprecated": false
+            },
+            {
+              "name": "tb003_init",
+              "qualname": "PolygonsSlots.tb003_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Initialize Extrude",
+              "line": 109,
+              "deprecated": false
+            },
+            {
+              "name": "tb003",
+              "qualname": "PolygonsSlots.tb003",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Extrude",
+              "line": 129,
+              "deprecated": false
+            },
+            {
+              "name": "tb004_init",
+              "qualname": "PolygonsSlots.tb004_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Initialize Combine",
+              "line": 155,
+              "deprecated": false
+            },
+            {
+              "name": "tb004",
+              "qualname": "PolygonsSlots.tb004",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Combine Selected Meshes.",
+              "line": 187,
+              "deprecated": false
+            },
+            {
+              "name": "tb005_init",
+              "qualname": "PolygonsSlots.tb005_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Initialize Detach",
+              "line": 206,
+              "deprecated": false
+            },
+            {
+              "name": "tb005",
+              "qualname": "PolygonsSlots.tb005",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Detach.",
+              "line": 230,
+              "deprecated": false
+            },
+            {
+              "name": "tb006_init",
+              "qualname": "PolygonsSlots.tb006_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Initialize Inset Face Region",
+              "line": 251,
+              "deprecated": false
+            },
+            {
+              "name": "tb006",
+              "qualname": "PolygonsSlots.tb006",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Inset Face Region",
+              "line": 263,
+              "deprecated": false
+            },
+            {
+              "name": "tb007_init",
+              "qualname": "PolygonsSlots.tb007_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Initialize Divide Facet",
+              "line": 288,
+              "deprecated": false
+            },
+            {
+              "name": "tb007",
+              "qualname": "PolygonsSlots.tb007",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Divide Facet",
+              "line": 314,
+              "deprecated": false
+            },
+            {
+              "name": "tb008_init",
+              "qualname": "PolygonsSlots.tb008_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Initialize Boolean Operation",
+              "line": 358,
+              "deprecated": false
+            },
+            {
+              "name": "tb008",
+              "qualname": "PolygonsSlots.tb008",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Boolean Operation",
+              "line": 376,
+              "deprecated": false
+            },
+            {
+              "name": "tb009_init",
+              "qualname": "PolygonsSlots.tb009_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Initialize Snap Closest Verts",
+              "line": 401,
+              "deprecated": false
+            },
+            {
+              "name": "tb009",
+              "qualname": "PolygonsSlots.tb009",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Snap Closest Verts",
+              "line": 419,
+              "deprecated": false
+            },
+            {
+              "name": "b000",
+              "qualname": "PolygonsSlots.b000",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Circularize",
+              "line": 434,
+              "deprecated": false
+            },
+            {
+              "name": "b001",
+              "qualname": "PolygonsSlots.b001",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Fill Holes",
+              "line": 451,
+              "deprecated": false
+            },
+            {
+              "name": "b003",
+              "qualname": "PolygonsSlots.b003",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Symmetrize",
+              "line": 455,
+              "deprecated": false
+            },
+            {
+              "name": "b005",
+              "qualname": "PolygonsSlots.b005",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Merge Vertices: Set Distance",
+              "line": 459,
+              "deprecated": false
+            },
+            {
+              "name": "b006",
+              "qualname": "PolygonsSlots.b006",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Bridge",
+              "line": 479,
+              "deprecated": false
+            },
+            {
+              "name": "b007",
+              "qualname": "PolygonsSlots.b007",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Interactive Bridge",
+              "line": 494,
+              "deprecated": false
+            },
+            {
+              "name": "b008",
+              "qualname": "PolygonsSlots.b008",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Weld Center",
+              "line": 498,
+              "deprecated": false
+            },
+            {
+              "name": "b009",
+              "qualname": "PolygonsSlots.b009",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Collapse Component",
+              "line": 506,
+              "deprecated": false
+            },
+            {
+              "name": "b011",
+              "qualname": "PolygonsSlots.b011",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Bevel",
+              "line": 516,
+              "deprecated": false
+            },
+            {
+              "name": "b012",
+              "qualname": "PolygonsSlots.b012",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Multi-Cut Tool",
+              "line": 520,
+              "deprecated": false
+            },
+            {
+              "name": "b022",
+              "qualname": "PolygonsSlots.b022",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Attach",
+              "line": 524,
+              "deprecated": false
+            },
+            {
+              "name": "b032",
+              "qualname": "PolygonsSlots.b032",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Poke",
+              "line": 529,
+              "deprecated": false
+            },
+            {
+              "name": "b034",
+              "qualname": "PolygonsSlots.b034",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Wedge",
+              "line": 533,
+              "deprecated": false
+            },
+            {
+              "name": "b038",
+              "qualname": "PolygonsSlots.b038",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Assign Invisible",
+              "line": 542,
+              "deprecated": false
+            },
+            {
+              "name": "b043",
+              "qualname": "PolygonsSlots.b043",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Target Weld",
+              "line": 556,
+              "deprecated": false
+            },
+            {
+              "name": "b047",
+              "qualname": "PolygonsSlots.b047",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Insert Edgeloop",
+              "line": 564,
+              "deprecated": false
+            },
+            {
+              "name": "b049",
+              "qualname": "PolygonsSlots.b049",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Slide Edge Tool",
+              "line": 568,
+              "deprecated": false
+            },
+            {
+              "name": "b051",
+              "qualname": "PolygonsSlots.b051",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Offset Edgeloop",
+              "line": 572,
+              "deprecated": false
+            },
+            {
+              "name": "b053",
+              "qualname": "PolygonsSlots.b053",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Edit Edge Flow",
+              "line": 576,
+              "deprecated": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "relpath": "slots/maya/preferences.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "Preferences",
+          "summary": "",
+          "line": 18,
+          "bases": [
+            "SlotsMaya"
+          ],
+          "members": [
+            {
+              "name": "header_init",
+              "qualname": "Preferences.header_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Initialize header",
+              "line": 25,
+              "deprecated": false
+            },
+            {
+              "name": "cmb001_init",
+              "qualname": "Preferences.cmb001_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Initializes the combo box with unit options.",
+              "line": 63,
+              "deprecated": false
+            },
+            {
+              "name": "cmb001",
+              "qualname": "Preferences.cmb001",
+              "kind": "method",
+              "signature": "(self, index, widget)",
+              "summary": "Set Working Units: Linear",
+              "line": 85,
+              "deprecated": false
+            },
+            {
+              "name": "cmb002_init",
+              "qualname": "Preferences.cmb002_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Initializes the combo box with frame rate options.",
+              "line": 91,
+              "deprecated": false
+            },
+            {
+              "name": "cmb002",
+              "qualname": "Preferences.cmb002",
+              "kind": "method",
+              "signature": "(self, index, widget)",
+              "summary": "Set Working Units: Time",
+              "line": 116,
+              "deprecated": false
+            },
+            {
+              "name": "s000_init",
+              "qualname": "Preferences.s000_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Initialize autosave max backups spinbox (widget is source of truth).",
+              "line": 121,
+              "deprecated": false
+            },
+            {
+              "name": "s001_init",
+              "qualname": "Preferences.s001_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Initialize autosave interval spinbox (widget is source of truth).",
+              "line": 145,
+              "deprecated": false
+            },
+            {
+              "name": "tb000",
+              "qualname": "Preferences.tb000",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Update Package",
+              "line": 162,
+              "deprecated": false
+            },
+            {
+              "name": "tb001",
+              "qualname": "Preferences.tb001",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Reload Tentacle package with its dependencies.",
+              "line": 166,
+              "deprecated": false
+            },
+            {
+              "name": "check_for_update",
+              "qualname": "Preferences.check_for_update",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Check for Tentacle package updates",
+              "line": 264,
+              "deprecated": false
+            },
+            {
+              "name": "lbl000",
+              "qualname": "Preferences.lbl000",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "UI Style Editor",
+              "line": 299,
+              "deprecated": false
+            },
+            {
+              "name": "lbl001",
+              "qualname": "Preferences.lbl001",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Hotkey Editor",
+              "line": 318,
+              "deprecated": false
+            },
+            {
+              "name": "b001",
+              "qualname": "Preferences.b001",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Color Settings",
+              "line": 341,
+              "deprecated": false
+            },
+            {
+              "name": "b002",
+              "qualname": "Preferences.b002",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Autosave: Delete All",
+              "line": 345,
+              "deprecated": false
+            },
+            {
+              "name": "b008",
+              "qualname": "Preferences.b008",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Hotkeys",
+              "line": 355,
+              "deprecated": false
+            },
+            {
+              "name": "b009",
+              "qualname": "Preferences.b009",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Plug-In Manager",
+              "line": 359,
+              "deprecated": false
+            },
+            {
+              "name": "b010",
+              "qualname": "Preferences.b010",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Settings/Preferences",
+              "line": 363,
+              "deprecated": false
+            },
+            {
+              "name": "cmb_bind_default_init",
+              "qualname": "Preferences.cmb_bind_default_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Default binding (key only).",
+              "line": 431,
+              "deprecated": false
+            },
+            {
+              "name": "cmb_bind_left_init",
+              "qualname": "Preferences.cmb_bind_left_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Left button binding.",
+              "line": 437,
+              "deprecated": false
+            },
+            {
+              "name": "cmb_bind_middle_init",
+              "qualname": "Preferences.cmb_bind_middle_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Middle button binding.",
+              "line": 443,
+              "deprecated": false
+            },
+            {
+              "name": "cmb_bind_right_init",
+              "qualname": "Preferences.cmb_bind_right_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Right button binding.",
+              "line": 449,
+              "deprecated": false
+            },
+            {
+              "name": "cmb_bind_left_right_init",
+              "qualname": "Preferences.cmb_bind_left_right_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Left+Right button binding.",
+              "line": 455,
+              "deprecated": false
+            },
+            {
+              "name": "kse_activation_key_init",
+              "qualname": "Preferences.kse_activation_key_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Initialize activation key sequence editor.",
+              "line": 461,
+              "deprecated": false
+            },
+            {
+              "name": "kse_repeat_last_init",
+              "qualname": "Preferences.kse_repeat_last_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Initialize repeat last command key sequence editor.",
+              "line": 475,
+              "deprecated": false
+            },
+            {
+              "name": "b_reset_bindings",
+              "qualname": "Preferences.b_reset_bindings",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Reset bindings to defaults.",
+              "line": 528,
+              "deprecated": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "relpath": "slots/maya/render.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "Render",
+          "summary": "",
+          "line": 13,
+          "bases": [
+            "SlotsMaya"
+          ],
+          "members": []
+        }
+      ]
+    },
+    {
+      "relpath": "slots/maya/rendering.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "Rendering",
+          "summary": "",
+          "line": 18,
+          "bases": [
+            "SlotsMaya"
+          ],
+          "members": [
+            {
+              "name": "cmb001_init",
+              "qualname": "Rendering.cmb001_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Render: camera",
+              "line": 25,
+              "deprecated": false
+            },
+            {
+              "name": "tb000_init",
+              "qualname": "Rendering.tb000_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Export Playblast Init",
+              "line": 30,
+              "deprecated": false
+            },
+            {
+              "name": "tb000",
+              "qualname": "Rendering.tb000",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Export Playblast",
+              "line": 287,
+              "deprecated": false
+            },
+            {
+              "name": "b000",
+              "qualname": "Rendering.b000",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Render Current Frame",
+              "line": 555,
+              "deprecated": false
+            },
+            {
+              "name": "b001",
+              "qualname": "Rendering.b001",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Open Render Settings Window",
+              "line": 561,
+              "deprecated": false
+            },
+            {
+              "name": "b002",
+              "qualname": "Rendering.b002",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Redo Previous Render",
+              "line": 565,
+              "deprecated": false
+            },
+            {
+              "name": "b003",
+              "qualname": "Rendering.b003",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Editor: Render Setup",
+              "line": 569,
+              "deprecated": false
+            },
+            {
+              "name": "b004",
+              "qualname": "Rendering.b004",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Editor: Rendering Flags",
+              "line": 573,
+              "deprecated": false
+            },
+            {
+              "name": "b005",
+              "qualname": "Rendering.b005",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Apply Vray Attributes To Selected Objects",
+              "line": 577,
+              "deprecated": false
+            },
+            {
+              "name": "b006",
+              "qualname": "Rendering.b006",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Load Vray Plugin",
+              "line": 605,
+              "deprecated": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "relpath": "slots/maya/rigging.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "Rigging",
+          "summary": "",
+          "line": 13,
+          "bases": [
+            "SlotsMaya"
+          ],
+          "members": [
+            {
+              "name": "header_init",
+              "qualname": "Rigging.header_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Init Rigging Header",
+              "line": 17,
+              "deprecated": false
+            },
+            {
+              "name": "cmb001_init",
+              "qualname": "Rigging.cmb001_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Init Create",
+              "line": 29,
+              "deprecated": false
+            },
+            {
+              "name": "cmb001",
+              "qualname": "Rigging.cmb001",
+              "kind": "method",
+              "signature": "(self, index, widget)",
+              "summary": "Create",
+              "line": 36,
+              "deprecated": false
+            },
+            {
+              "name": "cmb002_init",
+              "qualname": "Rigging.cmb002_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Init Quick Rig",
+              "line": 52,
+              "deprecated": false
+            },
+            {
+              "name": "cmb002",
+              "qualname": "Rigging.cmb002",
+              "kind": "method",
+              "signature": "(self, index, widget)",
+              "summary": "Quick Rig",
+              "line": 57,
+              "deprecated": false
+            },
+            {
+              "name": "chk000",
+              "qualname": "Rigging.chk000",
+              "kind": "method",
+              "signature": "(self, state, widget)",
+              "summary": "Scale Joint",
+              "line": 69,
+              "deprecated": false
+            },
+            {
+              "name": "chk001",
+              "qualname": "Rigging.chk001",
+              "kind": "method",
+              "signature": "(self, state, widget)",
+              "summary": "Scale IK",
+              "line": 74,
+              "deprecated": false
+            },
+            {
+              "name": "chk002",
+              "qualname": "Rigging.chk002",
+              "kind": "method",
+              "signature": "(self, state, widget)",
+              "summary": "Scale IK/FK",
+              "line": 79,
+              "deprecated": false
+            },
+            {
+              "name": "s000",
+              "qualname": "Rigging.s000",
+              "kind": "method",
+              "signature": "(self, value, widget)",
+              "summary": "Scale Joint/IK/FK",
+              "line": 86,
+              "deprecated": false
+            },
+            {
+              "name": "tb000_init",
+              "qualname": "Rigging.tb000_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Init Display Local Rotation Axes",
+              "line": 95,
+              "deprecated": false
+            },
+            {
+              "name": "tb000",
+              "qualname": "Rigging.tb000",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Toggle Display Local Rotation Axes",
+              "line": 129,
+              "deprecated": false
+            },
+            {
+              "name": "tb001_init",
+              "qualname": "Rigging.tb001_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Init Constraint Switch",
+              "line": 148,
+              "deprecated": false
+            },
+            {
+              "name": "tb001",
+              "qualname": "Rigging.tb001",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Constraint Switch",
+              "line": 173,
+              "deprecated": false
+            },
+            {
+              "name": "tb002_init",
+              "qualname": "Rigging.tb002_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Init Event Triggers",
+              "line": 189,
+              "deprecated": false
+            },
+            {
+              "name": "tb002",
+              "qualname": "Rigging.tb002",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Event Triggers",
+              "line": 223,
+              "deprecated": false
+            },
+            {
+              "name": "tb003_init",
+              "qualname": "Rigging.tb003_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Init Create Locator at Selection",
+              "line": 265,
+              "deprecated": false
+            },
+            {
+              "name": "tb003",
+              "qualname": "Rigging.tb003",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Create Locator at Selection",
+              "line": 339,
+              "deprecated": false
+            },
+            {
+              "name": "b003",
+              "qualname": "Rigging.b003",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Remove Locator",
+              "line": 368,
+              "deprecated": false
+            },
+            {
+              "name": "tb004_init",
+              "qualname": "Rigging.tb004_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Init Lock/Unlock Attributes",
+              "line": 377,
+              "deprecated": false
+            },
+            {
+              "name": "tb004",
+              "qualname": "Rigging.tb004",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Lock/Unlock Attributes",
+              "line": 406,
+              "deprecated": false
+            },
+            {
+              "name": "b004",
+              "qualname": "Rigging.b004",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Render Opacity",
+              "line": 443,
+              "deprecated": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "relpath": "slots/maya/scene.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "SceneSlots",
+          "summary": "",
+          "line": 15,
+          "bases": [
+            "SlotsMaya"
+          ],
+          "members": [
+            {
+              "name": "header_init",
+              "qualname": "SceneSlots.header_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Initialize Header",
+              "line": 23,
+              "deprecated": false
+            },
+            {
+              "name": "txt000",
+              "qualname": "SceneSlots.txt000",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Workspace Scenes: Filter",
+              "line": 88,
+              "deprecated": false
+            },
+            {
+              "name": "cmb000_init",
+              "qualname": "SceneSlots.cmb000_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Initialize Workspace Scenes",
+              "line": 92,
+              "deprecated": false
+            },
+            {
+              "name": "cmb000",
+              "qualname": "SceneSlots.cmb000",
+              "kind": "method",
+              "signature": "(self, index, widget)",
+              "summary": "Workspace Scenes",
+              "line": 112,
+              "deprecated": false
+            },
+            {
+              "name": "cmb002_init",
+              "qualname": "SceneSlots.cmb002_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Initialize Autosave",
+              "line": 117,
+              "deprecated": false
+            },
+            {
+              "name": "cmb002",
+              "qualname": "SceneSlots.cmb002",
+              "kind": "method",
+              "signature": "(self, index, widget)",
+              "summary": "Autosave",
+              "line": 136,
+              "deprecated": false
+            },
+            {
+              "name": "cmb003_init",
+              "qualname": "SceneSlots.cmb003_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Initialize Import",
+              "line": 141,
+              "deprecated": false
+            },
+            {
+              "name": "cmb003",
+              "qualname": "SceneSlots.cmb003",
+              "kind": "method",
+              "signature": "(self, index, widget)",
+              "summary": "Import",
+              "line": 153,
+              "deprecated": false
+            },
+            {
+              "name": "cmb004_init",
+              "qualname": "SceneSlots.cmb004_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Initialize Export",
+              "line": 165,
+              "deprecated": false
+            },
+            {
+              "name": "cmb004",
+              "qualname": "SceneSlots.cmb004",
+              "kind": "method",
+              "signature": "(self, index, widget)",
+              "summary": "Export",
+              "line": 183,
+              "deprecated": false
+            },
+            {
+              "name": "cmb005_init",
+              "qualname": "SceneSlots.cmb005_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Initialize Recent Files",
+              "line": 213,
+              "deprecated": false
+            },
+            {
+              "name": "cmb005",
+              "qualname": "SceneSlots.cmb005",
+              "kind": "method",
+              "signature": "(self, index: int, widget)",
+              "summary": "Recent Files",
+              "line": 219,
+              "deprecated": false
+            },
+            {
+              "name": "tb000_init",
+              "qualname": "SceneSlots.tb000_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Initialize Set Workspace",
+              "line": 224,
+              "deprecated": false
+            },
+            {
+              "name": "tb000",
+              "qualname": "SceneSlots.tb000",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Set Workspace",
+              "line": 264,
+              "deprecated": false
+            },
+            {
+              "name": "list000_init",
+              "qualname": "SceneSlots.list000_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Initialize Recent Files",
+              "line": 283,
+              "deprecated": false
+            },
+            {
+              "name": "list000",
+              "qualname": "SceneSlots.list000",
+              "kind": "method",
+              "signature": "(self, item)",
+              "summary": "Recent Files",
+              "line": 294,
+              "deprecated": false
+            },
+            {
+              "name": "lbl004",
+              "qualname": "SceneSlots.lbl004",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Open current project root",
+              "line": 299,
+              "deprecated": false
+            },
+            {
+              "name": "lbl005",
+              "qualname": "SceneSlots.lbl005",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Auto Set Workspace",
+              "line": 304,
+              "deprecated": false
+            },
+            {
+              "name": "b000",
+              "qualname": "SceneSlots.b000",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Autosave: Open Directory",
+              "line": 315,
+              "deprecated": false
+            },
+            {
+              "name": "b001",
+              "qualname": "SceneSlots.b001",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Open Reference Manager",
+              "line": 328,
+              "deprecated": false
+            },
+            {
+              "name": "b002",
+              "qualname": "SceneSlots.b002",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Scene Exporter",
+              "line": 332,
+              "deprecated": false
+            },
+            {
+              "name": "b003",
+              "qualname": "SceneSlots.b003",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Quick Export Scene Geo",
+              "line": 336,
+              "deprecated": false
+            },
+            {
+              "name": "b004",
+              "qualname": "SceneSlots.b004",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Open Hierarchy Manager",
+              "line": 340,
+              "deprecated": false
+            },
+            {
+              "name": "b005",
+              "qualname": "SceneSlots.b005",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Open Naming Tool",
+              "line": 344,
+              "deprecated": false
+            },
+            {
+              "name": "b006",
+              "qualname": "SceneSlots.b006",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Scene Cleanup",
+              "line": 348,
+              "deprecated": false
+            },
+            {
+              "name": "b009",
+              "qualname": "SceneSlots.b009",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Fix OCIO",
+              "line": 352,
+              "deprecated": false
+            },
+            {
+              "name": "b010",
+              "qualname": "SceneSlots.b010",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Scene Audit",
+              "line": 356,
+              "deprecated": false
+            },
+            {
+              "name": "b011",
+              "qualname": "SceneSlots.b011",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Fix Color Spaces",
+              "line": 360,
+              "deprecated": false
+            },
+            {
+              "name": "b012",
+              "qualname": "SceneSlots.b012",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Toggle Command Ports",
+              "line": 364,
+              "deprecated": false
+            },
+            {
+              "name": "b007",
+              "qualname": "SceneSlots.b007",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Import file",
+              "line": 379,
+              "deprecated": false
+            },
+            {
+              "name": "b008",
+              "qualname": "SceneSlots.b008",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Export Selection",
+              "line": 383,
+              "deprecated": false
+            },
+            {
+              "name": "b015",
+              "qualname": "SceneSlots.b015",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Remove String From Object Names.",
+              "line": 387,
+              "deprecated": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "relpath": "slots/maya/select.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "SelectSlots",
+          "summary": "",
+          "line": 13,
+          "bases": [
+            "SlotsMaya"
+          ],
+          "members": []
+        }
+      ]
+    },
+    {
+      "relpath": "slots/maya/selection.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "Selection",
+          "summary": "",
+          "line": 13,
+          "bases": [
+            "SlotsMaya"
+          ],
+          "members": [
+            {
+              "name": "list000_init",
+              "qualname": "Selection.list000_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Select by Type: Hierarchical type list.",
+              "line": 20,
+              "deprecated": false
+            },
+            {
+              "name": "list000",
+              "qualname": "Selection.list000",
+              "kind": "method",
+              "signature": "(self, item)",
+              "summary": "Select by Type",
+              "line": 34,
+              "deprecated": false
+            },
+            {
+              "name": "cmb001_init",
+              "qualname": "Selection.cmb001_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Reorder Selection Init",
+              "line": 54,
+              "deprecated": false
+            },
+            {
+              "name": "cmb001",
+              "qualname": "Selection.cmb001",
+              "kind": "method",
+              "signature": "(self, index, widget)",
+              "summary": "Reorder Selection",
+              "line": 79,
+              "deprecated": false
+            },
+            {
+              "name": "cmb003_init",
+              "qualname": "Selection.cmb003_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "",
+              "line": 116,
+              "deprecated": false
+            },
+            {
+              "name": "cmb003",
+              "qualname": "Selection.cmb003",
+              "kind": "method",
+              "signature": "(self, index, widget)",
+              "summary": "Convert To",
+              "line": 142,
+              "deprecated": false
+            },
+            {
+              "name": "cmb005_init",
+              "qualname": "Selection.cmb005_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "",
+              "line": 186,
+              "deprecated": false
+            },
+            {
+              "name": "cmb005",
+              "qualname": "Selection.cmb005",
+              "kind": "method",
+              "signature": "(self, index, widget)",
+              "summary": "Selection Contraints",
+              "line": 199,
+              "deprecated": false
+            },
+            {
+              "name": "chk000",
+              "qualname": "Selection.chk000",
+              "kind": "method",
+              "signature": "(self, state, widget)",
+              "summary": "Select Nth: uncheck other checkboxes",
+              "line": 218,
+              "deprecated": false
+            },
+            {
+              "name": "chk001",
+              "qualname": "Selection.chk001",
+              "kind": "method",
+              "signature": "(self, state, widget)",
+              "summary": "Select Nth: uncheck other checkboxes",
+              "line": 222,
+              "deprecated": false
+            },
+            {
+              "name": "chk002",
+              "qualname": "Selection.chk002",
+              "kind": "method",
+              "signature": "(self, state, widget)",
+              "summary": "Select Nth: uncheck other checkboxes",
+              "line": 226,
+              "deprecated": false
+            },
+            {
+              "name": "chk005_init",
+              "qualname": "Selection.chk005_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Create button group for radioboxes chk005, chk006, chk007",
+              "line": 230,
+              "deprecated": false
+            },
+            {
+              "name": "chk005",
+              "qualname": "Selection.chk005",
+              "kind": "method",
+              "signature": "(self, state, widget)",
+              "summary": "Select Style: Marquee",
+              "line": 242,
+              "deprecated": false
+            },
+            {
+              "name": "chk006",
+              "qualname": "Selection.chk006",
+              "kind": "method",
+              "signature": "(self, state, widget)",
+              "summary": "Select Style: Lasso",
+              "line": 247,
+              "deprecated": false
+            },
+            {
+              "name": "chk007",
+              "qualname": "Selection.chk007",
+              "kind": "method",
+              "signature": "(self, state, widget)",
+              "summary": "Select Style: Paint",
+              "line": 252,
+              "deprecated": false
+            },
+            {
+              "name": "lbl003",
+              "qualname": "Selection.lbl003",
+              "kind": "method",
+              "signature": "(self, *args)",
+              "summary": "Grow Selection",
+              "line": 257,
+              "deprecated": false
+            },
+            {
+              "name": "lbl004",
+              "qualname": "Selection.lbl004",
+              "kind": "method",
+              "signature": "(self, *args)",
+              "summary": "Shrink Selection",
+              "line": 261,
+              "deprecated": false
+            },
+            {
+              "name": "chk004",
+              "qualname": "Selection.chk004",
+              "kind": "method",
+              "signature": "(self, state, widget)",
+              "summary": "Ignore Backfacing (Camera Based Selection)",
+              "line": 265,
+              "deprecated": false
+            },
+            {
+              "name": "chk008",
+              "qualname": "Selection.chk008",
+              "kind": "method",
+              "signature": "(self, state, widget)",
+              "summary": "Toggle Soft Selection",
+              "line": 274,
+              "deprecated": false
+            },
+            {
+              "name": "chkxxx",
+              "qualname": "Selection.chkxxx",
+              "kind": "method",
+              "signature": "(self, **kwargs)",
+              "summary": "Transform Constraints: Constraint CheckBoxes",
+              "line": 283,
+              "deprecated": false
+            },
+            {
+              "name": "tb000_init",
+              "qualname": "Selection.tb000_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "",
+              "line": 292,
+              "deprecated": false
+            },
+            {
+              "name": "tb000",
+              "qualname": "Selection.tb000",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Select Nth",
+              "line": 334,
+              "deprecated": false
+            },
+            {
+              "name": "tb001_init",
+              "qualname": "Selection.tb001_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "",
+              "line": 367,
+              "deprecated": false
+            },
+            {
+              "name": "tb001",
+              "qualname": "Selection.tb001",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Select Similar",
+              "line": 449,
+              "deprecated": false
+            },
+            {
+              "name": "tb002_init",
+              "qualname": "Selection.tb002_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "",
+              "line": 484,
+              "deprecated": false
+            },
+            {
+              "name": "tb002",
+              "qualname": "Selection.tb002",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Select Island: Select Polygon Face Island",
+              "line": 537,
+              "deprecated": false
+            },
+            {
+              "name": "tb003_init",
+              "qualname": "Selection.tb003_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "",
+              "line": 556,
+              "deprecated": false
+            },
+            {
+              "name": "tb003",
+              "qualname": "Selection.tb003",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Select Edges By Angle",
+              "line": 575,
+              "deprecated": false
+            },
+            {
+              "name": "b001",
+              "qualname": "Selection.b001",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Toggle Selectability",
+              "line": 589,
+              "deprecated": false
+            },
+            {
+              "name": "b016",
+              "qualname": "Selection.b016",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Convert Selection To Vertices",
+              "line": 593,
+              "deprecated": false
+            },
+            {
+              "name": "b017",
+              "qualname": "Selection.b017",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Convert Selection To Edges",
+              "line": 597,
+              "deprecated": false
+            },
+            {
+              "name": "b018",
+              "qualname": "Selection.b018",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Convert Selection To Faces",
+              "line": 601,
+              "deprecated": false
+            },
+            {
+              "name": "b019",
+              "qualname": "Selection.b019",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Convert Selection To Edge Ring",
+              "line": 605,
+              "deprecated": false
+            },
+            {
+              "name": "get_selection_tool",
+              "qualname": "Selection.get_selection_tool",
+              "kind": "staticmethod",
+              "signature": "()",
+              "summary": "Queries the current selection tool in Maya.",
+              "line": 610,
+              "deprecated": false
+            },
+            {
+              "name": "set_selection_tool",
+              "qualname": "Selection.set_selection_tool",
+              "kind": "staticmethod",
+              "signature": "(tool)",
+              "summary": "Sets the selection tool in Maya.",
+              "line": 623,
+              "deprecated": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "relpath": "slots/maya/skeleton.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "SkeletonSlots",
+          "summary": "",
+          "line": 13,
+          "bases": [
+            "SlotsMaya"
+          ],
+          "members": []
+        }
+      ]
+    },
+    {
+      "relpath": "slots/maya/skin.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "Skin",
+          "summary": "",
+          "line": 13,
+          "bases": [
+            "SlotsMaya"
+          ],
+          "members": []
+        }
+      ]
+    },
+    {
+      "relpath": "slots/maya/stereo.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "StereoSlots",
+          "summary": "",
+          "line": 13,
+          "bases": [
+            "SlotsMaya"
+          ],
+          "members": []
+        }
+      ]
+    },
+    {
+      "relpath": "slots/maya/subdivision.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "Subdivision",
+          "summary": "",
+          "line": 11,
+          "bases": [
+            "SlotsMaya"
+          ],
+          "members": [
+            {
+              "name": "cmb001",
+              "qualname": "Subdivision.cmb001",
+              "kind": "method",
+              "signature": "(self, index, widget)",
+              "summary": "Smooth Proxy",
+              "line": 18,
+              "deprecated": false
+            },
+            {
+              "name": "cmb002",
+              "qualname": "Subdivision.cmb002",
+              "kind": "method",
+              "signature": "(self, index, widget)",
+              "summary": "Maya Subdivision Operations",
+              "line": 32,
+              "deprecated": false
+            },
+            {
+              "name": "s000",
+              "qualname": "Subdivision.s000",
+              "kind": "method",
+              "signature": "(self, value: int, widget: object) -> None",
+              "summary": "Division Level",
+              "line": 41,
+              "deprecated": false
+            },
+            {
+              "name": "s001",
+              "qualname": "Subdivision.s001",
+              "kind": "method",
+              "signature": "(self, value: int, widget: object) -> None",
+              "summary": "Tesselation Level",
+              "line": 57,
+              "deprecated": false
+            },
+            {
+              "name": "b000",
+              "qualname": "Subdivision.b000",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Quadrangulate",
+              "line": 71,
+              "deprecated": false
+            },
+            {
+              "name": "b001",
+              "qualname": "Subdivision.b001",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Triangulate",
+              "line": 75,
+              "deprecated": false
+            },
+            {
+              "name": "b005",
+              "qualname": "Subdivision.b005",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Reduce",
+              "line": 79,
+              "deprecated": false
+            },
+            {
+              "name": "b008",
+              "qualname": "Subdivision.b008",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Add Divisions - Subdivide Mesh",
+              "line": 117,
+              "deprecated": false
+            },
+            {
+              "name": "b009",
+              "qualname": "Subdivision.b009",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Smooth",
+              "line": 121,
+              "deprecated": false
+            },
+            {
+              "name": "b011",
+              "qualname": "Subdivision.b011",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Apply Smooth Preview",
+              "line": 125,
+              "deprecated": false
+            },
+            {
+              "name": "b028",
+              "qualname": "Subdivision.b028",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Quad Draw",
+              "line": 129,
+              "deprecated": false
+            },
+            {
+              "name": "smoothProxy",
+              "qualname": "Subdivision.smoothProxy",
+              "kind": "staticmethod",
+              "signature": "()",
+              "summary": "Subdiv Proxy",
+              "line": 134,
+              "deprecated": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "relpath": "slots/maya/surfaces.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "SurfacesSlots",
+          "summary": "",
+          "line": 13,
+          "bases": [
+            "SlotsMaya"
+          ],
+          "members": []
+        }
+      ]
+    },
+    {
+      "relpath": "slots/maya/symmetry.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "Symmetry",
+          "summary": "",
+          "line": 10,
+          "bases": [
+            "SlotsMaya"
+          ],
+          "members": [
+            {
+              "name": "chk000_init",
+              "qualname": "Symmetry.chk000_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Set initial symmetry state",
+              "line": 16,
+              "deprecated": false
+            },
+            {
+              "name": "chk000",
+              "qualname": "Symmetry.chk000",
+              "kind": "method",
+              "signature": "(self, state, widget)",
+              "summary": "Symmetry X",
+              "line": 24,
+              "deprecated": false
+            },
+            {
+              "name": "chk001",
+              "qualname": "Symmetry.chk001",
+              "kind": "method",
+              "signature": "(self, state, widget)",
+              "summary": "Symmetry Y",
+              "line": 28,
+              "deprecated": false
+            },
+            {
+              "name": "chk002",
+              "qualname": "Symmetry.chk002",
+              "kind": "method",
+              "signature": "(self, state, widget)",
+              "summary": "Symmetry Z",
+              "line": 32,
+              "deprecated": false
+            },
+            {
+              "name": "chk005_init",
+              "qualname": "Symmetry.chk005_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Set symmetry reference space",
+              "line": 36,
+              "deprecated": false
+            },
+            {
+              "name": "chk005",
+              "qualname": "Symmetry.chk005",
+              "kind": "method",
+              "signature": "(self, state, widget)",
+              "summary": "Symmetry: Topo",
+              "line": 40,
+              "deprecated": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "relpath": "slots/maya/texturing.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "TexturingSlots",
+          "summary": "",
+          "line": 13,
+          "bases": [
+            "SlotsMaya"
+          ],
+          "members": []
+        }
+      ]
+    },
+    {
+      "relpath": "slots/maya/toon.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "ToonSlots",
+          "summary": "",
+          "line": 13,
+          "bases": [
+            "SlotsMaya"
+          ],
+          "members": []
+        }
+      ]
+    },
+    {
+      "relpath": "slots/maya/transform.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "TransformSlots",
+          "summary": "",
+          "line": 11,
+          "bases": [
+            "SlotsMaya"
+          ],
+          "members": [
+            {
+              "name": "header_init",
+              "qualname": "TransformSlots.header_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Header Init",
+              "line": 21,
+              "deprecated": false
+            },
+            {
+              "name": "cmb002_init",
+              "qualname": "TransformSlots.cmb002_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Align To Init",
+              "line": 37,
+              "deprecated": false
+            },
+            {
+              "name": "cmb002",
+              "qualname": "TransformSlots.cmb002",
+              "kind": "method",
+              "signature": "(self, index, widget)",
+              "summary": "Align To",
+              "line": 50,
+              "deprecated": false
+            },
+            {
+              "name": "tb000_init",
+              "qualname": "TransformSlots.tb000_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Drop To Grid Init",
+              "line": 68,
+              "deprecated": false
+            },
+            {
+              "name": "tb000",
+              "qualname": "TransformSlots.tb000",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Drop To Grid",
+              "line": 98,
+              "deprecated": false
+            },
+            {
+              "name": "tb001_init",
+              "qualname": "TransformSlots.tb001_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Scale Connected Edges Init",
+              "line": 109,
+              "deprecated": false
+            },
+            {
+              "name": "tb001",
+              "qualname": "TransformSlots.tb001",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Scale Connected Edges",
+              "line": 120,
+              "deprecated": false
+            },
+            {
+              "name": "tb002_init",
+              "qualname": "TransformSlots.tb002_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Freeze Transformations Init",
+              "line": 125,
+              "deprecated": false
+            },
+            {
+              "name": "tb002",
+              "qualname": "TransformSlots.tb002",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Freeze Transformations",
+              "line": 206,
+              "deprecated": false
+            },
+            {
+              "name": "tb003_init",
+              "qualname": "TransformSlots.tb003_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Constraints Init",
+              "line": 244,
+              "deprecated": false
+            },
+            {
+              "name": "tb004_init",
+              "qualname": "TransformSlots.tb004_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Snap Init",
+              "line": 273,
+              "deprecated": false
+            },
+            {
+              "name": "tb005_init",
+              "qualname": "TransformSlots.tb005_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Move To Init",
+              "line": 337,
+              "deprecated": false
+            },
+            {
+              "name": "tb005",
+              "qualname": "TransformSlots.tb005",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Move To",
+              "line": 350,
+              "deprecated": false
+            },
+            {
+              "name": "chk021",
+              "qualname": "TransformSlots.chk021",
+              "kind": "method",
+              "signature": "(self, state, widget)",
+              "summary": "Transform Tool Snap Settings: Move",
+              "line": 373,
+              "deprecated": false
+            },
+            {
+              "name": "chk022",
+              "qualname": "TransformSlots.chk022",
+              "kind": "method",
+              "signature": "(self, state, widget)",
+              "summary": "Transform Tool Snap Settings: Scale",
+              "line": 382,
+              "deprecated": false
+            },
+            {
+              "name": "chk023",
+              "qualname": "TransformSlots.chk023",
+              "kind": "method",
+              "signature": "(self, state, widget)",
+              "summary": "Transform Tool Snap Settings: Rotate",
+              "line": 391,
+              "deprecated": false
+            },
+            {
+              "name": "chk024",
+              "qualname": "TransformSlots.chk024",
+              "kind": "method",
+              "signature": "(self, state, widget)",
+              "summary": "Transform Constraints: Edge",
+              "line": 400,
+              "deprecated": false
+            },
+            {
+              "name": "chk025",
+              "qualname": "TransformSlots.chk025",
+              "kind": "method",
+              "signature": "(self, state, widget)",
+              "summary": "Transform Contraints: Surface",
+              "line": 409,
+              "deprecated": false
+            },
+            {
+              "name": "chk026",
+              "qualname": "TransformSlots.chk026",
+              "kind": "method",
+              "signature": "(self, state, widget)",
+              "summary": "Transform Constraints: Make Live",
+              "line": 418,
+              "deprecated": false
+            },
+            {
+              "name": "s021",
+              "qualname": "TransformSlots.s021",
+              "kind": "method",
+              "signature": "(self, value, widget)",
+              "summary": "Transform Tool Snap Settings: Spinboxes",
+              "line": 429,
+              "deprecated": false
+            },
+            {
+              "name": "s022",
+              "qualname": "TransformSlots.s022",
+              "kind": "method",
+              "signature": "(self, value, widget)",
+              "summary": "Transform Tool Snap Settings: Spinboxes",
+              "line": 435,
+              "deprecated": false
+            },
+            {
+              "name": "s023",
+              "qualname": "TransformSlots.s023",
+              "kind": "method",
+              "signature": "(self, value, widget)",
+              "summary": "Transform Tool Snap Settings: Spinboxes",
+              "line": 441,
+              "deprecated": false
+            },
+            {
+              "name": "b_snap_ts",
+              "qualname": "TransformSlots.b_snap_ts",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Snap Toolset",
+              "line": 447,
+              "deprecated": false
+            },
+            {
+              "name": "b001",
+              "qualname": "TransformSlots.b001",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Match Scale",
+              "line": 451,
+              "deprecated": false
+            },
+            {
+              "name": "b002",
+              "qualname": "TransformSlots.b002",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Un-Freeze Transforms",
+              "line": 465,
+              "deprecated": false
+            },
+            {
+              "name": "setTransformSnap",
+              "qualname": "TransformSlots.setTransformSnap",
+              "kind": "method",
+              "signature": "(self, ctx, state)",
+              "summary": "Set the transform tool's move, rotate, and scale snap states.",
+              "line": 469,
+              "deprecated": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "relpath": "slots/maya/utilities.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "Utilities",
+          "summary": "",
+          "line": 11,
+          "bases": [
+            "SlotsMaya"
+          ],
+          "members": [
+            {
+              "name": "b000",
+              "qualname": "Utilities.b000",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Measure",
+              "line": 15,
+              "deprecated": false
+            },
+            {
+              "name": "b001",
+              "qualname": "Utilities.b001",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Annotation",
+              "line": 19,
+              "deprecated": false
+            },
+            {
+              "name": "b002",
+              "qualname": "Utilities.b002",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Calculator",
+              "line": 23,
+              "deprecated": false
+            },
+            {
+              "name": "b003",
+              "qualname": "Utilities.b003",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Grease Pencil",
+              "line": 27,
+              "deprecated": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "relpath": "slots/maya/uv.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "UvSlots",
+          "summary": "",
+          "line": 13,
+          "bases": [
+            "SlotsMaya"
+          ],
+          "members": [
+            {
+              "name": "get_map_size",
+              "qualname": "UvSlots.get_map_size",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Get the map size from the combobox as an int.",
+              "line": 23,
+              "deprecated": false
+            },
+            {
+              "name": "header_init",
+              "qualname": "UvSlots.header_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Initialize UV Menu Header",
+              "line": 27,
+              "deprecated": false
+            },
+            {
+              "name": "cmb002_init",
+              "qualname": "UvSlots.cmb002_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Initialize UV Transform Menu",
+              "line": 44,
+              "deprecated": false
+            },
+            {
+              "name": "tb000_init",
+              "qualname": "UvSlots.tb000_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Initialize UV packing tool interface.",
+              "line": 60,
+              "deprecated": false
+            },
+            {
+              "name": "tb000",
+              "qualname": "UvSlots.tb000",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Pack UVs with specified settings.",
+              "line": 132,
+              "deprecated": false
+            },
+            {
+              "name": "tb001_init",
+              "qualname": "UvSlots.tb001_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Initialize Auto Unwrap",
+              "line": 240,
+              "deprecated": false
+            },
+            {
+              "name": "tb001",
+              "qualname": "UvSlots.tb001",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Auto Unwrap",
+              "line": 291,
+              "deprecated": false
+            },
+            {
+              "name": "tb002_init",
+              "qualname": "UvSlots.tb002_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Initialize Toggle UV Display Options",
+              "line": 345,
+              "deprecated": false
+            },
+            {
+              "name": "tb003_init",
+              "qualname": "UvSlots.tb003_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Initialize Select By Type",
+              "line": 382,
+              "deprecated": false
+            },
+            {
+              "name": "tb003",
+              "qualname": "UvSlots.tb003",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Select By Type",
+              "line": 423,
+              "deprecated": false
+            },
+            {
+              "name": "tb004_init",
+              "qualname": "UvSlots.tb004_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Initialize Unfold UV",
+              "line": 445,
+              "deprecated": false
+            },
+            {
+              "name": "tb004",
+              "qualname": "UvSlots.tb004",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Unfold",
+              "line": 478,
+              "deprecated": false
+            },
+            {
+              "name": "tb005_init",
+              "qualname": "UvSlots.tb005_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Initialize Straighten UV",
+              "line": 516,
+              "deprecated": false
+            },
+            {
+              "name": "tb005",
+              "qualname": "UvSlots.tb005",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Straighten UV",
+              "line": 548,
+              "deprecated": false
+            },
+            {
+              "name": "tb006_init",
+              "qualname": "UvSlots.tb006_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Initialize Distribute",
+              "line": 565,
+              "deprecated": false
+            },
+            {
+              "name": "tb006",
+              "qualname": "UvSlots.tb006",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Distribute",
+              "line": 582,
+              "deprecated": false
+            },
+            {
+              "name": "tb007_init",
+              "qualname": "UvSlots.tb007_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Initialize Cleanup UV Sets",
+              "line": 592,
+              "deprecated": false
+            },
+            {
+              "name": "tb007",
+              "qualname": "UvSlots.tb007",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Cleanup UV Sets",
+              "line": 638,
+              "deprecated": false
+            },
+            {
+              "name": "tb008_init",
+              "qualname": "UvSlots.tb008_init",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Initialize Mirror UVs.",
+              "line": 699,
+              "deprecated": false
+            },
+            {
+              "name": "tb008",
+              "qualname": "UvSlots.tb008",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Mirror UVs (footprint-preserving by default).",
+              "line": 736,
+              "deprecated": false
+            },
+            {
+              "name": "cmb002",
+              "qualname": "UvSlots.cmb002",
+              "kind": "method",
+              "signature": "(self, index, widget)",
+              "summary": "Transform",
+              "line": 759,
+              "deprecated": false
+            },
+            {
+              "name": "chk001",
+              "qualname": "UvSlots.chk001",
+              "kind": "method",
+              "signature": "(self, state, widget)",
+              "summary": "Auto Unwrap: Scale Mode CheckBox",
+              "line": 811,
+              "deprecated": false
+            },
+            {
+              "name": "chk014",
+              "qualname": "UvSlots.chk014",
+              "kind": "method",
+              "signature": "(self, state, widget)",
+              "summary": "Display: Checkered Pattern",
+              "line": 821,
+              "deprecated": false
+            },
+            {
+              "name": "chk015",
+              "qualname": "UvSlots.chk015",
+              "kind": "method",
+              "signature": "(self, state, widget)",
+              "summary": "Display: Borders",
+              "line": 826,
+              "deprecated": false
+            },
+            {
+              "name": "chk016",
+              "qualname": "UvSlots.chk016",
+              "kind": "method",
+              "signature": "(self, state, widget)",
+              "summary": "Display: Distortion",
+              "line": 831,
+              "deprecated": false
+            },
+            {
+              "name": "b000",
+              "qualname": "UvSlots.b000",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Transfer UV's",
+              "line": 837,
+              "deprecated": false
+            },
+            {
+              "name": "b002",
+              "qualname": "UvSlots.b002",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Stack Shells",
+              "line": 848,
+              "deprecated": false
+            },
+            {
+              "name": "b003",
+              "qualname": "UvSlots.b003",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Get texel density.",
+              "line": 853,
+              "deprecated": false
+            },
+            {
+              "name": "b004",
+              "qualname": "UvSlots.b004",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Set Texel Density",
+              "line": 859,
+              "deprecated": false
+            },
+            {
+              "name": "b005",
+              "qualname": "UvSlots.b005",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Cut UV's",
+              "line": 866,
+              "deprecated": false
+            },
+            {
+              "name": "b007",
+              "qualname": "UvSlots.b007",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Display UV Borders",
+              "line": 892,
+              "deprecated": false
+            },
+            {
+              "name": "b011",
+              "qualname": "UvSlots.b011",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Sew UVs",
+              "line": 897,
+              "deprecated": false
+            },
+            {
+              "name": "b021",
+              "qualname": "UvSlots.b021",
+              "kind": "method",
+              "signature": "(self, widget)",
+              "summary": "Unfold and Pack UVs",
+              "line": 912,
+              "deprecated": false
+            },
+            {
+              "name": "b022",
+              "qualname": "UvSlots.b022",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Cut UV hard edges",
+              "line": 917,
+              "deprecated": false
+            },
+            {
+              "name": "b023",
+              "qualname": "UvSlots.b023",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Move To Uv Space: Left",
+              "line": 923,
+              "deprecated": false
+            },
+            {
+              "name": "b024",
+              "qualname": "UvSlots.b024",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Move To Uv Space: Down",
+              "line": 928,
+              "deprecated": false
+            },
+            {
+              "name": "b025",
+              "qualname": "UvSlots.b025",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Move To Uv Space: Up",
+              "line": 933,
+              "deprecated": false
+            },
+            {
+              "name": "b026",
+              "qualname": "UvSlots.b026",
+              "kind": "method",
+              "signature": "(self)",
+              "summary": "Move To Uv Space: Right",
+              "line": 938,
+              "deprecated": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "relpath": "slots/maya/visualize.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "VisualizeSlots",
+          "summary": "",
+          "line": 13,
+          "bases": [
+            "SlotsMaya"
+          ],
+          "members": []
+        }
+      ]
+    },
+    {
+      "relpath": "slots/maya/windows.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "WindowsSlots",
+          "summary": "",
+          "line": 13,
+          "bases": [
+            "SlotsMaya"
+          ],
+          "members": []
+        }
+      ]
+    },
+    {
+      "relpath": "tcl_blender.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "TclBlender",
+          "summary": "Marking Menu class overridden for use with Blender.",
+          "line": 7,
+          "bases": [
+            "MarkingMenu"
+          ],
+          "members": [
+            {
+              "name": "get_main_window",
+              "qualname": "TclBlender.get_main_window",
+              "kind": "classmethod",
+              "signature": "(cls)",
+              "summary": "Get Blender's main window object.",
+              "line": 27,
+              "deprecated": false
+            },
+            {
+              "name": "keyPressEvent",
+              "qualname": "TclBlender.keyPressEvent",
+              "kind": "method",
+              "signature": "(self, event)",
+              "summary": "",
+              "line": 31,
+              "deprecated": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "relpath": "tcl_max.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "TclMax",
+          "summary": "Marking Menu class overridden for use with Autodesk 3ds Max.",
+          "line": 10,
+          "bases": [
+            "MarkingMenu"
+          ],
+          "members": [
+            {
+              "name": "get_main_window",
+              "qualname": "TclMax.get_main_window",
+              "kind": "classmethod",
+              "signature": "(cls)",
+              "summary": "Get the 3DS MAX main window.",
+              "line": 30,
+              "deprecated": false
+            },
+            {
+              "name": "showEvent",
+              "qualname": "TclMax.showEvent",
+              "kind": "method",
+              "signature": "(self, event)",
+              "summary": "",
+              "line": 49,
+              "deprecated": false
+            },
+            {
+              "name": "hideEvent",
+              "qualname": "TclMax.hideEvent",
+              "kind": "method",
+              "signature": "(self, event)",
+              "summary": "",
+              "line": 57,
+              "deprecated": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "relpath": "tcl_maya.py",
+      "summary": "",
+      "functions": [],
+      "classes": [
+        {
+          "name": "TclMaya",
+          "summary": "Marking Menu class overridden for use with Autodesk Maya.",
+          "line": 10,
+          "bases": [
+            "MarkingMenu"
+          ],
+          "members": []
+        }
+      ]
+    }
+  ]
+}

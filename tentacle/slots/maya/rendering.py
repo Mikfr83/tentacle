@@ -4,11 +4,9 @@ import os
 import re
 from typing import Any, Dict, List, Optional
 
-try:
-    import pymel.core as pm
-except ImportError as error:
-    print(__file__, error)
-    pm = None
+import maya.cmds as cmds
+import maya.mel as mel
+import maya.api.OpenMaya as om
 
 from tentacle.slots.maya._slots_maya import SlotsMaya
 import mayatk as mtk
@@ -24,7 +22,8 @@ class Rendering(SlotsMaya):
 
     def cmb001_init(self, widget):
         """Render: camera"""
-        lst = {c.name(): c for c in pm.ls(type="camera") if "Target" not in c.name()}
+        cameras = cmds.ls(type="camera") or []
+        lst = {c: c for c in cameras if "Target" not in c}
         widget.add(lst)
 
     def tb000_init(self, widget):
@@ -33,8 +32,8 @@ class Rendering(SlotsMaya):
         menu = widget.option_box.menu
         menu.setTitle("Playblast Export")
 
-        playback_min = int(pm.playbackOptions(q=True, minTime=True))
-        playback_max = int(pm.playbackOptions(q=True, maxTime=True))
+        playback_min = int(cmds.playbackOptions(q=True, minTime=True))
+        playback_max = int(cmds.playbackOptions(q=True, maxTime=True))
         default_path = self._default_playblast_path()
 
         menu.add(
@@ -293,10 +292,10 @@ class Rendering(SlotsMaya):
         range_mode = range_data.get("mode", "playback")
 
         if range_mode == "animation":
-            start_frame = int(pm.playbackOptions(q=True, animationStartTime=True))
-            end_frame = int(pm.playbackOptions(q=True, animationEndTime=True))
+            start_frame = int(cmds.playbackOptions(q=True, animationStartTime=True))
+            end_frame = int(cmds.playbackOptions(q=True, animationEndTime=True))
         elif range_mode == "current":
-            current = int(pm.currentTime(query=True))
+            current = int(cmds.currentTime(query=True))
             start_frame = current
             end_frame = current
         elif range_mode == "custom":
@@ -308,8 +307,8 @@ class Rendering(SlotsMaya):
                 )
                 return
         else:
-            start_frame = int(pm.playbackOptions(q=True, minTime=True))
-            end_frame = int(pm.playbackOptions(q=True, maxTime=True))
+            start_frame = int(cmds.playbackOptions(q=True, minTime=True))
+            end_frame = int(cmds.playbackOptions(q=True, maxTime=True))
 
         frame_padding = int(menu.s012.value())
         percent = int(menu.s015.value())
@@ -333,7 +332,7 @@ class Rendering(SlotsMaya):
                 try:
                     scene_name = re.sub(pattern, replacement, scene_name)
                 except re.error as exc:
-                    pm.warning(f"Invalid regex pattern '{pattern}': {exc}")
+                    cmds.warning(f"Invalid regex pattern '{pattern}': {exc}")
         if not scene_name:
             scene_name = self._scene_base_name()
 
@@ -500,11 +499,14 @@ class Rendering(SlotsMaya):
             )
             return
 
-        pm.optionVar["tentacleEnableArnoldPlayblast"] = int(
-            any(variation.get("renderer") == "arnold" for variation in variations)
+        cmds.optionVar(
+            intValue=(
+                "tentacleEnableArnoldPlayblast",
+                int(any(variation.get("renderer") == "arnold" for variation in variations)),
+            )
         )
 
-        pm.currentTime(start_frame, update=True)
+        cmds.currentTime(start_frame, update=True)
 
         exporter = PlayblastExporter(
             start_frame=start_frame,
@@ -537,11 +539,11 @@ class Rendering(SlotsMaya):
                 outputs.append(f"{result['label']} mp4: {compressed}")
 
         if outputs:
-            pm.displayInfo("Playblast export complete:\n" + "\n".join(outputs))
+            om.MGlobal.displayInfo("Playblast export complete:\n" + "\n".join(outputs))
 
         if errors:
             for entry in errors:
-                pm.warning(
+                cmds.warning(
                     f"Playblast variant '{entry['label']}' failed: {entry.get('error')}"
                 )
             self.sb.message_box(
@@ -556,50 +558,45 @@ class Rendering(SlotsMaya):
         """Render Current Frame"""
         self.ui.cmb001.init_slot()
         camera = self.ui.cmb001.currentText()
-        pm.render(camera)  # render with selected camera
+        cmds.render(camera)  # render with selected camera
 
     def b001(self):
         """Open Render Settings Window"""
-        pm.mel.unifiedRenderGlobalsWindow()
+        mel.eval("unifiedRenderGlobalsWindow")
 
     def b002(self):
         """Redo Previous Render"""
-        pm.mel.redoPreviousRender("render")
+        mel.eval('redoPreviousRender "render"')
 
     def b003(self):
         """Editor: Render Setup"""
-        pm.mel.RenderSetupWindow()
+        mel.eval("RenderSetupWindow")
 
     def b004(self):
         """Editor: Rendering Flags"""
-        pm.mel.renderFlagsWindow()
+        mel.eval("renderFlagsWindow")
 
     def b005(self):
         """Apply Vray Attributes To Selected Objects"""
-        if pm is None:
-            print("PyMEL is unavailable. VRay attributes can only be applied inside Maya.")
-            return
-
         if not mtk.vray_plugin(query=True):
             print("VRay plugin is not loaded. Loading it now.")
             mtk.vray_plugin(load=True)
 
-        selection = pm.ls(selection=True)
+        selection = cmds.ls(selection=True) or []
         currentID = 1
         for obj in selection:
             # get renderable shape nodes relative to transform, iterate through and apply subdivision
-            shapes = pm.listRelatives(obj, s=1, ni=1)
-            if shapes:
-                for shape in shapes:
-                    pm.mel.eval(
-                        "vray addAttributesFromGroup " + shape + " vray_subdivision 1;"
-                    )
-                    pm.mel.eval(
-                        "vray addAttributesFromGroup " + shape + " vray_subquality 1;"
-                    )
+            shapes = cmds.listRelatives(obj, s=1, ni=1) or []
+            for shape in shapes:
+                mel.eval(
+                    "vray addAttributesFromGroup " + shape + " vray_subdivision 1;"
+                )
+                mel.eval(
+                    "vray addAttributesFromGroup " + shape + " vray_subquality 1;"
+                )
             # apply object ID to xform. i don't like giving individual shapes IDs.
-            pm.mel.eval("vray addAttributesFromGroup " + obj + " vray_objectID 1;")
-            pm.setAttr(obj + ".vrayObjectID", currentID)
+            mel.eval("vray addAttributesFromGroup " + obj + " vray_objectID 1;")
+            cmds.setAttr(obj + ".vrayObjectID", currentID)
             currentID += 1
 
     def b006(self):
@@ -612,24 +609,18 @@ class Rendering(SlotsMaya):
 
     @staticmethod
     def _scene_base_name() -> str:
-        if pm is None:
-            return "playblast"
-
-        scene = pm.sceneName()
+        scene = cmds.file(query=True, sceneName=True)
         if scene:
             return os.path.basename(scene).rsplit(".", 1)[0]
         return "playblast"
 
     @staticmethod
     def _camera_transforms() -> List[str]:
-        if pm is None:
-            return []
-
         camera_names: List[str] = []
-        for camera_shape in pm.ls(type="camera"):
-            parent = camera_shape.getParent()
+        for camera_shape in cmds.ls(type="camera") or []:
+            parent = mtk.NodeUtils.get_parent(camera_shape)
             if parent:
-                camera_names.append(parent.name())
+                camera_names.append(parent)
         return sorted(set(camera_names))
 
 

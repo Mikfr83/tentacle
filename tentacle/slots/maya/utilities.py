@@ -1,9 +1,6 @@
 # !/usr/bin/python
 # coding=utf-8
-try:
-    import pymel.core as pm
-except ImportError as error:
-    print(__file__, error)
+import maya.mel as mel
 import mayatk as mtk
 from tentacle.slots.maya._slots_maya import SlotsMaya
 
@@ -14,11 +11,11 @@ class Utilities(SlotsMaya):
 
     def b000(self):
         """Measure"""
-        pm.mel.DistanceTool()
+        mel.eval("DistanceTool")
 
     def b001(self):
         """Annotation"""
-        pm.mel.CreateAnnotateNode()
+        mel.eval("CreateAnnotateNode")
 
     def b002(self):
         """Calculator"""
@@ -26,7 +23,7 @@ class Utilities(SlotsMaya):
 
     def b003(self):
         """Grease Pencil"""
-        pm.mel.OpenBluePencil()
+        mel.eval("OpenBluePencil")
 
 
 # --------------------------------------------------------------------------------------------

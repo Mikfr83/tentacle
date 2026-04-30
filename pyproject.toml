@@ -15,7 +15,7 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 
-# Dependencies - exclude optional system deps (Pillow, qtpy, numpy, shiboken6, pymel)
+# Dependencies - exclude optional system deps (Pillow, qtpy, numpy, shiboken6)
 dependencies = [
     "pythontk>=0.8.3",
     "uitk>=1.1.37",

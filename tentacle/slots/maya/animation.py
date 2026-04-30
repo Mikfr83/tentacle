@@ -1,9 +1,7 @@
 # !/usr/bin/python
 # coding=utf-8
-try:
-    import pymel.core as pm
-except ImportError as error:
-    print(__file__, error)
+import maya.cmds as cmds
+import maya.api.OpenMaya as om
 import mayatk as mtk
 import pythontk as ptk
 from tentacle.slots.maya._slots_maya import SlotsMaya
@@ -60,7 +58,7 @@ class Animation(SlotsMaya):
             setText="Repair Visibility Tangents",
             setToolTip="Force 'step' tangents on visibility curves for selected objects (or all if none selected).",
             clicked=lambda: mtk.Diagnostics.repair_visibility_tangents(
-                objects=pm.selected() or None
+                objects=cmds.ls(sl=True) or None
             ),
         )
         widget.menu.add(
@@ -127,7 +125,7 @@ class Animation(SlotsMaya):
             setToolTip="Set frame to the current time.",
         )
         widget.option_box.menu.lbl020.clicked.connect(
-            lambda: widget.option_box.menu.s000.setValue(pm.currentTime(q=True))
+            lambda: widget.option_box.menu.s000.setValue(cmds.currentTime(q=True))
         )
         widget.option_box.menu.add(
             "QCheckBox",
@@ -347,7 +345,7 @@ class Animation(SlotsMaya):
         if scope == "scene":
             objects = None
         else:
-            objects = pm.ls(sl=True, type="transform", long=True)
+            objects = cmds.ls(sl=True, type="transform", long=True) or []
             if not objects:
                 self.sb.message_box("No objects selected.")
                 return
@@ -456,7 +454,7 @@ class Animation(SlotsMaya):
         # Only use start_frame if not -1
         start_frame = start_frame_value if start_frame_value != -1 else None
 
-        selected_objects = pm.selected()
+        selected_objects = cmds.ls(sl=True) or []
         mtk.stagger_keys(
             selected_objects,
             start_frame=start_frame,
@@ -502,7 +500,7 @@ class Animation(SlotsMaya):
         tangents = widget.option_box.menu.chk007.isChecked()
         optimize = widget.option_box.menu.chk008.isChecked()
 
-        selected_objects = pm.selected()
+        selected_objects = cmds.ls(sl=True) or []
         mtk.transfer_keyframes(
             selected_objects,
             relative=relative,
@@ -567,7 +565,7 @@ class Animation(SlotsMaya):
         remove_mode = widget.option_box.menu.chk027.isChecked()
         ignore_visibility = widget.option_box.menu.chk028.isChecked()
 
-        objects = pm.selected(flatten=True)
+        objects = cmds.ls(sl=True, flatten=True) or []
         if not objects:
             self.sb.message_box("You must select at least one object.")
             return
@@ -650,7 +648,7 @@ class Animation(SlotsMaya):
         channel_box_attrs_only = widget.option_box.menu.chk021.isChecked()
         align = widget.option_box.menu.cmb_align.currentData()
 
-        objects = pm.selected(flatten=True)
+        objects = cmds.ls(sl=True, flatten=True) or []
         if not objects:
             self.sb.message_box("You must select at least one object or set of keys.")
             return
@@ -691,7 +689,7 @@ class Animation(SlotsMaya):
         # Only use target_frame if not -1, otherwise use None to auto-detect
         target_frame = target_frame_value if target_frame_value != -1 else None
 
-        objects = pm.selected(flatten=True)
+        objects = cmds.ls(sl=True, flatten=True) or []
         if not objects:
             self.sb.message_box(
                 "You must select at least one object with selected keyframes."
@@ -755,7 +753,7 @@ class Animation(SlotsMaya):
         offset = widget.option_box.menu.s008.value()
         group_overlapping = widget.option_box.menu.chk016.isChecked()
 
-        selected_objects = pm.selected()
+        selected_objects = cmds.ls(sl=True) or []
         if not selected_objects:
             self.sb.message_box("You must select at least one object.")
             return
@@ -820,11 +818,11 @@ class Animation(SlotsMaya):
         # Get time range if requested
         time_range = None
         if use_time_range:
-            anim_start_time = pm.playbackOptions(query=True, minTime=True)
-            anim_end_time = pm.playbackOptions(query=True, maxTime=True)
+            anim_start_time = cmds.playbackOptions(query=True, minTime=True)
+            anim_end_time = cmds.playbackOptions(query=True, maxTime=True)
             time_range = (anim_start_time, anim_end_time)
 
-        selected_objects = pm.selected()
+        selected_objects = cmds.ls(sl=True) or []
         if not selected_objects:
             self.sb.message_box("You must select at least one object.")
             return
@@ -888,7 +886,7 @@ class Animation(SlotsMaya):
         time_param = cmb.itemData(cmb.currentIndex())
         channel_box_only = widget.option_box.menu.chk020.isChecked()
 
-        objects = pm.selected()
+        objects = cmds.ls(sl=True) or []
         if not objects:
             self.sb.message_box("You must select at least one object.")
             return
@@ -923,7 +921,7 @@ class Animation(SlotsMaya):
         untie_mode = widget.option_box.menu.chk022.isChecked()
         absolute = widget.option_box.menu.chk023.isChecked()
 
-        objects = pm.selected()
+        objects = cmds.ls(sl=True) or []
         if not objects:
             # If no selection, operate on all keyed objects in scene
             objects = None
@@ -999,7 +997,7 @@ class Animation(SlotsMaya):
             time = selection_type
 
         # Get objects to affect
-        selected_objects = pm.selected()
+        selected_objects = cmds.ls(sl=True) or []
         objects = selected_objects if selected_objects else None
 
         keys_selected = mtk.select_keys(
@@ -1012,7 +1010,7 @@ class Animation(SlotsMaya):
         if keys_selected == 0:
             self.sb.message_box("No keyframes found to select.")
         else:
-            pm.displayInfo(f"Selected {keys_selected} keyframe(s)")
+            om.MGlobal.displayInfo(f"Selected {keys_selected} keyframe(s)")
 
     def tb014_init(self, widget):
         """Scale Keys Init"""
@@ -1208,7 +1206,7 @@ class Animation(SlotsMaya):
         snap_mode = widget.option_box.menu.cmb034.currentData()
 
         # Get objects to affect
-        selected_objects = pm.selected()
+        selected_objects = cmds.ls(sl=True) or []
         if not selected_objects:
             self.sb.message_box("You must select at least one object.")
             return
@@ -1224,7 +1222,7 @@ class Animation(SlotsMaya):
             mode, include_rotation = "uniform", False
 
         # Determine keys parameter - check for selected keys in graph editor
-        selected_keys_in_graph = pm.keyframe(query=True, sl=True, tc=True)
+        selected_keys_in_graph = cmds.keyframe(query=True, sl=True, tc=True)
         keys = "selected" if selected_keys_in_graph and mode == "uniform" else None
 
         # Get samples parameter for speed mode
@@ -1327,7 +1325,7 @@ class Animation(SlotsMaya):
         value_threshold = widget.option_box.menu.d016.value()
 
         # Determine objects to process based on selection context
-        selected_objects = pm.selected(flatten=True)
+        selected_objects = cmds.ls(sl=True, flatten=True) or []
         selected_curves = mtk.AnimUtils.get_anim_curves(
             objects=None, selected_keys_only=True, recursive=True
         )
@@ -1448,8 +1446,6 @@ class Animation(SlotsMaya):
 
     def tb017(self, widget):
         """Step Keys — set stepped tangents on keys."""
-        import maya.cmds as cmds
-
         mode = widget.option_box.menu.cmb000.currentData()
 
         if mode == "auto":
@@ -1495,7 +1491,7 @@ class Animation(SlotsMaya):
 
         copy_mode = "auto" if mode == "copy_paste" else mode
         self._stored_attributes = mtk.AnimUtils.copy_keys(mode=copy_mode)
-        self._stored_frame = pm.currentTime(query=True)
+        self._stored_frame = cmds.currentTime(query=True)
 
         if not self._stored_attributes:
             labels = {
@@ -1509,7 +1505,7 @@ class Animation(SlotsMaya):
             return
 
         if mode == "copy_paste":
-            objects = pm.selected()
+            objects = cmds.ls(sl=True) or []
             if not objects:
                 self.sb.message_box("You must select at least one object.")
                 return
@@ -1559,7 +1555,7 @@ class Animation(SlotsMaya):
             self.sb.message_box("No values stored. Use 'Copy Keys' first.")
             return
 
-        objects = pm.selected()
+        objects = cmds.ls(sl=True) or []
         if not objects:
             self.sb.message_box("You must select at least one object.")
             return
@@ -1622,15 +1618,13 @@ class Animation(SlotsMaya):
 
     def tb019(self, widget):
         """Optimize Keys — remove redundant animation data."""
-        import maya.cmds as cmds
-
         remove_static = widget.option_box.menu.chk000.isChecked()
         remove_flat = widget.option_box.menu.chk001.isChecked()
         simplify = widget.option_box.menu.chk002.isChecked()
         tolerance = widget.option_box.menu.d000.value()
 
-        selected = pm.selected(flatten=True)
-        objects = selected if selected else cmds.ls(type="transform")
+        selected = cmds.ls(sl=True, flatten=True) or []
+        objects = selected if selected else (cmds.ls(type="transform") or [])
         if not objects:
             self.sb.message_box("No objects found to optimize.")
             return
