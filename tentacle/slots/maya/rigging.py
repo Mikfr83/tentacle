@@ -1,9 +1,7 @@
 # !/usr/bin/python
 # coding=utf-8
-try:
-    import pymel.core as pm
-except ImportError as error:
-    print(__file__, error)
+import maya.cmds as cmds
+import maya.mel as mel
 import mayatk as mtk
 
 # From this package:
@@ -23,7 +21,7 @@ class Rigging(SlotsMaya):
             setToolTip="Rebinds skinClusters on the selected meshe(s), preserving weights, bind pose.",
         )
         widget.menu.b020.clicked.connect(
-            lambda: mtk.rebind_skin_clusters(pm.selected())
+            lambda: mtk.rebind_skin_clusters(cmds.ls(sl=True) or [])
         )
 
     def cmb001_init(self, widget):
@@ -37,17 +35,17 @@ class Rigging(SlotsMaya):
         """Create"""
         text = widget.itemText(index)
         if text == "Joints":
-            pm.setToolTo("jointContext")  # create joint tool
+            cmds.setToolTo("jointContext")  # create joint tool
         elif text == "Locator":
-            pm.spaceLocator(p=[0, 0, 0])  # locator
+            cmds.spaceLocator(p=[0, 0, 0])  # locator
         elif text == "IK Handle":
-            pm.setToolTo("ikHandleContext")  # create ik handle
+            cmds.setToolTo("ikHandleContext")  # create ik handle
         elif text == "Lattice":  # create lattice
-            pm.lattice(divisions=[2, 5, 2], objectCentered=1, ldv=[2, 2, 2])
+            cmds.lattice(divisions=[2, 5, 2], objectCentered=1, ldv=[2, 2, 2])
         elif text == "Cluster":
-            pm.mel.CreateCluster()  # create cluster
+            mel.eval("CreateCluster")  # create cluster
         elif text == "Null Group":
-            pm.group(empty=True, name="null")  # create empty group
+            cmds.group(empty=True, name="null")  # create empty group
 
     def cmb002_init(self, widget):
         """Init Quick Rig"""
@@ -69,32 +67,32 @@ class Rigging(SlotsMaya):
     def chk000(self, state, widget):
         """Scale Joint"""
         # init global joint display size
-        widget.ui.tb000.option_box.menu.s000.setValue(pm.jointDisplayScale(q=True))
+        widget.ui.tb000.option_box.menu.s000.setValue(cmds.jointDisplayScale(q=True))
 
     def chk001(self, state, widget):
         """Scale IK"""
         # init IK handle display size
-        widget.ui.tb000.option_box.menu.s000.setValue(pm.ikHandleDisplayScale(q=True))
+        widget.ui.tb000.option_box.menu.s000.setValue(cmds.ikHandleDisplayScale(q=True))
 
     def chk002(self, state, widget):
         """Scale IK/FK"""
         # init IKFK display size
         widget.ui.tb000.option_box.menu.s000.setValue(
-            pm.jointDisplayScale(q=True, ikfk=1)
+            cmds.jointDisplayScale(q=True, ikfk=1)
         )
 
     def s000(self, value, widget):
         """Scale Joint/IK/FK"""
         if widget.ui.tb000.option_box.menu.chk000.isChecked():
-            pm.jointDisplayScale(value)  # set global joint display size
+            cmds.jointDisplayScale(value)  # set global joint display size
         elif widget.ui.tb000.option_box.menu.chk001.isChecked():
-            pm.ikHandleDisplayScale(value)  # set global IK handle display size
+            cmds.ikHandleDisplayScale(value)  # set global IK handle display size
         else:  # widget.ui.chk002.isChecked():
-            pm.jointDisplayScale(value, ikfk=1)  # set global IKFK display size
+            cmds.jointDisplayScale(value, ikfk=1)  # set global IKFK display size
 
     def tb000_init(self, widget):
         """Init Display Local Rotation Axes"""
-        scale_joint_value = pm.jointDisplayScale(q=True)
+        scale_joint_value = cmds.jointDisplayScale(q=True)
         widget.option_box.menu.setTitle("Display Local Rotation Axes")
         widget.option_box.menu.add(
             "QDoubleSpinBox",
@@ -128,18 +126,18 @@ class Rigging(SlotsMaya):
 
     def tb000(self, widget):
         """Toggle Display Local Rotation Axes"""
-        joints = pm.ls(type="joint")  # get all scene joints
+        joints = cmds.ls(type="joint") or []  # get all scene joints
 
         if not joints:  # if no joints in the scene
             self.sb.message_box("No joints found in the scene.")
             return  # exit the function
 
-        state = pm.toggle(joints[0], q=True, localAxis=1)
+        state = cmds.toggle(joints[0], q=True, localAxis=1)
         toggle = widget.option_box.menu.chk000.isChecked()
 
         if toggle:
             try:
-                pm.toggle(joints, localAxis=1)  # set display off
+                cmds.toggle(joints, localAxis=1)  # set display off
             except Exception as e:
                 print(f"An error occurred while toggling local axes: {e}")
 
@@ -172,7 +170,7 @@ class Rigging(SlotsMaya):
 
     def tb001(self, widget):
         """Constraint Switch"""
-        sel = pm.selected(flatten=True)
+        sel = cmds.ls(sl=True, flatten=True) or []
 
         switch_name = widget.option_box.menu.t003.text()
         weighted = widget.option_box.menu.chk003.isChecked()
@@ -225,18 +223,18 @@ class Rigging(SlotsMaya):
         category = widget.option_box.menu.cmb010.currentText().strip()
         remove = widget.option_box.menu.chk010.isChecked()
 
-        sel = pm.selected()
+        sel = cmds.ls(sl=True) or []
         if not sel:
             null_name = f"{category}_triggers"
-            if pm.objExists(null_name):
-                sel = [pm.PyNode(null_name)]
+            if cmds.objExists(null_name):
+                sel = [null_name]
             elif remove:
                 self.sb.message_box(
                     f"No objects selected and <hl>{null_name}</hl> not found."
                 )
                 return
             else:
-                sel = [pm.spaceLocator(name=null_name)]
+                sel = cmds.spaceLocator(name=null_name)
                 self.sb.message_box(
                     f"No selection \u2014 created <hl>{null_name}</hl> locator."
                 )
@@ -348,7 +346,7 @@ class Rigging(SlotsMaya):
         lock_rotation = widget.option_box.menu.chk008.isChecked()
         lock_scale = widget.option_box.menu.chk009.isChecked()
 
-        selection = pm.selected()
+        selection = cmds.ls(sl=True) or []
         if not selection:
             return mtk.create_locator(scale=loc_scale)
 
@@ -367,7 +365,7 @@ class Rigging(SlotsMaya):
 
     def b003(self):
         """Remove Locator"""
-        selection = pm.ls(selection=True)
+        selection = cmds.ls(selection=True) or []
         mtk.remove_locator(selection)
 
     # ------------------------------------------------------------------
@@ -405,8 +403,6 @@ class Rigging(SlotsMaya):
     @mtk.undoable
     def tb004(self, widget):
         """Lock/Unlock Attributes"""
-        import maya.cmds as cmds
-
         lock = widget.option_box.menu.chk010.isChecked()
         mode = widget.option_box.menu.cmb010.currentData()
 

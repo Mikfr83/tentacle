@@ -1,9 +1,7 @@
 # !/usr/bin/python
 # coding=utf-8
-try:
-    import pymel.core as pm
-except ImportError as error:
-    print(__file__, error)
+import maya.cmds as cmds
+import maya.mel as mel
 import mayatk as mtk
 from tentacle.slots.maya._slots_maya import SlotsMaya
 
@@ -19,36 +17,36 @@ class Subdivision(SlotsMaya):
         """Smooth Proxy"""
         text = widget.items[index]
         if text == "Create Subdiv Proxy":
-            pm.mel.SmoothProxyOptions()  # Add polygons to the selected proxy objects #performSmoothProxy 1;
+            mel.eval("SmoothProxyOptions")
         elif text == "Remove Subdiv Proxy Mirror":
-            pm.mel.UnmirrorSmoothProxyOptions()  # Create a single low resolution mesh for a mirrored proxy setup #performUnmirrorSmoothProxy 1;
+            mel.eval("UnmirrorSmoothProxyOptions")
         elif text == "Crease Tool":
-            pm.mel.polyCreaseProperties()  # Harden or soften the edges of a smooth mesh preview #polyCreaseValues polyCreaseContext;
+            mel.eval("polyCreaseProperties")
         elif text == "Toggle Subdiv Proxy Display":
-            pm.mel.SmoothingDisplayToggle()  # Toggle the display of smooth shapes #smoothingDisplayToggle 1;
+            mel.eval("SmoothingDisplayToggle")
         elif text == "Both Proxy and Subdiv Display":
-            pm.mel.SmoothingDisplayShowBoth()  # Display both smooth shapes #smoothingDisplayToggle 0;
+            mel.eval("SmoothingDisplayShowBoth")
 
     def cmb002(self, index, widget):
         """Maya Subdivision Operations"""
         if index is widget.items.index("Reduce Polygons"):
-            pm.mel.ReducePolygonOptions()
+            mel.eval("ReducePolygonOptions")
         elif index is widget.items.index("Add Divisions"):
-            pm.mel.SubdividePolygonOptions()
+            mel.eval("SubdividePolygonOptions")
         elif index is widget.items.index("Smooth"):
-            pm.mel.performPolySmooth(1)
+            mel.eval("performPolySmooth 1")
 
     def s000(self, value: int, widget: object) -> None:
         """Division Level"""
-        shapes = pm.ls(selection=True, dag=True, leaf=True)
-        transforms = pm.listRelatives(shapes, parent=True)
+        shapes = cmds.ls(selection=True, dag=True, leaf=True) or []
+        transforms = cmds.listRelatives(shapes, parent=True) or []
         for obj in transforms:
-            if hasattr(obj, "smoothLevel"):
+            if cmds.attributeQuery("smoothLevel", node=obj, exists=True):
                 # Correctly pass attributes as keyword arguments
                 mtk.Attributes.set_attributes(obj, smoothLevel=value)
                 # SubDivision proxy options: 'divisions'
-                pm.optionVar(intValue=["proxyDivisions", value])
-                pm.inViewMessage(
+                cmds.optionVar(intValue=("proxyDivisions", value))
+                cmds.inViewMessage(
                     statusMessage=f"{obj}: Division Level: <hl>{value}</hl>",
                     pos="topCenter",
                     fade=True,
@@ -56,13 +54,13 @@ class Subdivision(SlotsMaya):
 
     def s001(self, value: int, widget: object) -> None:
         """Tesselation Level"""
-        shapes = pm.ls(selection=True, dag=True, leaf=True)
-        transforms = pm.listRelatives(shapes, parent=True)
+        shapes = cmds.ls(selection=True, dag=True, leaf=True) or []
+        transforms = cmds.listRelatives(shapes, parent=True) or []
         for obj in transforms:
-            if hasattr(obj, "smoothLevel"):
+            if cmds.attributeQuery("smoothLevel", node=obj, exists=True):
                 # Correctly pass attributes as keyword arguments
                 mtk.Attributes.set_attributes(obj, smoothTessLevel=value)
-                pm.inViewMessage(
+                cmds.inViewMessage(
                     statusMessage=f"{obj}: Tesselation Level: <hl>{value}</hl>",
                     pos="topCenter",
                     fade=True,
@@ -70,17 +68,19 @@ class Subdivision(SlotsMaya):
 
     def b000(self):
         """Quadrangulate"""
-        pm.mel.performPolyQuadrangulate(0)
+        mel.eval("performPolyQuadrangulate 0")
 
     def b001(self):
         """Triangulate"""
-        pm.mel.polyTriangulate()
+        mel.eval("polyTriangulate")
 
     def b005(self):
         """Reduce"""
-        selection = pm.ls(sl=1, objectsOnly=1, type="transform")
+        selection = cmds.ls(sl=1, objectsOnly=1, type="transform") or []
+        if not selection:
+            return
 
-        pm.polyReduce(
+        cmds.polyReduce(
             selection,
             ver=1,
             trm=0,
@@ -116,19 +116,19 @@ class Subdivision(SlotsMaya):
 
     def b008(self):
         """Add Divisions - Subdivide Mesh"""
-        pm.mel.SubdividePolygon()
+        mel.eval("SubdividePolygon")
 
     def b009(self):
         """Smooth"""
-        pm.mel.SmoothPolygon()
+        mel.eval("SmoothPolygon")
 
     def b011(self):
         """Apply Smooth Preview"""
-        pm.mel.performSmoothMeshPreviewToPolygon()  # convert smooth mesh preview to polygons
+        mel.eval("performSmoothMeshPreviewToPolygon")
 
     def b028(self):
         """Quad Draw"""
-        pm.mel.dR_quadDrawTool()
+        mel.eval("dR_quadDrawTool")
 
     @staticmethod
     def smoothProxy():
@@ -136,12 +136,10 @@ class Subdivision(SlotsMaya):
         global polySmoothBaseMesh
         polySmoothBaseMesh = []
         # disable creating seperate layers for subdiv proxy
-        pm.optionVar(intValue=["polySmoothLoInLayer", 0])
-        pm.optionVar(intValue=["polySmoothHiInLayer", 0])
+        cmds.optionVar(intValue=("polySmoothLoInLayer", 0))
+        cmds.optionVar(intValue=("polySmoothHiInLayer", 0))
         # query smooth proxy state.
-        sel = pm.mel.polyCheckSelection(
-            "polySmoothProxy", "o", 0
-        )  # pm.mel.eval("polyCheckSelection \"polySmoothProxy\" \"o\" 0")
+        sel = mel.eval('polyCheckSelection "polySmoothProxy" "o" 0') or []
 
         if len(sel) == 0 and len(polySmoothBaseMesh) == 0:
             return "Error: Nothing selected."
@@ -153,18 +151,22 @@ class Subdivision(SlotsMaya):
         elif len(polySmoothBaseMesh) != 0:
             sel = polySmoothBaseMesh
 
-        transform = pm.listRelatives(sel[0], fullPath=1, parent=1)
-        shape = pm.listRelatives(transform[0], pa=1, shapes=1)
+        transform = cmds.listRelatives(sel[0], fullPath=1, parent=1) or []
+        if not transform:
+            return
+        shape = cmds.listRelatives(transform[0], pa=1, shapes=1) or []
+        if not shape:
+            return
 
         # check shape for an existing output to a smoothProxy
-        attachedSmoothProxies = pm.listConnections(
+        attachedSmoothProxies = cmds.listConnections(
             shape[0], type="polySmoothProxy", s=0, d=1
-        )
+        ) or []
         if len(attachedSmoothProxies) != 0:  # subdiv off
-            pm.mel.smoothingDisplayToggle(0)
+            mel.eval("smoothingDisplayToggle 0")
 
         # toggle performSmoothProxy
-        pm.mel.performSmoothProxy(0)  # toggle SubDiv Proxy;
+        mel.eval("performSmoothProxy 0")  # toggle SubDiv Proxy
 
 
 # --------------------------------------------------------------------------------------------

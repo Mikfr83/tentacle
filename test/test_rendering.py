@@ -1,32 +1,27 @@
 #!/usr/bin/python
 # coding=utf-8
-"""Regression tests for tentacle.slots.maya.rendering.
-
-Bug history:
-- Import guard did not define module-level pm when pymel import failed, causing
-  AttributeError in headless environments.
-- Rendering.b005 called self.load_vray_plugin(), but no such method exists.
-  Correct behavior is to use mayatk.vray_plugin(query/load).
-
-Fixed: 2026-02-20
-"""
+"""Regression tests for tentacle.slots.maya.rendering."""
 
 import unittest
 
-from tentacle.slots.maya import rendering
+try:
+    from tentacle.slots.maya import rendering
+    _MAYA_AVAILABLE = True
+except ImportError:
+    rendering = None
+    _MAYA_AVAILABLE = False
 
 
 class _FakeMel:
     def __init__(self):
-        self.calls = []
+        self.evaluated = []
 
     def eval(self, expression):
-        self.calls.append(expression)
+        self.evaluated.append(expression)
 
 
-class _FakePm:
+class _FakeCmds:
     def __init__(self):
-        self.mel = _FakeMel()
         self.set_attr_calls = []
 
     def ls(self, selection=False):
@@ -39,9 +34,6 @@ class _FakePm:
 
     def setAttr(self, attr, value):
         self.set_attr_calls.append((attr, value))
-
-    def sceneName(self):
-        return ""
 
 
 class _FakeMtk:
@@ -57,33 +49,32 @@ class _FakeMtk:
             self.load_called = True
 
 
-class TestRenderingHeadlessSafety(unittest.TestCase):
-    def test_import_guard_defines_pm_placeholder(self):
-        self.assertTrue(
-            hasattr(rendering, "pm"),
-            "rendering module should always define a pm name under import guard",
-        )
-
-
+@unittest.skipUnless(_MAYA_AVAILABLE, "Requires maya.cmds")
 class TestRenderingVrayAttributes(unittest.TestCase):
     def test_b005_uses_mayatk_vray_plugin(self):
         instance = rendering.Rendering.__new__(rendering.Rendering)
 
-        original_pm = getattr(rendering, "pm", None)
+        original_cmds = rendering.cmds
+        original_mel = rendering.mel
         original_mtk = rendering.mtk
-        fake_pm = _FakePm()
+        fake_cmds = _FakeCmds()
+        fake_mel = _FakeMel()
         fake_mtk = _FakeMtk()
         try:
-            rendering.pm = fake_pm
+            rendering.cmds = fake_cmds
+            rendering.mel = fake_mel
             rendering.mtk = fake_mtk
 
             instance.b005()
 
             self.assertTrue(fake_mtk.query_called, "Expected VRay query call")
             self.assertTrue(fake_mtk.load_called, "Expected VRay load call")
-            self.assertEqual(fake_pm.set_attr_calls, [("pCube1.vrayObjectID", 1)])
+            self.assertEqual(fake_cmds.set_attr_calls, [("pCube1.vrayObjectID", 1)])
+            # Three vray attribute-group calls per shape, plus one per object id.
+            self.assertEqual(len(fake_mel.evaluated), 3)
         finally:
-            rendering.pm = original_pm
+            rendering.cmds = original_cmds
+            rendering.mel = original_mel
             rendering.mtk = original_mtk
 
 

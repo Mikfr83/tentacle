@@ -1,9 +1,6 @@
 # !/usr/bin/python
 # coding=utf-8
-try:
-    import pymel.core as pm
-except ImportError as error:
-    print(__file__, error)
+import maya.cmds as cmds
 import mayatk as mtk
 from tentacle.slots.maya._slots_maya import SlotsMaya
 
@@ -61,7 +58,7 @@ class Crease(SlotsMaya):
     def b002(self, widget):
         """Transfer Crease Edges"""
         try:
-            source, *targets = pm.ls(orderedSelection=True, objectsOnly=True)
+            source, *targets = cmds.ls(orderedSelection=True, objectsOnly=True) or []
             mtk.Components.transfer_creased_edges(source, targets)
         except ValueError:
             self.sb.message_box(

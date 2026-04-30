@@ -2,10 +2,8 @@
 # coding=utf-8
 import re
 
-try:
-    import pymel.core as pm
-except ImportError as error:
-    print(__file__, error)
+import maya.cmds as cmds
+import maya.mel as mel
 import mayatk as mtk
 
 # From this package:
@@ -44,7 +42,7 @@ class MaterialsSlots(SlotsMaya):
             setText="Hypershade Editor",
             setObjectName="b007",
             setToolTip="Open the Hypershade Window.",
-            clicked=lambda: pm.mel.HypershadeWindow(),
+            clicked=lambda: mel.eval("HypershadeWindow"),
         )
         # Section: Setup
         widget.menu.add("Separator", setTitle="Setup")
@@ -161,7 +159,7 @@ class MaterialsSlots(SlotsMaya):
             )
             # Rename the material after editing has finished.
             widget.on_editing_finished.connect(
-                lambda text: pm.rename(widget.currentData(), text)
+                lambda text: cmds.rename(str(widget.currentData()), text)
             )
             # Initialize the widget every time before the popup is shown.
             widget.before_popup_shown.connect(widget.init_slot)
@@ -193,7 +191,7 @@ class MaterialsSlots(SlotsMaya):
         if not mat:
             return
 
-        old_name = mat.name()
+        old_name = str(mat).rsplit("|", 1)[-1]
         new_name = re.sub(r"[\d_]+$", "", old_name)
 
         # If stripping results in no change
@@ -211,14 +209,14 @@ class MaterialsSlots(SlotsMaya):
             return
 
         # Ensure the target name doesn't already exist
-        if pm.objExists(new_name):
+        if cmds.objExists(new_name):
             self.sb.message_box(
                 f"<hl>Rename aborted</hl><br>A node named '<strong>{new_name}</strong>' already exists."
             )
             return
 
         try:
-            pm.rename(mat, new_name)
+            cmds.rename(str(mat), new_name)
         except Exception as e:
             self.sb.message_box(f"<hl>Rename failed</hl><br>{e}")
             return
@@ -260,13 +258,13 @@ class MaterialsSlots(SlotsMaya):
 
         # If get_and_select is enabled, first get the material from current selection
         if get_and_select:
-            selection = pm.ls(sl=True)
+            selection = cmds.ls(sl=True) or []
             if selection:
                 mat = mtk.MatUtils.get_mats(selection[0])
                 if len(mat) == 1:
                     # Refresh the materials list and set the found material as current
                     self.ui.cmb002.init_slot()
-                    self.ui.cmb002.setAsCurrent(mat.pop().name())
+                    self.ui.cmb002.setAsCurrent(str(mat.pop()))
                 elif len(mat) == 0:
                     print(
                         "Get material failed: No material found on selected object. Proceeding with current material."
@@ -299,7 +297,7 @@ class MaterialsSlots(SlotsMaya):
         )  # Search in selection only
 
         if search_in_selection_only:
-            selection = pm.ls(sl=True, objectsOnly=True)
+            selection = cmds.ls(sl=True, objectsOnly=True) or []
         else:
             selection = None  # Search all objects in the scene
 
@@ -312,24 +310,24 @@ class MaterialsSlots(SlotsMaya):
             )
             return
 
-        pm.select(faces_with_mat)
+        cmds.select(faces_with_mat)
 
     def lbl002(self):
         """Delete Material"""
         mat = self.ui.cmb002.currentData()  # get the mat obj from cmb002
-        mat = pm.delete(mat)
+        cmds.delete(str(mat))
         self.ui.cmb002.init_slot()  # refresh the materials list comboBox
 
     def b015(self, widget):
         """Delete Unused Materials"""
-        pm.mel.hyperShadePanelMenuCommand("hyperShadePanel1", "deleteUnusedNodes")
+        mel.eval('hyperShadePanelMenuCommand "hyperShadePanel1" "deleteUnusedNodes"')
         self.ui.cmb002.init_slot()  # refresh the materials list comboBox
 
     def lbl004(self):
         """Select and Show Attributes: Show Material Attributes in the Attribute Editor."""
         mat = self.ui.cmb002.currentData()  # get the mat obj from cmb002
-        pm.select(mat, replace=True)
-        pm.mel.eval(f'showEditorExact("{mat}")')
+        cmds.select(str(mat), replace=True)
+        mel.eval(f'showEditorExact("{mat}")')
 
     def lbl005(self):
         """Set the current combo box text as editable."""
@@ -352,7 +350,7 @@ class MaterialsSlots(SlotsMaya):
 
     def b002(self, widget):
         """Get Material: Change the index to match the current material selection."""
-        selection = pm.ls(sl=True)
+        selection = cmds.ls(sl=True) or []
         if not selection:
             self.sb.message_box(
                 "<hl>Nothing selected</hl><br>Select mesh object(s) or face(s)."
@@ -367,11 +365,11 @@ class MaterialsSlots(SlotsMaya):
             return
 
         self.ui.cmb002.init_slot()  # refresh the materials list comboBox
-        self.ui.cmb002.setAsCurrent(mat.pop().name())  # pop: mat is a set
+        self.ui.cmb002.setAsCurrent(str(mat.pop()))  # pop: mat is a set
 
     def b004(self, widget):
         """Assign Random"""
-        selection = pm.ls(sl=True, flatten=True)
+        selection = cmds.ls(sl=True, flatten=True) or []
         if not selection:
             self.sb.message_box("No renderable object is selected for assignment.")
             return
@@ -383,30 +381,30 @@ class MaterialsSlots(SlotsMaya):
         # Check and delete the last random material if it's no longer in use
         if self.last_random_material and self.last_random_material != new_mat:
             # Check all shading engines connected to the last random material
-            shading_engines = pm.listConnections(
-                self.last_random_material, type="shadingEngine"
-            )
+            shading_engines = cmds.listConnections(
+                str(self.last_random_material), type="shadingEngine"
+            ) or []
 
             # Iterate through each shading engine to check if any geometry is connected
             is_in_use = False
             for se in shading_engines:
-                if pm.listConnections(se, type="mesh"):
+                if cmds.listConnections(se, type="mesh"):
                     is_in_use = True
                     break
 
             # If the last random material is not in use, delete it
             if not is_in_use:
-                pm.delete(self.last_random_material)
+                cmds.delete(str(self.last_random_material))
 
         # Update the last random material with the newly created one
         self.last_random_material = new_mat
 
         # Refresh the UI
         self.ui.cmb002.init_slot()
-        self.ui.cmb002.setAsCurrent(new_mat.name())
+        self.ui.cmb002.setAsCurrent(str(new_mat))
 
         # Reselect the original selection so that this method can be called again if needed.
-        pm.select(selection)
+        cmds.select(selection)
 
     def b005_init(self, widget):
         """Initialize Assign Current"""
@@ -427,7 +425,7 @@ class MaterialsSlots(SlotsMaya):
 
     def b005(self, widget):
         """Assign Current"""
-        selection = pm.ls(sl=True, flatten=1)
+        selection = cmds.ls(sl=True, flatten=1) or []
         if not selection:
             self.sb.message_box("No renderable object is selected for assignment.")
             return
@@ -437,14 +435,14 @@ class MaterialsSlots(SlotsMaya):
 
     def b006(self, widget):
         """Assign: New Material"""
-        renderable_objects = pm.ls(sl=True, type="mesh", dag=True, geometry=True)
+        renderable_objects = cmds.ls(sl=True, type="mesh", dag=True, geometry=True) or []
         if not renderable_objects:
             self.sb.message_box("No renderable object is selected for assignment.")
             return
-        pm.mel.eval(
+        mel.eval(
             'buildObjectMenuItemsNow "MainPane|viewPanes|modelPanel4|modelPanel4|modelPanel4|modelPanel4ObjectPop";'
         )
-        pm.mel.createAssignNewMaterialTreeLister("")
+        mel.eval('createAssignNewMaterialTreeLister ""')
 
     def b008(self, widget):
         """Map Packer"""
@@ -482,7 +480,7 @@ class MaterialsSlots(SlotsMaya):
 
     def b013(self):
         """Reload Textures and Reset Viewport"""
-        mtk.MatUtils.reload_textures()  # pm.mel.AEReloadAllTextures()
+        mtk.MatUtils.reload_textures()
         mtk.DisplayUtils.reset_viewport()
         confirmation_message = "<html><body><p style='font-size:16px; color:yellow;'>Textures Reloaded & Viewport Reset.</p></body></html>"
         self.sb.message_box(confirmation_message)

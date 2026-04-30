@@ -1,9 +1,7 @@
 # !/usr/bin/python
 # coding=utf-8
-try:
-    import pymel.core as pm
-except ImportError as error:
-    print(__file__, error)
+import maya.cmds as cmds
+import maya.mel as mel
 from uitk import Signals
 from tentacle.slots.maya._slots_maya import SlotsMaya
 
@@ -102,153 +100,153 @@ class Editors(SlotsMaya):
 
         if parent_text == "General Editors":
             if text == "Attribute Editor":
-                pm.mel.AttributeEditor()
+                mel.eval("AttributeEditor")
             elif text == "Channel Box":
-                pm.mel.OpenChannelBox()
+                mel.eval("OpenChannelBox")
             elif text == "Layer Editor":
-                pm.mel.OpenLayerEditor()
+                mel.eval("OpenLayerEditor")
             elif text == "Content Browser":
-                pm.mel.OpenContentBrowser()
+                mel.eval("OpenContentBrowser")
             elif text == "Tool Settings":
-                pm.mel.ToolSettingsWindow()
+                mel.eval("ToolSettingsWindow")
             elif text == "Hypergraph: Hierarchy":
-                pm.mel.HypergraphHierarchyWindow()
+                mel.eval("HypergraphHierarchyWindow")
             elif text == "Hypergraph: Connections":
-                pm.mel.HypergraphDGWindow()
+                mel.eval("HypergraphDGWindow")
             elif text == "Viewport":
-                pm.mel.DisplayViewport()
+                mel.eval("DisplayViewport")
             elif text == "Adobe After Effects Live Link":
-                pm.mel.OpenAELiveLink()
+                mel.eval("OpenAELiveLink")
             elif text == "Asset Editor":
-                pm.mel.AssetEditor()
+                mel.eval("AssetEditor")
             elif text == "Attribute Spread Sheet":
-                pm.mel.SpreadSheetEditor()
+                mel.eval("SpreadSheetEditor")
             elif text == "Component Editor":
-                pm.mel.ComponentEditor()
+                mel.eval("ComponentEditor")
             elif text == "Channel Control":
-                pm.mel.ChannelControlEditor()
+                mel.eval("ChannelControlEditor")
             elif text == "Display Layer Editor":
-                pm.mel.DisplayLayerEditorWindow()
+                mel.eval("DisplayLayerEditorWindow")
             elif text == "File Path Editor":
-                pm.mel.FilePathEditor()
+                mel.eval("FilePathEditor")
             elif text == "Namespace Editor":
-                pm.mel.NamespaceEditor()
+                mel.eval("NamespaceEditor")
             elif text == "Script Editor":
-                pm.mel.ScriptEditor()
+                mel.eval("ScriptEditor")
             elif text == "Command Shell":
-                pm.mel.CommandShell()
+                mel.eval("CommandShell")
             elif text == "Profiler":
-                pm.mel.ProfilerTool()
+                mel.eval("ProfilerTool")
             elif text == "Evaluation Toolkit":
-                pm.mel.EvaluationToolkit()
+                mel.eval("EvaluationToolkit")
 
         elif parent_text == "Modeling Editors":
             if text == "Modeling Toolkit":
-                pm.mel.OpenModelingToolkit()
+                mel.eval("OpenModelingToolkit")
             elif text == "Paint Effects":
-                pm.mel.PaintEffectsWindow()
+                mel.eval("PaintEffectsWindow")
             elif text == "UV Editor":
-                pm.mel.TextureViewWindow()
+                mel.eval("TextureViewWindow")
             elif text == "XGen Editor":
-                pm.mel.OpenXGenEditor()
+                mel.eval("OpenXGenEditor")
             elif text == "Crease Sets":
-                pm.mel.OpenCreaseEditor()
+                mel.eval("OpenCreaseEditor")
 
         elif parent_text == "Animation Editors":
             if text == "Graph Editor":
-                pm.mel.GraphEditor()
+                mel.eval("GraphEditor")
             elif text == "Time Editor":
-                pm.mel.TimeEditorWindow()
+                mel.eval("TimeEditorWindow")
             elif text == "Trax Editor":
-                pm.mel.CharacterAnimationEditor()
+                mel.eval("CharacterAnimationEditor")
             elif text == "Camera Sequencer":
-                pm.mel.SequenceEditor()
+                mel.eval("SequenceEditor")
             elif text == "Dope Sheet":
-                pm.mel.DopeSheetEditor()
+                mel.eval("DopeSheetEditor")
             elif text == "Quick Rig":
-                pm.mel.QuickRigEditor()
+                mel.eval("QuickRigEditor")
             elif text == "HumanIK":
-                pm.mel.HIKCharacterControlsTool()
+                mel.eval("HIKCharacterControlsTool")
             elif text == "Shape Editor":
-                pm.mel.ShapeEditor()
+                mel.eval("ShapeEditor")
             elif text == "Pose Editor":
-                pm.mel.PoseEditor()
+                mel.eval("PoseEditor")
             elif text == "Expression Editor":
-                pm.mel.ExpressionEditor()
+                mel.eval("ExpressionEditor")
 
         elif parent_text == "Rendering Editors":
             if text == "Render View":
-                pm.mel.RenderViewWindow()
+                mel.eval("RenderViewWindow")
             elif text == "Render Settings":
-                pm.mel.RenderGlobalsWindow()
+                mel.eval("RenderGlobalsWindow")
             elif text == "Hypershade":
-                pm.mel.HypershadeWindow()
+                mel.eval("HypershadeWindow")
             elif text == "Render Setup":
-                pm.mel.RenderSetupWindow()
+                mel.eval("RenderSetupWindow")
             elif text == "Light Editor":
-                pm.mel.OpenLightEditor()
+                mel.eval("OpenLightEditor")
             elif text == "Custom Stereo Rig Editor":
-                pm.mel.OpenStereoRigManager()
+                mel.eval("OpenStereoRigManager")
             elif text == "Rendering Flags":
-                pm.mel.RenderFlagsWindow()
+                mel.eval("RenderFlagsWindow")
             elif text == "Shading Group Attributes":
-                pm.mel.ShadingGroupAttributeEditor()
+                mel.eval("ShadingGroupAttributeEditor")
 
         elif parent_text == "Relationship Editors":
             if text == "Animation Layers":
-                pm.mel.AnimLayerRelationshipEditor()
+                mel.eval("AnimLayerRelationshipEditor")
             elif text == "Camera Sets":
-                pm.mel.CameraSetEditor()
+                mel.eval("CameraSetEditor")
             elif text == "Character Sets":
-                pm.mel.CharacterSetEditor()
+                mel.eval("CharacterSetEditor")
             elif text == "Deformer Sets":
-                pm.mel.DeformerSetEditor()
+                mel.eval("DeformerSetEditor")
             elif text == "Display Layers":
-                pm.mel.LayerRelationshipEditor()
+                mel.eval("LayerRelationshipEditor")
             elif text == "Dynamic Relationships":
-                pm.mel.DynamicRelationshipEditor()
+                mel.eval("DynamicRelationshipEditor")
             elif text == "Light Linking: Light Centric":
-                pm.mel.LightCentricLightLinkingEditor()
+                mel.eval("LightCentricLightLinkingEditor")
             elif text == "Light Linking: Object Centric":
-                pm.mel.ObjectCentricLightLinkingEditor()
+                mel.eval("ObjectCentricLightLinkingEditor")
             elif text == "Partitions":
-                pm.mel.PartitionEditor()
+                mel.eval("PartitionEditor")
             elif text == "Render Pass Sets":
-                pm.mel.RenderPassSetEditor()
+                mel.eval("RenderPassSetEditor")
             elif text == "Sets":
-                pm.mel.SetEditor()
+                mel.eval("SetEditor")
             elif text == "UV Linking: Texture-Centric":
-                pm.mel.TextureCentricUVLinkingEditor()
+                mel.eval("TextureCentricUVLinkingEditor")
             elif text == "UV Linking: UV-Centric":
-                pm.mel.UVCentricUVLinkingEditor()
+                mel.eval("UVCentricUVLinkingEditor")
             elif text == "UV Linking: Paint Effects/UV":
-                pm.mel.PFXUVSetLinkingEditor()
+                mel.eval("PFXUVSetLinkingEditor")
             elif text == "UV Linking: Hair/UV":
-                pm.mel.HairUVSetLinkingEditor()
+                mel.eval("HairUVSetLinkingEditor")
 
     def b000(self):
         """Attributes"""
-        pm.mel.AttributeEditor()
+        mel.eval("AttributeEditor")
 
     def b001(self):
         """Outliner"""
-        pm.mel.OutlinerWindow()
+        mel.eval("OutlinerWindow")
 
     def b002(self):
         """Tool"""
-        pm.toolPropertyWindow()
+        cmds.toolPropertyWindow()
 
     def b003(self):
         """Layers"""
-        pm.mel.OpenChannelsLayers()
+        mel.eval("OpenChannelsLayers")
 
     def b004(self):
         """Channels"""
-        pm.mel.OpenChannelsLayers()
+        mel.eval("OpenChannelsLayers")
 
     def b005(self):
         """Node Editor"""
-        pm.mel.NodeEditorWindow()
+        mel.eval("NodeEditorWindow")
 
     def b006(self):
         """Dependancy Graph
@@ -287,41 +285,41 @@ class Editors(SlotsMaya):
                 -showCachedConnections 0
                 $editorName //
         """
-        pm.mel.HypergraphHierarchyWindow()
+        mel.eval("HypergraphHierarchyWindow")
 
     def b007(self):
         """Status Line"""
-        pm.mel.ToggleStatusLine()
+        mel.eval("ToggleStatusLine")
 
     def b008(self):
         """Shelf"""
-        pm.mel.ToggleShelf()
+        mel.eval("ToggleShelf")
 
     def b009(self):
         """Time & Range"""
-        ts_visible = pm.mel.isUIComponentVisible("Time Slider")
-        rs_visible = pm.mel.isUIComponentVisible("Range Slider")
+        ts_visible = mel.eval('isUIComponentVisible "Time Slider"')
+        rs_visible = mel.eval('isUIComponentVisible "Range Slider"')
 
         if ts_visible or rs_visible:
             if ts_visible:
-                pm.mel.ToggleTimeSlider()
+                mel.eval("ToggleTimeSlider")
             if rs_visible:
-                pm.mel.ToggleRangeSlider()
+                mel.eval("ToggleRangeSlider")
         else:
-            pm.mel.ToggleTimeSlider()
-            pm.mel.ToggleRangeSlider()
+            mel.eval("ToggleTimeSlider")
+            mel.eval("ToggleRangeSlider")
 
     def b011(self):
         """Command Line"""
-        pm.mel.ToggleCommandLine()
+        mel.eval("ToggleCommandLine")
 
     def b012(self):
         """Help Line"""
-        pm.mel.ToggleHelpLine()
+        mel.eval("ToggleHelpLine")
 
     def b013(self):
         """Tool Box"""
-        pm.mel.ToggleToolbox()
+        mel.eval("ToggleToolbox")
 
     def getEditorWidget(self, name):
         """Get a maya widget from a given name.

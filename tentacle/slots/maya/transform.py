@@ -1,9 +1,7 @@
 # !/usr/bin/python
 # coding=utf-8
-try:
-    import pymel.core as pm
-except ImportError as error:
-    print(__file__, error)
+import maya.cmds as cmds
+import maya.mel as mel
 import mayatk as mtk
 from tentacle.slots.maya._slots_maya import SlotsMaya
 
@@ -51,19 +49,19 @@ class TransformSlots(SlotsMaya):
         """Align To"""
         text = widget.items[index]
         if text == "Point to Point":
-            pm.mel.SnapPointToPointOptions()  # performSnapPtToPt 1; Select any type of point object or component.
+            mel.eval("SnapPointToPointOptions")
         elif text == "2 Points to 2 Points":
-            pm.mel.Snap2PointsTo2PointsOptions()  # performSnap2PtTo2Pt 1; Select any type of point object or component.
+            mel.eval("Snap2PointsTo2PointsOptions")
         elif text == "3 Points to 3 Points":
-            pm.mel.Snap3PointsTo3PointsOptions()  # performSnap3PtTo3Pt 1; Select any type of point object or component.
+            mel.eval("Snap3PointsTo3PointsOptions")
         elif text == "Align Objects":
-            pm.mel.performAlignObjects(1)  # Align the selected objects.
+            mel.eval("performAlignObjects 1")
         elif text == "Position Along Curve":
-            pm.mel.PositionAlongCurve()  # Position selected objects along a selected curve.
+            mel.eval("PositionAlongCurve")
         elif text == "Align Tool":
-            pm.mel.SetAlignTool()  # setToolTo alignToolCtx; Align the selection to the last selected object.
+            mel.eval("SetAlignTool")
         elif text == "Snap Together Tool":
-            pm.mel.SetSnapTogetherToolOptions()  # setToolTo snapTogetherToolCtx; toolPropertyWindow;) Snap two objects together.
+            mel.eval("SetSnapTogetherToolOptions")
 
     def tb000_init(self, widget):
         """Drop To Grid Init"""
@@ -102,9 +100,10 @@ class TransformSlots(SlotsMaya):
         center_pivot = widget.option_box.menu.chk016.isChecked()
         freeze_transforms = widget.option_box.menu.chk017.isChecked()
 
-        objects = pm.ls(sl=1, objectsOnly=1)
+        objects = cmds.ls(sl=1, objectsOnly=1) or []
         mtk.drop_to_grid(objects, align, origin, center_pivot, freeze_transforms)
-        pm.select(objects)  # reselect the original selection.
+        if objects:
+            cmds.select(objects)  # reselect the original selection.
 
     def tb001_init(self, widget):
         """Scale Connected Edges Init"""
@@ -205,7 +204,7 @@ class TransformSlots(SlotsMaya):
 
     def tb002(self, widget):
         """Freeze Transformations"""
-        objects = pm.selected()
+        objects = cmds.ls(sl=True) or []
         if not objects:
             self.sb.message_box("Please select at least one object.")
             return
@@ -246,8 +245,8 @@ class TransformSlots(SlotsMaya):
         widget.option_box.menu.trigger_button = "left"
         widget.option_box.menu.add_apply_button = False
         widget.option_box.menu.setTitle("CONSTRAINTS")
-        edge_constraint = pm.xformConstraint(q=True, type=1) == "edge"
-        surface_constraint = pm.xformConstraint(q=True, type=1) == "surface"
+        edge_constraint = cmds.xformConstraint(q=True, type=1) == "edge"
+        surface_constraint = cmds.xformConstraint(q=True, type=1) == "surface"
         values = [
             ("chk024", "Contrain: Edge", edge_constraint),
             ("chk025", "Constain: Surface", surface_constraint),
@@ -316,13 +315,13 @@ class TransformSlots(SlotsMaya):
         )
         # Set the values
         widget.option_box.menu.s021.setValue(
-            pm.manipMoveContext("Move", q=True, snapValue=True)
+            cmds.manipMoveContext("Move", q=True, snapValue=True)
         )
         widget.option_box.menu.s022.setValue(
-            pm.manipScaleContext("Scale", q=True, snapValue=True)
+            cmds.manipScaleContext("Scale", q=True, snapValue=True)
         )
         widget.option_box.menu.s023.setValue(
-            pm.manipRotateContext("Rotate", q=1, snapValue=True)
+            cmds.manipRotateContext("Rotate", q=1, snapValue=True)
         )
 
         def update_text():
@@ -351,7 +350,7 @@ class TransformSlots(SlotsMaya):
         """Move To"""
         move_all_to_last = widget.option_box.menu.chk036.isChecked()
 
-        sel = pm.ls(orderedSelection=True, transforms=True)
+        sel = cmds.ls(orderedSelection=True, transforms=True) or []
         if not len(sel) > 1:
             self.sb.message_box(
                 "<b>Nothing selected.</b><br>The operation requires at least two selected objects."
@@ -363,12 +362,12 @@ class TransformSlots(SlotsMaya):
             source = sel[:-1]
             target = sel[-1]
             mtk.move_to(source, target)
-            pm.select(source)
+            cmds.select(source)
         else:  # Move first object to remaining selected objects' bounding box or pivot point
             source = sel[0]
             target = sel[1:]
             mtk.move_to(source, target)
-            pm.select(source)
+            cmds.select(source)
 
     def chk021(self, state, widget):
         """Transform Tool Snap Settings: Move"""
@@ -402,47 +401,47 @@ class TransformSlots(SlotsMaya):
         tb = self.ui.tb003
         tb.init_slot()
         if state:
-            pm.xformConstraint(type="edge")
+            cmds.xformConstraint(type="edge")
         else:
-            pm.xformConstraint(type="none")
+            cmds.xformConstraint(type="none")
 
     def chk025(self, state, widget):
         """Transform Contraints: Surface"""
         tb = self.ui.tb003
         tb.init_slot()
         if state:
-            pm.xformConstraint(type="surface")
+            cmds.xformConstraint(type="surface")
         else:
-            pm.xformConstraint(type="none")
+            cmds.xformConstraint(type="none")
 
     def chk026(self, state, widget):
         """Transform Constraints: Make Live"""
         tb = self.ui.tb003
         tb.init_slot()
 
-        selection = pm.ls(sl=1, objectsOnly=1, type="transform")
+        selection = cmds.ls(sl=1, objectsOnly=1, type="transform") or []
         if state and selection:
-            pm.makeLive(selection[0])
+            cmds.makeLive(selection[0])
         else:
-            pm.makeLive(none=True)
+            cmds.makeLive(none=True)
 
     def s021(self, value, widget):
         """Transform Tool Snap Settings: Spinboxes"""
-        pm.manipMoveContext("Move", edit=1, snapValue=value)
+        cmds.manipMoveContext("Move", edit=1, snapValue=value)
         # UV move context
-        pm.texMoveContext("texMoveContext", edit=1, snapValue=value)
+        cmds.texMoveContext("texMoveContext", edit=1, snapValue=value)
 
     def s022(self, value, widget):
         """Transform Tool Snap Settings: Spinboxes"""
-        pm.manipScaleContext("Scale", edit=1, snapValue=value)
+        cmds.manipScaleContext("Scale", edit=1, snapValue=value)
         # UV scale context
-        pm.texScaleContext("texScaleContext", edit=1, snapValue=value)
+        cmds.texScaleContext("texScaleContext", edit=1, snapValue=value)
 
     def s023(self, value, widget):
         """Transform Tool Snap Settings: Spinboxes"""
-        pm.manipRotateContext("Rotate", edit=1, snapValue=value)
+        cmds.manipRotateContext("Rotate", edit=1, snapValue=value)
         # UV rotate context
-        pm.texRotateContext("texRotateContext", edit=1, snapValue=value)
+        cmds.texRotateContext("texRotateContext", edit=1, snapValue=value)
 
     def b_snap_ts(self):
         """Snap Toolset"""
@@ -450,7 +449,7 @@ class TransformSlots(SlotsMaya):
 
     def b001(self):
         """Match Scale"""
-        selection = pm.ls(orderedSelection=True, flatten=True)
+        selection = cmds.ls(orderedSelection=True, flatten=True) or []
         if not selection:
             self.sb.message_box(
                 "<b>Nothing selected.</b><br>The operation requires at least two selected objects."
@@ -464,7 +463,7 @@ class TransformSlots(SlotsMaya):
 
     def b002(self):
         """Un-Freeze Transforms"""
-        mtk.restore_transforms(pm.selected())
+        mtk.restore_transforms(cmds.ls(sl=True) or [])
 
     def setTransformSnap(self, ctx, state):
         """Set the transform tool's move, rotate, and scale snap states.
@@ -474,35 +473,35 @@ class TransformSlots(SlotsMaya):
                 state (int): valid: 0=off, 1=relative, 2=absolute
         """
         if ctx == "move":
-            pm.manipMoveContext(
+            cmds.manipMoveContext(
                 "Move",
                 edit=1,
                 snap=False if state == 0 else True,
                 snapRelative=True if state == 1 else False,
             )  # state: 0=off, 1=relative, 2=absolute
-            pm.texMoveContext(
+            cmds.texMoveContext(
                 "texMoveContext", edit=1, snap=False if state == 0 else True
             )  # uv move context
 
         elif ctx == "scale":
-            pm.manipScaleContext(
+            cmds.manipScaleContext(
                 "Scale",
                 edit=1,
                 snap=False if state == 0 else True,
                 snapRelative=True if state == 1 else False,
             )  # state: 0=off, 1=relative, 2=absolute
-            pm.texScaleContext(
+            cmds.texScaleContext(
                 "texScaleContext", edit=1, snap=False if state == 0 else True
             )  # uv scale context
 
         elif ctx == "rotate":
-            pm.manipRotateContext(
+            cmds.manipRotateContext(
                 "Rotate",
                 edit=1,
                 snap=False if state == 0 else True,
                 snapRelative=True if state == 1 else False,
             )  # state: 0=off, 1=relative, 2=absolute
-            pm.texRotateContext(
+            cmds.texRotateContext(
                 "texRotateContext", edit=1, snap=False if state == 0 else True
             )  # uv rotate context
 

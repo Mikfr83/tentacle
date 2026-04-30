@@ -1,9 +1,6 @@
 # !/usr/bin/python
 # coding=utf-8
-try:
-    import pymel.core as pm
-except ImportError as error:
-    print(__file__, error)
+import maya.cmds as cmds
 import pythontk as ptk
 import mayatk as mtk
 from tentacle.slots.maya._slots_maya import SlotsMaya
@@ -50,17 +47,18 @@ class Normals(SlotsMaya):
         upper_hardness = upper_hardness if upper_hardness > -1 else None
         lower_hardness = lower_hardness if lower_hardness > -1 else None
 
-        selection = pm.ls(sl=True)
+        selection = cmds.ls(sl=True) or []
         # Reset the normals before the operation with object selections.
-        if pm.selectMode(query=True, object=True):
-            pm.polySetToFaceNormal(selection)
+        if selection and cmds.selectMode(query=True, object=True):
+            cmds.polySetToFaceNormal(selection)
 
         mtk.Components.set_edge_hardness(
             selection, angle_threshold, upper_hardness, lower_hardness
         )
 
-        objects = pm.ls(selection, objectsOnly=True)
-        pm.polyOptions(objects, se=True)  # Soft edge display.
+        objects = cmds.ls(selection, objectsOnly=True) or []
+        if objects:
+            cmds.polyOptions(objects, se=True)  # Soft edge display.
 
     def tb004_init(self, widget):
         """Initialize Average Normals"""
@@ -75,39 +73,42 @@ class Normals(SlotsMaya):
         """Average Normals"""
         by_uv_shell = widget.option_box.menu.chk003.isChecked()
 
-        objects = pm.ls(sl=True)
+        objects = cmds.ls(sl=True) or []
         mtk.Components.average_normals(objects, by_uv_shell=by_uv_shell)
 
     def b000(self):
         """Soften Edge Normals"""
-        selection = pm.selected()
+        selection = cmds.ls(sl=True) or []
         # Map components to their respective objects
         components_dict = mtk.Components.map_components_to_objects(selection)
         # Loop through each object and its corresponding components
         for obj, components in components_dict.items():
-            pm.polySoftEdge(components, angle=180)  # Use maximum angle to soften
-            pm.polyOptions(obj, se=True)  # Set soft edge display.
-        pm.select(selection)  # Re-select the original selection
+            cmds.polySoftEdge(components, angle=180)  # Use maximum angle to soften
+            cmds.polyOptions(obj, se=True)  # Set soft edge display.
+        if selection:
+            cmds.select(selection)  # Re-select the original selection
 
     def b001(self):
         """Harden all selected edges."""
-        selection = pm.selected()
+        selection = cmds.ls(sl=True) or []
         # Map components to their respective objects
         components_dict = mtk.Components.map_components_to_objects(selection)
         # Loop through each object and its corresponding components
         for obj, components in components_dict.items():
-            pm.polySoftEdge(components, angle=0)  # Use minimum angle to harden
-            pm.polyOptions(obj, se=True)  # Set soft edge display.
-        pm.select(selection)  # Re-select the original selection
+            cmds.polySoftEdge(components, angle=0)  # Use minimum angle to harden
+            cmds.polyOptions(obj, se=True)  # Set soft edge display.
+        if selection:
+            cmds.select(selection)  # Re-select the original selection
 
     def b002(self):
         """Transfer Normals"""
-        source, *target = pm.ls(sl=1, fl=True)
-        if not source or not target:
+        sel = cmds.ls(sl=1, fl=True) or []
+        if len(sel) < 2:
             self.sb.message_box(
                 "Select a source object and one or more target objects."
             )
             return
+        source, *target = sel
 
         mtk.Components.transfer_normals([source] + target)
 
@@ -125,7 +126,7 @@ class Normals(SlotsMaya):
 
     def b006(self):
         """Set To Face"""
-        pm.polySetToFaceNormal()
+        cmds.polySetToFaceNormal()
 
     def tb010_init(self, widget):
         """Initialize Reverse Normals"""
@@ -149,14 +150,15 @@ class Normals(SlotsMaya):
         """Reverse Normals"""
         mode = widget.option_box.menu.cmb000.currentIndex()
 
-        for obj in pm.ls(sl=1, objectsOnly=1):
-            sel = pm.ls(obj, sl=1)
+        for obj in cmds.ls(sl=1, objectsOnly=1) or []:
+            sel = cmds.ls(obj, sl=1) or []
             # normalMode 0: Reverse
             # normalMode 1: Propagate
             # normalMode 2: Conform
             # normalMode 3: Reverse and Extract
             # normalMode 4: Reverse and Propagate
-            pm.polyNormal(sel, normalMode=mode, userNormalMode=1)
+            if sel:
+                cmds.polyNormal(sel, normalMode=mode, userNormalMode=1)
 
 
 # --------------------------------------------------------------------------------------------

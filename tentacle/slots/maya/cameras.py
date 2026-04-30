@@ -1,9 +1,7 @@
 # !/usr/bin/python
 # coding=utf-8
-try:
-    import pymel.core as pm
-except ImportError as error:
-    print(__file__, error)
+import maya.cmds as cmds
+import maya.mel as mel
 import mayatk as mtk
 from uitk import Signals
 from tentacle.slots.maya._slots_maya import SlotsMaya
@@ -43,14 +41,15 @@ class Cameras(SlotsMaya):
 
         # Existing code for finding and listing cameras
         try:
-            cameras = pm.ls(type=("camera"), l=True)
-            startup_cameras = [
-                camera
-                for camera in cameras
-                if pm.camera(camera.parent(0), q=True, startupCamera=True)
-            ]
-            non_startup_cameras_pynodes = list(set(cameras) - set(startup_cameras))
-            non_startup_cameras = list(map(str, non_startup_cameras_pynodes))
+            scene_cameras = cmds.ls(type="camera", l=True) or []
+            startup_cameras = []
+            non_startup_cameras = []
+            for camera in scene_cameras:
+                parent = mtk.NodeUtils.get_parent(camera, full_path=True)
+                if parent and cmds.camera(parent, q=True, startupCamera=True):
+                    startup_cameras.append(camera)
+                else:
+                    non_startup_cameras.append(camera)
 
         except AttributeError:
             non_startup_cameras = []
@@ -82,25 +81,25 @@ class Cameras(SlotsMaya):
 
         if parent_text == "Create Camera":
             focal_length = item.item_data()
-            pm.camera(focalLength=focal_length)
+            cmds.camera(focalLength=focal_length)
 
         elif parent_text == "Select Camera":
-            pm.select(text)
-            pm.lookThru(text)
+            cmds.select(text)
+            cmds.lookThru(text)
 
         elif parent_text == "Visibility Settings":
             if text == "Exclusive to Camera":
-                pm.mel.eval("SetExclusiveToCamera;")
+                mel.eval("SetExclusiveToCamera;")
             elif text == "Hidden from Camera":
-                pm.mel.eval("SetHiddenFromCamera;")
+                mel.eval("SetHiddenFromCamera;")
             elif text == "Remove from Exclusive":
-                pm.mel.eval("CameraRemoveFromExclusive;")
+                mel.eval("CameraRemoveFromExclusive;")
             elif text == "Remove from Hidden":
-                pm.mel.eval("CameraRemoveFromHidden;")
+                mel.eval("CameraRemoveFromHidden;")
             elif text == "Remove All for Camera":
-                pm.mel.eval("CameraRemoveAll;")
+                mel.eval("CameraRemoveAll;")
             elif text == "Remove All":
-                pm.mel.eval("CameraRemoveAllForAll;")
+                mel.eval("CameraRemoveAllForAll;")
 
         elif parent_text == "Camera Options":
             if text == "Auto Adjust Clipping":
@@ -139,44 +138,44 @@ class Cameras(SlotsMaya):
 
     def b007(self):
         """Cameras: Align View"""
-        selection = pm.selected()
+        selection = cmds.ls(sl=True) or []
         if not selection:
             self.sb.message_box("Nothing Selected.")
             return
 
-        if not pm.objExists("alignToPoly"):  # if no camera exists; create camera
-            cam, camShape = pm.camera()
-            pm.hide(cam)
-            pm.rename(cam, "alignToPoly")
+        if not cmds.objExists("alignToPoly"):  # if no camera exists; create camera
+            cam, camShape = cmds.camera()
+            cmds.hide(cam)
+            cmds.rename(cam, "alignToPoly")
 
         # Check if camera view is orthoraphic
-        ortho = int(pm.camera("alignToPoly", q=True, orthographic=1))
+        ortho = int(cmds.camera("alignToPoly", q=True, orthographic=1))
         if not ortho:
-            pm.viewPlace("alignToPoly", ortho=1)
+            cmds.viewPlace("alignToPoly", ortho=1)
 
-        pm.lookThru("alignToPoly")
-        pm.AlignCameraToPolygon()
-        pm.viewFit(fitFactor=5.0)
+        cmds.lookThru("alignToPoly")
+        mel.eval("AlignCameraToPolygon")
+        cmds.viewFit(fitFactor=5.0)
 
     def b010(self):
         """Camera: Dolly"""
-        pm.mel.eval("setToolTo $gDolly")
+        mel.eval("setToolTo $gDolly")
 
     def b011(self):
         """Camera: Roll"""
         # Maya doesn't have a standard 'Roll' tool active command usually exposed simply?
         # Trying Track/Tumble?
         # Maybe the user meant Tumble?
-        pm.mel.eval("setToolTo $gTumble")
+        mel.eval("setToolTo $gTumble")
 
     def b012(self):
         """Camera: Truck"""
-        pm.mel.eval("setToolTo $gTrack")
+        mel.eval("setToolTo $gTrack")
 
     def b013(self):
         """Camera: Orbit"""
         # Orbit is Tumble
-        pm.mel.eval("setToolTo $gTumble")
+        mel.eval("setToolTo $gTumble")
 
     def toggle_camera_view(self):
         """Toggle between the last two camera views in history."""

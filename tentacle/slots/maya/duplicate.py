@@ -1,9 +1,6 @@
 # !/usr/bin/python
 # coding=utf-8
-try:
-    import pymel.core as pm
-except ImportError as error:
-    print(__file__, error)
+import maya.cmds as cmds
 import mayatk as mtk
 from tentacle.slots.maya._slots_maya import SlotsMaya
 
@@ -69,7 +66,7 @@ class Duplicate(SlotsMaya):
         delete_history = widget.option_box.menu.chk001.isChecked()
 
         # Get the list of selected transform nodes in the order they were selected
-        selection = pm.ls(orderedSelection=True, transforms=True)
+        selection = cmds.ls(orderedSelection=True, transforms=True) or []
         if not selection:
             self.sb.message_box(
                 "<strong>Nothing selected</strong>.<br>Operation requires an object selection."
@@ -107,7 +104,7 @@ class Duplicate(SlotsMaya):
             instances = mtk.get_instances(objects=None)
         else:
             # Select instances of the selected objects only
-            selection = pm.ls(sl=1)
+            selection = cmds.ls(sl=1) or []
             if not selection:
                 self.sb.message_box(
                     "<strong>Nothing selected</strong>.<br>Select objects to find their instances, or enable 'All Instanced Objects' option."
@@ -116,7 +113,7 @@ class Duplicate(SlotsMaya):
             instances = mtk.get_instances(selection)
 
         if instances:
-            pm.select(instances)
+            cmds.select(instances)
         else:
             self.sb.message_box("<strong>No instanced objects found</strong>.")
 
@@ -126,7 +123,7 @@ class Duplicate(SlotsMaya):
 
     def b005(self):
         """Uninstance Selected Objects"""
-        selection = pm.ls(sl=1)
+        selection = cmds.ls(sl=1) or []
         mtk.uninstance(selection)
 
     def b006(self):

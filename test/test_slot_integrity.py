@@ -4,7 +4,7 @@
 
 Validates that every slot module under tentacle/slots/maya/:
 - Defines exactly one public class that inherits from SlotsMaya
-- Uses the expected import-guard pattern for pymel
+- Does not import pymel (the package is fully migrated to maya.cmds)
 - Has a corresponding __init__ accepting (self, switchboard)
 """
 import ast
@@ -93,24 +93,24 @@ class TestSlotClassStructure(unittest.TestCase):
         self.assertEqual(multi, [], f"Multiple slot classes in: {multi}")
 
 
-class TestSlotImportGuards(unittest.TestCase):
-    """Slot modules use try/except for pymel to allow headless import."""
+class TestNoPymelImports(unittest.TestCase):
+    """Slot modules must not import pymel — the package is migrated to cmds."""
 
-    def test_pymel_import_guarded(self):
-        """Any file that imports pymel should use try/except."""
-        unguarded = []
+    def test_no_pymel_imports(self):
+        offenders = []
         for f in _slot_files():
-            source = f.read_text(encoding="utf-8")
-            if "import pymel" not in source:
-                continue
-            # Accept try/except style or conditional import
-            if "try:" in source or "importlib" in source:
-                continue
-            unguarded.append(f.name)
+            tree = ast.parse(f.read_text(encoding="utf-8"))
+            for node in ast.walk(tree):
+                if isinstance(node, ast.Import):
+                    if any(a.name.split(".")[0] == "pymel" for a in node.names):
+                        offenders.append(f.name)
+                        break
+                elif isinstance(node, ast.ImportFrom):
+                    if (node.module or "").split(".")[0] == "pymel":
+                        offenders.append(f.name)
+                        break
         self.assertEqual(
-            unguarded,
-            [],
-            f"Files with unguarded pymel import: {unguarded}",
+            offenders, [], f"Slot files re-introduced pymel: {offenders}"
         )
 
 
@@ -129,10 +129,9 @@ class TestSlotsMayaBase(unittest.TestCase):
 class TestEditTb001Performance(unittest.TestCase):
     """Verify edit.py tb001 uses performance-optimized patterns (AST-based).
 
-    Bug: Delete History (tb001) was extremely slow on heavy scenes because
-    it used PyMEL for bulk queries and per-node utility calls without
-    suspending viewport refresh.
-    Fixed: 2026-03-03
+    Heavy-scene performance requires bulk cmds queries and a viewport-
+    refresh suspend wrapper; PyMEL paths and per-node utility loops are
+    forbidden in this hot path.
     """
 
     @classmethod
@@ -189,8 +188,8 @@ class TestEditTb001Performance(unittest.TestCase):
         """tb001 should suspend viewport refresh during cleanup."""
         calls = self._collect_calls(self.tb001_node)
         self.assertTrue(
-            any(c == "pm.refresh" for c in calls),
-            "tb001 should call pm.refresh (for suspend/resume)",
+            any(c == "cmds.refresh" for c in calls),
+            "tb001 should call cmds.refresh (for suspend/resume)",
         )
 
     def test_no_per_node_pymel_groups(self):

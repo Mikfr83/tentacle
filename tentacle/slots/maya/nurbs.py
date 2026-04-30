@@ -1,9 +1,7 @@
 # !/usr/bin/python
 # coding=utf-8
-try:
-    import pymel.core as pm
-except ImportError as error:
-    print(__file__, error)
+import maya.cmds as cmds
+import maya.mel as mel
 import pythontk as ptk
 import mayatk as mtk
 from tentacle.slots.maya._slots_maya import SlotsMaya
@@ -188,21 +186,17 @@ class Nurbs(SlotsMaya):
         """Create: Curve"""
         text = widget.items[index]
         if text == "Ep Curve Tool":
-            pm.mel.eval("EPCurveToolOptions;")  # pm.mel.eval('EPCurveTool;')
+            mel.eval("EPCurveToolOptions;")
         elif text == "CV Curve Tool":
-            pm.mel.eval("CVCurveToolOptions")  # pm.mel.eval('CVCurveTool')
+            mel.eval("CVCurveToolOptions")
         elif text == "Bezier Curve Tool":
-            pm.mel.eval(
-                "CreateBezierCurveToolOptions"
-            )  # pm.mel.eval('CreateBezierCurveTool;')
+            mel.eval("CreateBezierCurveToolOptions")
         elif text == "Pencil Curve Tool":
-            pm.mel.eval("PencilCurveToolOptions;")  # pm.mel.eval('PencilCurveTool;')
+            mel.eval("PencilCurveToolOptions;")
         elif text == "2 Point Circular Arc":
-            pm.mel.eval("TwoPointArcToolOptions;")  # pm.mel.eval("TwoPointArcTool;")
+            mel.eval("TwoPointArcToolOptions;")
         elif text == "3 Point Circular Arc":
-            pm.mel.eval(
-                "ThreePointArcToolOptions;"
-            )  # pm.mel.eval("ThreePointArcTool;")
+            mel.eval("ThreePointArcToolOptions;")
 
     def tb000(self, widget):
         """Revolve"""
@@ -216,8 +210,8 @@ class Nurbs(SlotsMaya):
         useTolerance = widget.menu.chk009.isChecked()
         tolerance = widget.menu.s006.value()
 
-        curves = pm.ls(sl=True)
-        return pm.revolve(
+        curves = cmds.ls(sl=True) or []
+        return cmds.revolve(
             curves,
             po=polygon,
             rn=range_,
@@ -263,102 +257,102 @@ class Nurbs(SlotsMaya):
 
     def b012(self):
         """Project Curve"""
-        pm.mel.ProjectCurveOnMesh()
+        mel.eval("ProjectCurveOnMesh")
 
     def b014(self):
         """Duplicate Curve"""
-        pm.mel.DuplicateCurve()
+        mel.eval("DuplicateCurve")
 
     def b016(self):
         """Extract Curve"""
         try:
-            pm.mel.CreateCurveFromPoly()
+            mel.eval("CreateCurveFromPoly")
         except Exception:
             mtk.create_curve_from_edges()
 
     def b018(self):
         """Lock Curve"""
-        pm.mel.LockCurveLength()
+        mel.eval("LockCurveLength")
 
     def b019(self):
         """Unlock Curve"""
-        pm.mel.UnlockCurveLength()
+        mel.eval("UnlockCurveLength")
 
     def b020(self):
         """Bend Curve"""
-        pm.mel.BendCurves()
+        mel.eval("BendCurves")
 
     def b022(self):
         """Curl Curve"""
-        pm.mel.CurlCurves()
+        mel.eval("CurlCurves")
 
     def b024(self):
         """Modify Curve Curvature"""
-        pm.mel.ScaleCurvature()
+        mel.eval("ScaleCurvature")
 
     def b026(self):
         """Smooth Curve"""
-        pm.mel.SmoothHairCurves()
+        mel.eval("SmoothHairCurves")
 
     def b028(self):
         """Straighten Curve"""
-        pm.mel.StraightenCurves()
+        mel.eval("StraightenCurves")
 
     def b030(self):
         """Extrude"""
-        pm.mel.Extrude()
+        mel.eval("Extrude")
 
     def b036(self):
         """Planar"""
-        pm.mel.Planar()
+        mel.eval("Planar")
 
     def b038(self):
         """Insert Isoparm"""
-        pm.mel.InsertIsoparms()
+        mel.eval("InsertIsoparms")
 
     def b040(self):
         """Edit Curve Tool"""
-        pm.mel.CurveEditTool()
+        mel.eval("CurveEditTool")
 
     def b041(self):
         """Attach Curve"""
-        pm.mel.AttachCurveOptions()
+        mel.eval("AttachCurveOptions")
 
     def b042(self):
         """Detach Curve"""
-        pm.mel.DetachCurve()
+        mel.eval("DetachCurve")
 
     def b043(self):
         """Extend Curve"""
-        pm.mel.ExtendCurveOptions()
+        mel.eval("ExtendCurveOptions")
 
     def b045(self):
         """Cut Curve"""
-        pm.mel.CutCurve()
+        mel.eval("CutCurve")
 
     def b046(self):
         """Open/Close Curve"""
-        pm.mel.OpenCloseCurve()
+        mel.eval("OpenCloseCurve")
 
     def b047(self):
         """Insert Knot"""
-        pm.mel.InsertKnot()
+        mel.eval("InsertKnot")
 
     def b049(self):
         """Add Points Tool"""
-        pm.mel.AddPointsTool()
+        mel.eval("AddPointsTool")
 
     def b051(self):
         """Reverse Curve"""
-        pm.mel.ReverseCurve()
+        mel.eval("ReverseCurve")
 
     def b052(self):
         """Extend Curve"""
-        pm.mel.ExtendCurve()
+        mel.eval("ExtendCurve")
 
     def b054(self):
         """Extend On Surface"""
-        pm.mel.ExtendCurveOnSurface()
+        mel.eval("ExtendCurveOnSurface")
 
 
 # --------------------------------------------------------------------------------------------

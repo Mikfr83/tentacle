@@ -1,9 +1,7 @@
 # !/usr/bin/python
 # coding=utf-8
-try:
-    import pymel.core as pm
-except ImportError as error:
-    print(__file__, error)
+import maya.cmds as cmds
+import maya.mel as mel
 from qtpy import QtWidgets
 from uitk import Signals, WidgetComboBox, ToolBox
 import mayatk as mtk
@@ -39,7 +37,7 @@ class Selection(SlotsMaya):
             return
 
         selection_type = item.item_text()
-        objects = pm.ls()
+        objects = cmds.ls() or []
 
         try:
             result = mtk.Selection.select_by_type(
@@ -49,7 +47,7 @@ class Selection(SlotsMaya):
         except ValueError:
             pass
         except Exception as e:
-            pm.warning(f"Error selecting by type '{selection_type}': {e}")
+            cmds.warning(f"Error selecting by type '{selection_type}': {e}")
 
     def cmb001_init(self, widget):
         """Reorder Selection Init"""
@@ -98,7 +96,7 @@ class Selection(SlotsMaya):
         method = method_map.get(selected_option, "name")
 
         # Get current selection
-        objects = pm.selected()
+        objects = cmds.ls(sl=True) or []
         if not objects:
             self.sb.message_box("No objects selected to reorder.")
             return
@@ -108,7 +106,7 @@ class Selection(SlotsMaya):
 
         # Reselect in new order
         if reordered:
-            pm.select(reordered)
+            cmds.select(reordered)
             print(
                 f"Reordered {len(reordered)} objects by {selected_option}{' (reversed)' if reverse else ''}"
             )
@@ -143,45 +141,45 @@ class Selection(SlotsMaya):
         """Convert To"""
         text = widget.items[index]
         if text == "Verts":  # Convert Selection To Vertices
-            pm.mel.PolySelectConvert(3)
-        elif text == "Vertex Faces":  #
-            pm.mel.PolySelectConvert(5)
-        elif text == "Vertex Perimeter":  #
-            pm.mel.ConvertSelectionToVertexPerimeter()
+            mel.eval("PolySelectConvert 3")
+        elif text == "Vertex Faces":
+            mel.eval("PolySelectConvert 5")
+        elif text == "Vertex Perimeter":
+            mel.eval("ConvertSelectionToVertexPerimeter")
         elif text == "Edges":  # Convert Selection To Edges
-            pm.mel.PolySelectConvert(2)
-        elif text == "Edge Loop":  #
-            pm.mel.polySelectSp(loop=1)
+            mel.eval("PolySelectConvert 2")
+        elif text == "Edge Loop":
+            mel.eval("polySelectSp -loop 1")
         elif text == "Edge Ring":  # Convert Selection To Edge Ring
-            pm.mel.SelectEdgeRingSp()
-        elif text == "Contained Edges":  #
-            pm.mel.PolySelectConvert(20)
-        elif text == "Edge Perimeter":  #
-            pm.mel.ConvertSelectionToEdgePerimeter()
-        elif text == "Border Edges":  #
-            pm.select(self.getBorderEdgeFromFace())
+            mel.eval("SelectEdgeRingSp")
+        elif text == "Contained Edges":
+            mel.eval("PolySelectConvert 20")
+        elif text == "Edge Perimeter":
+            mel.eval("ConvertSelectionToEdgePerimeter")
+        elif text == "Border Edges":
+            cmds.select(self.getBorderEdgeFromFace())
         elif text == "Faces":  # Convert Selection To Faces
-            pm.mel.PolySelectConvert(1)
-        elif text == "Face Path":  #
-            pm.mel.polySelectEdges("edgeRing")
-        elif text == "Contained Faces":  #
-            pm.mel.PolySelectConvert(10)
-        elif text == "Face Perimeter":  #
-            pm.mel.polySelectFacePerimeter()
-        elif text == "UV's":  #
-            pm.mel.PolySelectConvert(4)
-        elif text == "UV Shell":  #
-            pm.mel.polySelectBorderShell(0)
-        elif text == "UV Shell Border":  #
-            pm.mel.polySelectBorderShell(1)
-        elif text == "UV Perimeter":  #
-            pm.mel.ConvertSelectionToUVPerimeter()
-        elif text == "UV Edge Loop":  #
-            pm.mel.polySelectEdges("edgeUVLoopOrBorder")
-        elif text == "Shell":  #
-            pm.mel.polyConvertToShell()
-        elif text == "Shell Border":  #
-            pm.mel.polyConvertToShellBorder()
+            mel.eval("PolySelectConvert 1")
+        elif text == "Face Path":
+            mel.eval('polySelectEdges "edgeRing"')
+        elif text == "Contained Faces":
+            mel.eval("PolySelectConvert 10")
+        elif text == "Face Perimeter":
+            mel.eval("polySelectFacePerimeter")
+        elif text == "UV's":
+            mel.eval("PolySelectConvert 4")
+        elif text == "UV Shell":
+            mel.eval("polySelectBorderShell 0")
+        elif text == "UV Shell Border":
+            mel.eval("polySelectBorderShell 1")
+        elif text == "UV Perimeter":
+            mel.eval("ConvertSelectionToUVPerimeter")
+        elif text == "UV Edge Loop":
+            mel.eval('polySelectEdges "edgeUVLoopOrBorder"')
+        elif text == "Shell":
+            mel.eval("polyConvertToShell")
+        elif text == "Shell Border":
+            mel.eval("polyConvertToShellBorder")
 
     def cmb005_init(self, widget):
         """ """
@@ -200,19 +198,19 @@ class Selection(SlotsMaya):
         """Selection Contraints"""
         text = widget.items[index]
         if text == "Angle":
-            pm.mel.dR_selConstraintAngle()
+            mel.eval("dR_selConstraintAngle")
         elif text == "Border":
-            pm.mel.dR_selConstraintBorder()
+            mel.eval("dR_selConstraintBorder")
         elif text == "Edge Loop":
-            pm.mel.dR_selConstraintEdgeLoop()
+            mel.eval("dR_selConstraintEdgeLoop")
         elif text == "Edge Ring":
-            pm.mel.dR_selConstraintEdgeRing()
+            mel.eval("dR_selConstraintEdgeRing")
         elif text == "Shell":
-            pm.mel.dR_selConstraintElement()
+            mel.eval("dR_selConstraintElement")
         elif text == "UV Edge Loop":
-            pm.mel.dR_selConstraintUVEdgeLoop()
+            mel.eval("dR_selConstraintUVEdgeLoop")
         elif text == "OFF":
-            pm.mel.dR_selConstraintOff()
+            mel.eval("dR_selConstraintOff")
         self.sb.message_box(f"Select Constaints: <hl>{text}</hl>")
 
     def chk000(self, state, widget):
@@ -256,28 +254,28 @@ class Selection(SlotsMaya):
 
     def lbl003(self, *args):
         """Grow Selection"""
-        pm.mel.GrowPolygonSelectionRegion()
+        mel.eval("GrowPolygonSelectionRegion")
 
     def lbl004(self, *args):
         """Shrink Selection"""
-        pm.mel.ShrinkPolygonSelectionRegion()
+        mel.eval("ShrinkPolygonSelectionRegion")
 
     def chk004(self, state, widget):
         """Ignore Backfacing (Camera Based Selection)"""
         if state:
-            pm.selectPref(useDepth=True)
+            cmds.selectPref(useDepth=True)
             self.sb.message_box("Camera-based selection <hl>ON</hl>.")
         else:
-            pm.selectPref(useDepth=False)
+            cmds.selectPref(useDepth=False)
             self.sb.message_box("Camera-based selection <hl>OFF</hl>.")
 
     def chk008(self, state, widget):
         """Toggle Soft Selection"""
         if state:
-            pm.softSelect(edit=1, softSelectEnabled=True)
+            cmds.softSelect(edit=1, softSelectEnabled=True)
             self.sb.message_box("Soft Select <hl>ON</hl>.")
         else:
-            pm.softSelect(edit=1, softSelectEnabled=False)
+            cmds.softSelect(edit=1, softSelectEnabled=False)
             self.sb.message_box("Soft Select <hl>OFF</hl>.")
 
     def chkxxx(self, **kwargs):
@@ -285,7 +283,7 @@ class Selection(SlotsMaya):
         widget = kwargs.get("widget")
         state = kwargs.get("state")
         try:
-            pm.select(widget.text(), deselect=(not state))
+            cmds.select(widget.text(), deselect=(not state))
         except KeyError:
             pass
 
@@ -340,7 +338,7 @@ class Selection(SlotsMaya):
         borderEdges = widget.option_box.menu.chk010.isChecked()
         step = widget.option_box.menu.s003.value()
 
-        selection = pm.ls(orderedSelection=True)
+        selection = cmds.ls(orderedSelection=True) or []
         if not selection:
             self.sb.message_box("Operation requires a valid selection.")
             return
@@ -362,7 +360,7 @@ class Selection(SlotsMaya):
             all_edges = mtk.Components.get_components(selection, "edges")
             result = mtk.Components.get_border_components(all_edges)
 
-        pm.select(result[::step])
+        cmds.select(result[::step])
 
     def tb001_init(self, widget):
         """ """
@@ -460,9 +458,9 @@ class Selection(SlotsMaya):
         b = widget.option_box.menu.chk019.isChecked()  # bounding box
         inc = widget.option_box.menu.chk020.isChecked()  # select the original objects
 
-        objMode = pm.selectMode(q=True, object=1)
+        objMode = cmds.selectMode(q=True, object=1)
         if objMode:
-            selection = pm.ls(sl=1, objectsOnly=1, type="transform")
+            selection = cmds.ls(sl=1, objectsOnly=1, type="transform") or []
             mtk.get_similar_mesh(
                 selection,
                 tolerance=tolerance,
@@ -479,7 +477,7 @@ class Selection(SlotsMaya):
                 worldArea=wa,
             )
         else:
-            pm.mel.doSelectSimilar(1, {tolerance})
+            mel.eval(f"doSelectSimilar 1 {{{tolerance}}};")
 
     def tb002_init(self, widget):
         """ """
@@ -540,7 +538,7 @@ class Selection(SlotsMaya):
         range_y = float(widget.option_box.menu.s004.value())
         range_z = float(widget.option_box.menu.s005.value())
 
-        sel = pm.ls(sl=1)
+        sel = cmds.ls(sl=1) or []
         selected_faces = mtk.Components.get_components(sel, component_type="faces")
         if not selected_faces:
             self.sb.message_box("The operation requires a face selection.")
@@ -551,7 +549,7 @@ class Selection(SlotsMaya):
         )
         islands = mtk.Components.get_contigious_islands(similar_faces)
         island = [i for i in islands if bool(set(i) & set(selected_faces))]
-        pm.select(island)
+        cmds.select(island)
 
     def tb003_init(self, widget):
         """ """
@@ -577,14 +575,14 @@ class Selection(SlotsMaya):
         angleLow = widget.option_box.menu.s006.value()
         angleHigh = widget.option_box.menu.s007.value()
 
-        objects = pm.ls(sl=1, objectsOnly=1)
+        objects = cmds.ls(sl=1, objectsOnly=1) or []
         edges = mtk.Components.get_edges_by_normal_angle(
             objects, low_angle=angleLow, high_angle=angleHigh
         )
-        pm.select(edges)
+        cmds.select(edges)
 
-        pm.selectMode(component=1)
-        pm.selectType(edge=1)
+        cmds.selectMode(component=1)
+        cmds.selectType(edge=1)
 
     def b001(self):
         """Toggle Selectability"""
@@ -592,19 +590,19 @@ class Selection(SlotsMaya):
 
     def b016(self):
         """Convert Selection To Vertices"""
-        pm.mel.PolySelectConvert(3)
+        mel.eval("PolySelectConvert 3")
 
     def b017(self):
         """Convert Selection To Edges"""
-        pm.mel.PolySelectConvert(2)
+        mel.eval("PolySelectConvert 2")
 
     def b018(self):
         """Convert Selection To Faces"""
-        pm.mel.PolySelectConvert(1)
+        mel.eval("PolySelectConvert 1")
 
     def b019(self):
         """Convert Selection To Edge Ring"""
-        pm.mel.SelectEdgeRingSp()
+        mel.eval("SelectEdgeRingSp")
 
     @staticmethod
     def get_selection_tool():
@@ -614,7 +612,7 @@ class Selection(SlotsMaya):
             str: The current selection tool.
         """
         try:
-            return pm.currentCtx()
+            return cmds.currentCtx()
         except Exception as e:
             print(f"# Error: {e}")
             return None
@@ -632,7 +630,7 @@ class Selection(SlotsMaya):
             return
 
         try:
-            pm.setToolTo(tool)
+            cmds.setToolTo(tool)
         except Exception as e:
             print(f"# Error: {e}")
 

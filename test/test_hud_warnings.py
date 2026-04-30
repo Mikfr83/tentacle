@@ -11,15 +11,30 @@ import os
 import tempfile
 import unittest
 
-from tentacle.slots.maya import hud
+try:
+    from tentacle.slots.maya import hud
+    _MAYA_AVAILABLE = True
+except ImportError:
+    # tentacle.slots.maya.hud imports maya.cmds at module load; in plain
+    # Python (no Maya runtime) this raises. The whole test module then
+    # has nothing meaningful to do — skip cleanly.
+    hud = None
+    _MAYA_AVAILABLE = False
 
 
-class _FakePm:
+pytestmark = unittest.skipUnless(_MAYA_AVAILABLE, "Requires maya.cmds")
+
+
+class _FakeCmds:
+    """Stand-in for maya.cmds covering only what hud._scene_is_unsaved needs."""
+
     def __init__(self, scene_name: str):
         self._scene_name = scene_name
 
-    def sceneName(self):
-        return self._scene_name
+    def file(self, query=False, sceneName=False):
+        if query and sceneName:
+            return self._scene_name
+        return ""
 
 
 class _FakeCheckbox:
@@ -46,40 +61,46 @@ class _FakeSb:
         self.loaded_ui = _FakeLoadedUi(prefs)
 
 
-class _GateOnlyHarness(hud.WarningsMixin):
-    """Strip WARNING_DEFS so we test only the unsaved-scene gate, not real checks."""
+if _MAYA_AVAILABLE:
 
-    WARNING_DEFS = (
-        {
-            "key": "chk_warn_dummy",
-            "icon": "!",
-            "color": "Red",
-            "label": "Dummy",
-            "check": lambda self: True,
-            "describe": lambda self: "dummy",
-        },
-    )
+    class _GateOnlyHarness(hud.WarningsMixin):
+        """Strip WARNING_DEFS so we test only the unsaved-scene gate, not real checks."""
+
+        WARNING_DEFS = (
+            {
+                "key": "chk_warn_dummy",
+                "icon": "!",
+                "color": "Red",
+                "label": "Dummy",
+                "check": lambda self: True,
+                "describe": lambda self: "dummy",
+            },
+        )
+
+else:
+    _GateOnlyHarness = None  # type: ignore[assignment]
 
 
+@unittest.skipUnless(_MAYA_AVAILABLE, "Requires maya.cmds")
 class TestUnsavedSceneGate(unittest.TestCase):
     _SENTINEL = object()
 
     def setUp(self):
-        self._original_pm = getattr(hud, "pm", self._SENTINEL)
+        self._original_cmds = getattr(hud, "cmds", self._SENTINEL)
 
     def tearDown(self):
-        if self._original_pm is self._SENTINEL:
-            if hasattr(hud, "pm"):
-                delattr(hud, "pm")
+        if self._original_cmds is self._SENTINEL:
+            if hasattr(hud, "cmds"):
+                delattr(hud, "cmds")
         else:
-            hud.pm = self._original_pm
+            hud.cmds = self._original_cmds
 
     def _make(self, scene_name, skip_unsaved, dummy=True):
         instance = _GateOnlyHarness.__new__(_GateOnlyHarness)
         instance.sb = _FakeSb(
             _FakePrefs(chk_warn_skip_unsaved=skip_unsaved, chk_warn_dummy=dummy)
         )
-        hud.pm = _FakePm(scene_name)
+        hud.cmds = _FakeCmds(scene_name)
         return instance
 
     def test_gate_blocks_when_scene_untitled_and_skip_enabled(self):

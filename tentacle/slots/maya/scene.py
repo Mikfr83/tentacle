@@ -2,10 +2,8 @@
 # coding=utf-8
 import os
 
-try:
-    import pymel.core as pm
-except ImportError as error:
-    print(__file__, error)
+import maya.cmds as cmds
+import maya.mel as mel
 import pythontk as ptk
 import mayatk as mtk
 from uitk import Signals
@@ -93,7 +91,7 @@ class SceneSlots(SlotsMaya):
         """Initialize Workspace Scenes"""
         if not widget.is_initialized:
             widget.refresh_on_show = True  # Call this method on show
-            pm.scriptJob(event=["workspaceChanged", self.ui.cmb000.init_slot])
+            cmds.scriptJob(event=["workspaceChanged", self.ui.cmb000.init_slot])
 
         include = self.ui.txt000.text() or None
 
@@ -112,7 +110,7 @@ class SceneSlots(SlotsMaya):
     def cmb000(self, index, widget):
         """Workspace Scenes"""
         scene = widget.items[index]
-        pm.openFile(scene, force=True)
+        cmds.file(scene, open=True, force=True)
 
     def cmb002_init(self, widget):
         """Initialize Autosave"""
@@ -136,7 +134,7 @@ class SceneSlots(SlotsMaya):
     def cmb002(self, index, widget):
         """Autosave"""
         file = widget.items[index]
-        pm.openFile(file, open=1, force=True)
+        cmds.file(file, open=True, force=True)
 
     def cmb003_init(self, widget):
         """Initialize Import"""
@@ -154,13 +152,13 @@ class SceneSlots(SlotsMaya):
         """Import"""
         text = widget.items[index]
         if text == "Import File":  # Import
-            pm.mel.Import()
+            mel.eval("Import")
         elif text == "Import Options":  # Import options
-            pm.mel.ImportOptions()
+            mel.eval("ImportOptions")
         elif text == "FBX Import Presets":  # FBX Import Presets
-            pm.mel.FBXUICallBack(-1, "editImportPresetInNewWindow", "fbx")
+            mel.eval('FBXUICallBack -1 "editImportPresetInNewWindow" "fbx"')
         elif text == "OBJ Import Presets":  # Obj Import Presets
-            pm.mel.FBXUICallBack(-1, "editImportPresetInNewWindow", "obj")
+            mel.eval('FBXUICallBack -1 "editImportPresetInNewWindow" "obj"')
 
     def cmb004_init(self, widget):
         """Initialize Export"""
@@ -184,31 +182,31 @@ class SceneSlots(SlotsMaya):
         """Export"""
         text = widget.items[index]
         if text == "Export Selection":
-            pm.mel.ExportSelection()
+            mel.eval("ExportSelection")
         elif text == "Export All":
-            pm.mel.Export()
+            mel.eval("Export")
         elif text == "Send to Unreal":
-            pm.mel.SendToUnrealSelection()
+            mel.eval("SendToUnrealSelection")
         elif text == "Send to Unity":
-            pm.mel.SendToUnitySelection()
+            mel.eval("SendToUnitySelection")
         elif text == "GoZ":
-            pm.mel.eval(
+            mel.eval(
                 'print("GoZ"); source"C:/Users/Public/Pixologic/GoZApps/Maya/GoZBrushFromMaya.mel"; source "C:/Users/Public/Pixologic/GoZApps/Maya/GoZScript.mel";'
             )
         elif text == "Send to 3dsMax: As New Scene":  # Send to 3dsMax: As New Scene
-            pm.mel.SendAsNewScene3dsMax()  # OneClickMenuExecute ("3ds Max", "SendAsNewScene"); doMaxFlow { "sendNew","perspShape","1" };
+            mel.eval("SendAsNewScene3dsMax")
         elif text == "Send to 3dsMax: Update Current":  # Send to 3dsMax: Update Current
-            pm.mel.UpdateCurrentScene3dsMax()  # OneClickMenuExecute ("3ds Max", "UpdateCurrentScene"); doMaxFlow { "update","perspShape","1" };
+            mel.eval("UpdateCurrentScene3dsMax")
         elif text == "Send to 3dsMax: Add to Current":  # Send to 3dsMax: Add to Current
-            pm.mel.AddToCurrentScene3dsMax()  # OneClickMenuExecute ("3ds Max", "AddToScene"); doMaxFlow { "add","perspShape","1" };
+            mel.eval("AddToCurrentScene3dsMax")
         elif text == "Export to Offline File":  # Export to Offline File
-            pm.mel.ExportOfflineFileOptions()  # ExportOfflineFile
+            mel.eval("ExportOfflineFileOptions")
         elif text == "Export Options":  # Export options
-            pm.mel.ExportSelectionOptions()
+            mel.eval("ExportSelectionOptions")
         elif text == "FBX Export Presets":  # FBX Export Presets
-            pm.mel.FBXUICallBack(-1, "editExportPresetInNewWindow", "fbx")
+            mel.eval('FBXUICallBack -1 "editExportPresetInNewWindow" "fbx"')
         elif text == "OBJ Export Presets":  # Obj Export Presets
-            pm.mel.FBXUICallBack(-1, "editExportPresetInNewWindow", "obj")
+            mel.eval('FBXUICallBack -1 "editExportPresetInNewWindow" "obj"')
 
     def cmb005_init(self, widget):
         """Initialize Recent Files"""
@@ -219,7 +217,7 @@ class SceneSlots(SlotsMaya):
     def cmb005(self, index: int, widget):
         """Recent Files"""
         force = not mtk.get_env_info("scene_modified")
-        pm.openFile(widget.items[index], open=True, force=force, ignoreVersion=True)
+        cmds.file(widget.items[index], open=True, force=force, ignoreVersion=True)
 
     def tb000_init(self, widget):
         """Initialize Set Workspace"""
@@ -263,7 +261,7 @@ class SceneSlots(SlotsMaya):
 
     def tb000(self, widget):
         """Set Workspace"""
-        pm.mel.SetProject()
+        mel.eval("SetProject")
         # Record the newly set workspace
         workspace = mtk.get_env_info("workspace")
         if hasattr(self, "_recent_workspaces") and workspace:
@@ -275,7 +273,7 @@ class SceneSlots(SlotsMaya):
         if not os.path.isfile(os.path.join(str(path), "workspace.mel")):
             self.sb.message_box("Not a valid workspace.")
             return
-        pm.workspace(path, openWorkspace=True)
+        cmds.workspace(path, openWorkspace=True)
         workspace_name = os.path.basename(path)
         self.sb.message_box(f"Workspace set to {workspace_name}.")
         self.ui.tb000.init_slot()
@@ -294,18 +292,18 @@ class SceneSlots(SlotsMaya):
     def list000(self, item):
         """Recent Files"""
         data = item.item_data()
-        pm.openFile(data, open=True, force=True)
+        cmds.file(data, open=True, force=True)
 
     def lbl004(self):
         """Open current project root"""
-        dir_ = pm.workspace(q=True, rd=1)  # current project path.
+        dir_ = cmds.workspace(q=True, rd=1)  # current project path.
         os.startfile(ptk.format_path(dir_))
 
     def lbl005(self):
         """Auto Set Workspace"""
         workspace = mtk.find_workspace_using_path()
         if workspace:
-            pm.workspace(workspace, openWorkspace=True)
+            cmds.workspace(workspace, openWorkspace=True)
             workspace_name = os.path.basename(workspace)
             self.sb.message_box(f"Workspace set to {workspace_name}.")
             self.ui.tb000.init_slot()
@@ -392,21 +390,21 @@ class SceneSlots(SlotsMaya):
         replace = self.ui.chk004.isChecked()
         selected = self.ui.chk005.isChecked()
 
-        objects = pm.ls(from_)  # Stores a list of all objects starting with 'from_'
+        objects = cmds.ls(from_) or []  # Stores a list of all objects starting with 'from_'
         if selected:  # get user selected objects instead
-            objects = pm.ls(sl=True)
+            objects = cmds.ls(sl=True) or []
         from_ = from_.strip("*")  # strip modifier asterisk from user input
 
         for obj in objects:  # Get a list of it's direct parent
-            relatives = pm.listRelatives(obj, parent=1)
+            relatives = cmds.listRelatives(obj, parent=1) or []
             # If that parent starts with group, it came in root level and is pasted in a group, so ungroup it
-            if "group*" in relatives:
-                relatives[0].ungroup()
+            if relatives and "group" in relatives[0]:
+                cmds.ungroup(relatives[0])
 
             newName = to
             if replace:
                 newName = obj.replace(from_, to)
-            pm.rename(obj, newName)  # Rename the object with the new name
+            cmds.rename(obj, newName)  # Rename the object with the new name
 
 
 # --------------------------------------------------------------------------------------------

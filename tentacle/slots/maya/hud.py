@@ -3,10 +3,7 @@
 import os
 from typing import Optional
 
-try:
-    import pymel.core as pm
-except ImportError as error:
-    print(__file__, error)
+import maya.cmds as cmds
 import pythontk as ptk
 import mayatk as mtk
 from tentacle.slots.maya._slots_maya import SlotsMaya
@@ -22,13 +19,13 @@ class StatusMixin:
             if self.sb.preferences.tb000.menu.auto_update:
                 self.sb.check_for_update()
         # Symmetry status
-        if pm.symmetricModelling(q=True, symmetry=True):
-            axis = pm.symmetricModelling(q=True, axis=True)
+        if cmds.symmetricModelling(q=True, symmetry=True):
+            axis = cmds.symmetricModelling(q=True, axis=True)
             hud.insertText(
                 f'Symmetry Axis: <font style="color: Yellow;">{axis.upper()}</font>'
             )
         # Xform constraints
-        xformConstraint = pm.xformConstraint(query=True, type=True)
+        xformConstraint = cmds.xformConstraint(query=True, type=True)
         if xformConstraint and xformConstraint != "none":
             hud.insertText(
                 f'Xform Constraint: <font style="color: Cyan;">{xformConstraint}</font>'
@@ -40,10 +37,10 @@ class StatusMixin:
                 f'Workspace: <font style="color: Yellow;">{workspace}</font>'
             )
         # Units
-        sceneUnits = pm.currentUnit(q=True, fullName=True, linear=True)
+        sceneUnits = cmds.currentUnit(q=True, fullName=True, linear=True)
         hud.insertText(f'Units: <font style="color: Yellow;">{sceneUnits}</font>')
         # Frame rate
-        frame_rate_key = pm.currentUnit(q=True, time=True)
+        frame_rate_key = cmds.currentUnit(q=True, time=True)
         frame_rate_val = ptk.VidUtils.FRAME_RATES.get(frame_rate_key)
         if frame_rate_val is None:
             frame_rate_display = "Unknown Frame Rate"
@@ -56,13 +53,13 @@ class StatusMixin:
 
 class SelectionMixin:
     def insert_selection_info(self, hud, selection) -> None:
-        if pm.selectMode(q=True, object=True) and pm.selectType(
+        if cmds.selectMode(q=True, object=True) and cmds.selectType(
             q=True, allObjects=True
         ):
             numberOfSelected = len(selection)
             if numberOfSelected < 11:
                 name_and_type = [
-                    f'<font style="color: Yellow;">{i.name()}<font style="color: LightGray;">:{pm.objectType(i)}<br/>'
+                    f'<font style="color: Yellow;">{i}<font style="color: LightGray;">:{cmds.objectType(i)}<br/>'
                     for i in selection
                 ]
                 name_and_type_str = "".join(name_and_type)
@@ -72,55 +69,54 @@ class SelectionMixin:
                 f'Selected: <font style="color: Yellow;">{numberOfSelected}<br/>{name_and_type_str}'
             )
 
-            if numberOfSelected == 1 and pm.nodeType(selection[0]) == "transform":
-                shape_node = pm.listRelatives(
+            if numberOfSelected == 1 and cmds.nodeType(selection[0]) == "transform":
+                shape_node = cmds.listRelatives(
                     selection[0], shapes=True, noIntermediate=True, fullPath=True
-                )
-                if shape_node and isinstance(shape_node[0], pm.nt.Mesh):
-                    vertex_faces = shape_node[0].vtxFace
-                    all_locked = pm.polyNormalPerVertex(
-                        vertex_faces, query=True, allLocked=True
+                ) or []
+                if shape_node and cmds.objectType(shape_node[0]) == "mesh":
+                    all_locked = cmds.polyNormalPerVertex(
+                        f"{shape_node[0]}.vtxFace[*][*]",
+                        query=True,
+                        allLocked=True,
                     )
                     if all_locked and any(all_locked):
                         hud.insertText(
                             'Normals: <font style="color: Red;">LOCKED</font>'
                         )
-                    if (
-                        pm.objectType(shape_node[0], isType="mesh")
-                        and shape_node[0].isInstanced()
-                    ):
+                    instance_paths = cmds.ls(shape_node[0], allPaths=True) or []
+                    if len(instance_paths) > 1:
                         hud.insertText(
-                            f'Instances: <font style="color: Yellow;">{shape_node[0].instanceCount()}</font>'
+                            f'Instances: <font style="color: Yellow;">{len(instance_paths)}</font>'
                         )
 
-            objectFaces = pm.polyEvaluate(selection, face=True)
+            objectFaces = cmds.polyEvaluate(selection, face=True)
             if isinstance(objectFaces, int):
                 hud.insertText(f'Faces: <font style="color: Yellow;">{objectFaces:,d}')
-            objectTris = pm.polyEvaluate(selection, triangle=True)
+            objectTris = cmds.polyEvaluate(selection, triangle=True)
             if isinstance(objectTris, int):
                 hud.insertText(f'Tris: <font style="color: Yellow;">{objectTris:,d}')
-            objectUVs = pm.polyEvaluate(selection, uvcoord=True)
+            objectUVs = cmds.polyEvaluate(selection, uvcoord=True)
             if isinstance(objectUVs, int):
                 hud.insertText(f'UVs: <font style="color: Yellow;">{objectUVs:,d}')
 
     def insert_component_info(self, hud, selection) -> None:
         type_, num_selected, total_num = None, None, None
-        if pm.selectType(q=True, vertex=1):
+        if cmds.selectType(q=True, vertex=1):
             type_ = "Verts"
-            num_selected = pm.polyEvaluate(vertexComponent=1)
-            total_num = pm.polyEvaluate(selection, vertex=1)
-        elif pm.selectType(q=True, edge=1):
+            num_selected = cmds.polyEvaluate(vertexComponent=1)
+            total_num = cmds.polyEvaluate(selection, vertex=1)
+        elif cmds.selectType(q=True, edge=1):
             type_ = "Edges"
-            num_selected = pm.polyEvaluate(edgeComponent=1)
-            total_num = pm.polyEvaluate(selection, edge=1)
-        elif pm.selectType(q=True, facet=1):
+            num_selected = cmds.polyEvaluate(edgeComponent=1)
+            total_num = cmds.polyEvaluate(selection, edge=1)
+        elif cmds.selectType(q=True, facet=1):
             type_ = "Faces"
-            num_selected = pm.polyEvaluate(faceComponent=1)
-            total_num = pm.polyEvaluate(selection, face=1)
-        elif pm.selectType(q=True, polymeshUV=1):
+            num_selected = cmds.polyEvaluate(faceComponent=1)
+            total_num = cmds.polyEvaluate(selection, face=1)
+        elif cmds.selectType(q=True, polymeshUV=1):
             type_ = "UVs"
-            num_selected = pm.polyEvaluate(uvComponent=1)
-            total_num = pm.polyEvaluate(selection, uvcoord=1)
+            num_selected = cmds.polyEvaluate(uvComponent=1)
+            total_num = cmds.polyEvaluate(selection, uvcoord=1)
 
         if type_:
             hud.insertText(
@@ -193,7 +189,7 @@ class WarningsMixin:
     def _scene_is_unsaved(self) -> bool:
         """True if no saved scene file exists on disk (new/untitled scene)."""
         try:
-            scene = str(pm.sceneName() or "")
+            scene = str(cmds.file(query=True, sceneName=True) or "")
             return not scene or not os.path.isfile(scene)
         except (RuntimeError, TypeError):
             return False
@@ -240,13 +236,13 @@ class WarningsMixin:
 
     def _warn_check_default_framerate(self) -> bool:
         try:
-            default = pm.optionVar(q="workingUnitTimeDefault")
+            default = cmds.optionVar(q="workingUnitTimeDefault")
         except (RuntimeError, TypeError):
             default = "film"  # Maya factory default
-        return pm.currentUnit(q=True, time=True) == default
+        return cmds.currentUnit(q=True, time=True) == default
 
     def _warn_describe_default_framerate(self) -> str:
-        key = pm.currentUnit(q=True, time=True)
+        key = cmds.currentUnit(q=True, time=True)
         val = ptk.VidUtils.FRAME_RATES.get(key)
         display = f"{val} fps {key.upper()}" if val else key
         return (
@@ -255,10 +251,10 @@ class WarningsMixin:
         )
 
     def _warn_check_autosave_off(self) -> bool:
-        return not pm.autoSave(q=True, enable=True)
+        return not cmds.autoSave(q=True, enable=True)
 
     def _warn_check_autosave_scene_open(self) -> bool:
-        scene = str(pm.sceneName() or "")
+        scene = str(cmds.file(query=True, sceneName=True) or "")
         if not scene:
             return False
         scene_norm = os.path.normpath(scene).lower()
@@ -316,13 +312,13 @@ class HudSlots(
 
         self.insert_warning_details(hud, self._active_warnings)
 
-        selection = pm.ls(sl=True)
+        selection = cmds.ls(sl=True) or []
         if not selection:
             self.insert_scene_status(hud)
         else:
-            if pm.selectMode(q=True, object=True):
+            if cmds.selectMode(q=True, object=True):
                 self.insert_selection_info(hud, selection)
-            elif pm.selectMode(q=True, component=1):
+            elif cmds.selectMode(q=True, component=1):
                 self.insert_component_info(hud, selection)
 
         method = self.sb.prev_slot

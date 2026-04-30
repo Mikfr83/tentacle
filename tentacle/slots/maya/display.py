@@ -1,9 +1,7 @@
 # !/usr/bin/python
 # coding=utf-8
-try:
-    import pymel.core as pm
-except ImportError as error:
-    print(__file__, error)
+import maya.cmds as cmds
+import maya.mel as mel
 import pythontk as ptk
 import mayatk as mtk
 from tentacle.slots.maya._slots_maya import SlotsMaya
@@ -33,7 +31,7 @@ class DisplaySlots(SlotsMaya):
 
     def b000(self):
         """Set Wireframe color"""
-        pm.mel.objectColorPalette()
+        mel.eval("objectColorPalette")
 
     def b001(self):
         """Wireframe Selected"""
@@ -41,13 +39,15 @@ class DisplaySlots(SlotsMaya):
 
     def b002(self):
         """Hide Selected"""
-        selection = pm.ls(sl=True)
-        pm.hide(selection)
+        selection = cmds.ls(sl=True)
+        if selection:
+            cmds.hide(selection)
 
     def b003(self):
         """Show Selected"""
-        selection = pm.ls(sl=True)
-        pm.showHidden(selection)
+        selection = cmds.ls(sl=True)
+        if selection:
+            cmds.showHidden(selection)
 
     def b004(self):
         """Show Geometry"""
@@ -55,37 +55,35 @@ class DisplaySlots(SlotsMaya):
 
     def b005(self):
         """Xray Selected"""
-        objects = pm.ls(sl=True, transforms=True)
+        objects = cmds.ls(sl=True, transforms=True) or []
         for item in objects:
-            result = pm.displaySurface(item, xRay=True, query=True)
+            result = cmds.displaySurface(item, xRay=True, query=True)
             if result is not None:
-                pm.displaySurface(item, xRay=(not result[0]))
+                cmds.displaySurface(item, xRay=(not result[0]))
 
     def b006(self):
         """Un-Xray All"""
-        # Get all mesh transforms and disable xray on each
-        meshes = pm.ls(type="mesh")
+        meshes = cmds.ls(type="mesh", long=True) or []
         for mesh in meshes:
-            transform = mesh.getParent()
+            transform = mtk.NodeUtils.get_parent(mesh, full_path=True)
             if transform:
-                pm.displaySurface(transform, xRay=False)
+                cmds.displaySurface(transform, xRay=False)
 
     def b007(self):
         """Xray Other"""
-        # Get all mesh transforms
-        meshes = pm.ls(type="mesh")
-        all_mesh_transforms = set(
-            mesh.getParent() for mesh in meshes if mesh.getParent()
-        )
-        # Get the currently selected objects
-        selected_objects = set(pm.ls(sl=True, transforms=True))
-        # Filter out the selected objects
+        meshes = cmds.ls(type="mesh", long=True) or []
+        all_mesh_transforms = set()
+        for mesh in meshes:
+            parent = mtk.NodeUtils.get_parent(mesh, full_path=True)
+            if parent:
+                all_mesh_transforms.add(parent)
+        selected_objects = set(cmds.ls(sl=True, transforms=True, long=True) or [])
         non_selected_objects = all_mesh_transforms - selected_objects
 
         for item in non_selected_objects:
-            result = pm.displaySurface(item, xRay=True, query=True)
+            result = cmds.displaySurface(item, xRay=True, query=True)
             if result is not None:
-                pm.displaySurface(item, xRay=(not result[0]))
+                cmds.displaySurface(item, xRay=(not result[0]))
 
     def b009(self):
         """Toggle Material Override"""
@@ -98,8 +96,8 @@ class DisplaySlots(SlotsMaya):
     def b012(self):
         """Wireframe Non Active (Wireframe All But The Selected Item)"""
         current_panel = mtk.get_panel(withFocus=1)
-        state = pm.modelEditor(current_panel, q=True, activeOnly=1)
-        pm.modelEditor(current_panel, edit=1, activeOnly=not state)
+        state = cmds.modelEditor(current_panel, q=True, activeOnly=1)
+        cmds.modelEditor(current_panel, edit=1, activeOnly=not state)
 
     def b013(self):
         """Explode View GUI"""
@@ -111,7 +109,7 @@ class DisplaySlots(SlotsMaya):
 
     def b021(self):
         """Template Selected"""
-        pm.toggle(template=1)  # pm.toggle(template=1, q=True)
+        cmds.toggle(template=1)
 
 
 # --------------------------------------------------------------------------------------------
