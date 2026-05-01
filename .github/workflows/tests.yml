@@ -32,6 +32,17 @@ jobs:
           pip install pytest qtpy PySide6 pythontk uitk mayatk
           pip install -e . --no-deps
 
+      - name: Compile UI files (pyside6-uic)
+        # _ui.py files are gitignored build artifacts. Generate them so
+        # test_ui_integrity (which checks .ui <-> _ui.py pairing) and any
+        # product code that imports compiled UI works in CI.
+        run: |
+          for ui in tentacle/ui/*.ui tentacle/ui/maya_menus/*.ui; do
+            out="${ui%.ui}_ui.py"
+            pyside6-uic "$ui" -o "$out"
+          done
+          echo "Compiled $(ls tentacle/ui/*_ui.py tentacle/ui/maya_menus/*_ui.py | wc -l) UI files"
+
       - name: Run tests
         id: tests
         env:
