@@ -307,7 +307,7 @@ Supports negative values to compress timing.</string>
      </size>
     </property>
     <property name="toolTip">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Deletes &lt;span style=&quot; font-weight:600;&quot;&gt;ALL&lt;/span&gt; keyframes for the currently selected object(s).&lt;/p&gt;&lt;p&gt;If specific attributes are selected in the channel box, only keyframes for those attributes will be deleted.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Deletes &lt;span style=" font-weight:600;"&gt;ALL&lt;/span&gt; keyframes for the currently selected object(s).&lt;/p&gt;&lt;p&gt;If specific attributes are selected in the channel box, only keyframes for those attributes will be deleted.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
     <property name="text">
      <string>Delete Keys</string>
@@ -449,8 +449,8 @@ Supports negative values to compress timing.</string>
    <header>widgets.pushbutton.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
- <connections/>
+ <resources />
+ <connections />
  <designerdata>
   <property name="gridDeltaX">
    <number>5</number>
