@@ -22,9 +22,6 @@ except ImportError:
     _MAYA_AVAILABLE = False
 
 
-pytestmark = unittest.skipUnless(_MAYA_AVAILABLE, "Requires maya.cmds")
-
-
 class _FakeCmds:
     """Stand-in for maya.cmds covering only what hud._scene_is_unsaved needs."""
 

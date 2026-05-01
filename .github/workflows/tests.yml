@@ -1,10 +1,9 @@
 name: Tests
 
 on:
-  push:
-    branches: [main]
   pull_request:
     branches: [main]
+  workflow_call:
 
 jobs:
   test:
@@ -25,7 +24,7 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y libegl1-mesa libopengl0 xvfb python3-tk
+          sudo apt-get install -y libegl1 libopengl0 libxkbcommon0 libdbus-1-3 libfontconfig1 python3-tk
 
       - name: Install dependencies
         run: |
@@ -33,11 +32,24 @@ jobs:
           pip install pytest qtpy PySide6 pythontk uitk mayatk
           pip install -e . --no-deps
 
+      - name: Compile UI files (pyside6-uic)
+        # _ui.py files are gitignored build artifacts. Generate them so
+        # test_ui_integrity (which checks .ui <-> _ui.py pairing) and any
+        # product code that imports compiled UI works in CI.
+        run: |
+          for ui in tentacle/ui/*.ui tentacle/ui/maya_menus/*.ui; do
+            out="${ui%.ui}_ui.py"
+            pyside6-uic "$ui" -o "$out"
+          done
+          echo "Compiled $(ls tentacle/ui/*_ui.py tentacle/ui/maya_menus/*_ui.py | wc -l) UI files"
+
       - name: Run tests
         id: tests
+        env:
+          QT_QPA_PLATFORM: offscreen
         run: |
           set +e
-          OUTPUT=$(xvfb-run -a pytest --tb=short -v test/ 2>&1)
+          OUTPUT=$(pytest --tb=short -v test/ 2>&1)
           EXIT_CODE=$?
           echo "$OUTPUT"
 
