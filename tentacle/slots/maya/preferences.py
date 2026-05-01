@@ -40,6 +40,12 @@ class Preferences(SlotsMaya):
                 setObjectName="lbl001",
                 setToolTip="Customize the UI shortcuts.",
             )
+            widget.menu.add(
+                self.sb.registered_widgets.Label,
+                setText="UI Browser",
+                setObjectName="lbl002",
+                setToolTip="Browse, search, tag, and launch any registered UI.",
+            )
             # Package section
             widget.menu.add(
                 self.sb.registered_widgets.Separator,
@@ -296,45 +302,15 @@ class Preferences(SlotsMaya):
 
     def lbl000(self):
         """UI Style Editor"""
-        from uitk.widgets.editors.style_editor import StyleEditor
-
-        # Create if not exists or if the C++ object has been deleted
-        if not hasattr(self, "_style_editor"):
-            self._style_editor = StyleEditor(parent=self.sb.handlers.marking_menu)
-        else:
-            try:
-                # Check if underlying C++ object is valid
-                if not self._style_editor.isVisible():
-                    self._style_editor.show()  # Just show if hidden
-            except RuntimeError:
-                # Re-create if deleted
-                self._style_editor = StyleEditor(parent=self.sb.handlers.marking_menu)
-        print("Opening Style Editor:", self._style_editor)
-        self._style_editor.show()
-        self._style_editor.raise_()
+        self.sb.editors.show("style")
 
     def lbl001(self):
         """Hotkey Editor"""
-        from uitk.widgets.editors.hotkey_editor import HotkeyEditor
+        self.sb.editors.show("hotkey")
 
-        # Create if not exists or if the C++ object has been deleted
-        if not hasattr(self, "_hotkey_editor"):
-            self._hotkey_editor = HotkeyEditor(
-                switchboard=self.sb, parent=self.sb.handlers.marking_menu
-            )
-        else:
-            try:
-                # Check if underlying C++ object is valid
-                if not self._hotkey_editor.isVisible():
-                    self._hotkey_editor.show()  # Just show if hidden
-            except RuntimeError:
-                # Re-create if deleted
-                self._hotkey_editor = HotkeyEditor(
-                    switchboard=self.sb, parent=self.sb.handlers.marking_menu
-                )
-
-        self._hotkey_editor.show()
-        self._hotkey_editor.raise_()
+    def lbl002(self):
+        """UI Browser"""
+        self.sb.editors.show("browser")
 
     def b001(self):
         """Color Settings"""
