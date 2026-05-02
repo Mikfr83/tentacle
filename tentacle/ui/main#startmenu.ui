@@ -471,7 +471,7 @@
                 <number>0</number>
                </property>
                <item>
-                <widget class="QWidget" name="region_B_inner" native="true">
+                <widget class="Region" name="region_B_inner" native="true">
                  <property name="minimumSize">
                   <size>
                    <width>0</width>
