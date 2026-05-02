@@ -109,7 +109,7 @@
            <number>0</number>
           </property>
           <item>
-           <widget class="QWidget" name="region_5" native="true">
+           <widget class="Region" name="region_5" native="true">
             <property name="minimumSize">
              <size>
               <width>0</width>
@@ -194,7 +194,7 @@
            </spacer>
           </item>
           <item>
-           <widget class="QWidget" name="widget_0" native="true">
+           <widget class="Region" name="widget_0" native="true">
             <property name="minimumSize">
              <size>
               <width>0</width>
